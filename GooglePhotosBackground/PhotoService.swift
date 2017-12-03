@@ -15,7 +15,7 @@ class PhotoService {
 
     private let networkManager = NetworkManager()
     private let fileManager = FileManager.default
-    private let saveURL: URL
+    let saveURL: URL
 
     init() {
         guard let path = NSSearchPathForDirectoriesInDomains(.picturesDirectory, .userDomainMask, true).first else {
@@ -34,7 +34,7 @@ class PhotoService {
 
     func downloadPhoto(_ resource: PhotoResource, success: @escaping ((PhotoResource) -> ()), failure: ((Error) -> ())?) {
         let request = PhotoRequest(url: resource.url)
-        networkManager.make(request: request, success: { [unowned self] response in
+        networkManager.send(request: request, success: { [unowned self] response in
             guard let response = response as? PhotoResponse else {
                 assertionFailure("expected PhotoResponse")
                 return
@@ -59,5 +59,9 @@ class PhotoService {
         }, failure: { error in
             failure?(error)
         })
+    }
+
+    func cancelAll() {
+        networkManager.cancelAll()
     }
 }

@@ -13,7 +13,7 @@ class PhotoAlbumService {
 
     func getPhotoAlbums(success: @escaping (([PhotoAlbum]) -> ()), failure: ((Error) -> ())?) {
         let request = PhotoAlbumsRequest(url: API.photoAlbums.url)
-        networkManager.make(request: request, success: { [unowned self] response in
+        networkManager.send(request: request, success: { [unowned self] response in
             guard let response = response as? PhotoAlbumsResponse else {
                 assertionFailure("expected PhotoAlbumsResponse")
                 return
@@ -39,7 +39,7 @@ class PhotoAlbumService {
 
     func getPhotoResources(_ album: PhotoAlbum, success: @escaping (([PhotoResource]) -> ()), failure: ((Error) -> ())?) {
         let request = PhotoResourceRequest(url: album.url)
-        networkManager.make(request: request, success: { response in
+        networkManager.send(request: request, success: { response in
             guard let response = response as? PhotoResourceResponse else {
                 assertionFailure("expected PhotoResourceResponse")
                 return
@@ -48,5 +48,9 @@ class PhotoAlbumService {
         }, failure: { error in
             failure?(error)
         })
+    }
+
+    func cancelAll() {
+        networkManager.cancelAll()
     }
 }

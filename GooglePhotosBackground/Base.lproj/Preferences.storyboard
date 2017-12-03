@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aSx-RA-gKc">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="1B3-K6-DwJ">
+            <objects>
+                <windowController id="aSx-RA-gKc" sceneMemberID="viewController">
+                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="dLX-HB-WAX">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+                        <connections>
+                            <outlet property="delegate" destination="aSx-RA-gKc" id="Vhp-C5-J7q"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="OrY-pY-lGR" kind="relationship" relationship="window.shadowedContentViewController" id="Dag-Rr-pxG"/>
+                    </connections>
+                </windowController>
+                <customObject id="IBe-Lb-ikx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-254" y="247"/>
+        </scene>
+        <!--Preferences View Controller-->
+        <scene sceneID="J5J-oO-Jfn">
+            <objects>
+                <viewController id="OrY-pY-lGR" customClass="PreferencesViewController" customModule="GooglePhotosBackground" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="v6H-mx-fpe">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="123"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="d8H-SD-Fov">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="123"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="FmQ-fQ-nV4"/>
+                                    <constraint firstAttribute="height" constant="123" id="LWv-40-ndl"/>
+                                </constraints>
+                            </customView>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vw3-zq-qHa">
+                                <rect key="frame" x="250" y="18" width="80" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="Odt-TJ-MBu"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="AwD-kn-cQF">
+                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#" numberStyle="decimal" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="2000000000" minusSign=" " id="Kpl-5q-45s"/>
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="OrY-pY-lGR" id="zOP-aE-SMO"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jEb-d9-GUA">
+                                <rect key="frame" x="18" y="20" width="124" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="photos to download" id="eaq-Fa-A9X">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="92j-Kh-vsi">
+                                <rect key="frame" x="250" y="52" width="80" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="Bts-KJ-iss"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="bhC-wE-kgV">
+                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#" numberStyle="decimal" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="2000000000" minusSign=" " id="9Bo-84-o7t"/>
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="OrY-pY-lGR" id="M25-pl-tpO"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PUz-xT-PaX">
+                                <rect key="frame" x="18" y="86" width="80" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="auto-refresh" id="KPL-dO-LRI">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="i2p-L4-W2C">
+                                <rect key="frame" x="310" y="86" width="22" height="18"/>
+                                <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="fIi-XG-cGf">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="autoRefreshCheckBoxPressed:" target="OrY-pY-lGR" id="aPR-Om-i5m"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y9N-8M-gpg">
+                                <rect key="frame" x="18" y="54" width="175" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="auto-refresh interval (hours)" id="r49-TA-WKR">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="jEb-d9-GUA" firstAttribute="top" secondItem="92j-Kh-vsi" secondAttribute="bottom" constant="15" id="12r-Bz-x98"/>
+                            <constraint firstItem="PUz-xT-PaX" firstAttribute="top" secondItem="v6H-mx-fpe" secondAttribute="top" constant="20" id="1YT-hj-8Ob"/>
+                            <constraint firstItem="PUz-xT-PaX" firstAttribute="leading" secondItem="v6H-mx-fpe" secondAttribute="leading" constant="20" id="6bj-cE-vu8"/>
+                            <constraint firstItem="Y9N-8M-gpg" firstAttribute="leading" secondItem="PUz-xT-PaX" secondAttribute="leading" id="9oE-FC-YaS"/>
+                            <constraint firstItem="92j-Kh-vsi" firstAttribute="centerY" secondItem="Y9N-8M-gpg" secondAttribute="centerY" id="JMc-Zh-Edl"/>
+                            <constraint firstItem="Vw3-zq-qHa" firstAttribute="trailing" secondItem="92j-Kh-vsi" secondAttribute="trailing" id="Jc1-Zp-SX0"/>
+                            <constraint firstItem="Y9N-8M-gpg" firstAttribute="top" secondItem="PUz-xT-PaX" secondAttribute="bottom" constant="15" id="KXg-Dc-vkC"/>
+                            <constraint firstAttribute="trailing" secondItem="d8H-SD-Fov" secondAttribute="trailing" id="ON5-HK-imt"/>
+                            <constraint firstItem="d8H-SD-Fov" firstAttribute="top" secondItem="v6H-mx-fpe" secondAttribute="top" id="Oh9-5p-Jg9"/>
+                            <constraint firstAttribute="trailing" secondItem="i2p-L4-W2C" secondAttribute="trailing" constant="20" id="SGn-A2-aJi"/>
+                            <constraint firstItem="jEb-d9-GUA" firstAttribute="leading" secondItem="Y9N-8M-gpg" secondAttribute="leading" id="dFg-Iy-mSu"/>
+                            <constraint firstItem="i2p-L4-W2C" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="PUz-xT-PaX" secondAttribute="trailing" constant="20" id="e6T-6Z-BMi"/>
+                            <constraint firstItem="Vw3-zq-qHa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jEb-d9-GUA" secondAttribute="trailing" constant="20" id="iIe-z4-tnT"/>
+                            <constraint firstItem="d8H-SD-Fov" firstAttribute="leading" secondItem="v6H-mx-fpe" secondAttribute="leading" id="j5i-lO-KZk"/>
+                            <constraint firstItem="i2p-L4-W2C" firstAttribute="centerY" secondItem="PUz-xT-PaX" secondAttribute="centerY" id="nXO-mK-dK2"/>
+                            <constraint firstItem="92j-Kh-vsi" firstAttribute="trailing" secondItem="i2p-L4-W2C" secondAttribute="trailing" id="tmi-f5-XEl"/>
+                            <constraint firstItem="Vw3-zq-qHa" firstAttribute="centerY" secondItem="jEb-d9-GUA" secondAttribute="centerY" id="uE6-JZ-hh2"/>
+                            <constraint firstItem="92j-Kh-vsi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Y9N-8M-gpg" secondAttribute="trailing" constant="20" id="wLr-8N-eDk"/>
+                            <constraint firstAttribute="bottom" secondItem="d8H-SD-Fov" secondAttribute="bottom" id="xul-6l-bC6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="autoRefreshCheckBox" destination="i2p-L4-W2C" id="PEe-Hu-gcb"/>
+                        <outlet property="autoRefreshCheckBoxTextLabel" destination="PUz-xT-PaX" id="qXG-OD-RUd"/>
+                        <outlet property="autoRefreshIntervalTextField" destination="92j-Kh-vsi" id="Lik-Wn-iAB"/>
+                        <outlet property="autoRefreshIntervalTextLabel" destination="Y9N-8M-gpg" id="S3S-Gf-On8"/>
+                        <outlet property="numberOfPhotosTextField" destination="Vw3-zq-qHa" id="NQU-Xr-PAx"/>
+                        <outlet property="numberOfPhotosTextLabel" destination="jEb-d9-GUA" id="dmL-er-5rh"/>
+                    </connections>
+                </viewController>
+                <customObject id="Dc1-qy-exH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="312" y="240"/>
+        </scene>
+    </scenes>
+</document>

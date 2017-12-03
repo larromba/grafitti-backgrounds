@@ -1,20 +1,17 @@
 //
-//  OperationState.swift
-//  QOT
+//  ConcurrentOperation.swift
+//  GooglePhotosBackground
 //
-//  Created by Sam Wyndham on 26.05.17.
-//  Copyright © 2017 Tignum. All rights reserved.
+//  Created by Lee Arromba on 02/12/2017.
+//  Copyright © 2017 Pink Chicken. All rights reserved.
 //
 
 import Foundation
 
-/// An abstract superclass or concurrent operations.
 class ConcurrentOperation: Operation {
-
     private enum State {
         case ready, executing, finished
     }
-
     private enum KVOKey: String {
         case isExecuting, isFinished
     }
@@ -82,9 +79,8 @@ class ConcurrentOperation: Operation {
         return state == .finished
     }
 
-    /// The entry point of all subclass operations. Sublasses must call `finish` when complete.
     func execute() {
-        fatalError("Super should not be called")
+        assertionFailure("super should not be called")
     }
 
     final func finish() {

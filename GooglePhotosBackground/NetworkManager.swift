@@ -20,26 +20,26 @@ class NetworkManager {
         return queue
     }()
 
-    func make(request: Request, success: @escaping ((Response) -> ()), failure: @escaping ((Error) -> ())) {
+    func send(request: Request, success: @escaping ((Response) -> ()), failure: @escaping ((Error) -> ())) {
         let operation = NetworkOperation()
-        operation.task = urlSession.dataTask(with: request.url) { [unowned operation] data, response, error in
+        operation.task = urlSession.dataTask(with: request.url) { [weak operation] data, response, error in
             if let error = error {
                 failure(error)
-                operation.finish()
+                operation?.finish()
                 return
             }
             guard let data = data else {
                 failure(NetworkError.noData)
-                operation.finish()
+                operation?.finish()
                 return
             }
             do {
                 let response = try request.createResponse(with: data)
                 success(response)
-                operation.finish()
+                operation?.finish()
             } catch {
                 failure(error)
-                operation.finish()
+                operation?.finish()
             }
         }
         queue.addOperation(operation)
@@ -47,20 +47,24 @@ class NetworkManager {
 
     func download(_ url: URL, success: @escaping ((URL) -> ()), failure: @escaping ((Error) -> ())) {
         let operation = NetworkOperation()
-        operation.task = urlSession.downloadTask(with: url) { [unowned operation] tempURL, response, error in
+        operation.task = urlSession.downloadTask(with: url) { [weak operation] tempURL, response, error in
             if let error = error {
                 failure(error)
-                operation.finish()
+                operation?.finish()
                 return
             }
             guard let tempURL = tempURL else {
                 failure(NetworkError.noData)
-                operation.finish()
+                operation?.finish()
                 return
             }
             success(tempURL)
-            operation.finish()
+            operation?.finish()
         }
         queue.addOperation(operation)
+    }
+
+    func cancelAll() {
+        queue.cancelAllOperations()
     }
 }

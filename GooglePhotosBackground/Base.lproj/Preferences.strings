@@ -1,0 +1,9 @@
+
+/* Class = "NSTextFieldCell"; title = "auto-refresh"; ObjectID = "KPL-dO-LRI"; */
+"KPL-dO-LRI.title" = "auto-refresh";
+
+/* Class = "NSWindow"; title = "Preferences"; ObjectID = "dLX-HB-WAX"; */
+"dLX-HB-WAX.title" = "Preferences";
+
+/* Class = "NSTextFieldCell"; title = "auto-refresh interval (hours)"; ObjectID = "r49-TA-WKR"; */
+"r49-TA-WKR.title" = "auto-refresh interval (hours)";

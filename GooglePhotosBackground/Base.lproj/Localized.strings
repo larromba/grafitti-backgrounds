@@ -1,0 +1,16 @@
+/* 
+  Localized.strings
+  GooglePhotosBackground
+
+  Created by Lee Arromba on 03/12/2017.
+  Copyright © 2017 Pink Chicken. All rights reserved.
+*/
+
+"Refresh Folder" = "Refresh Folder";
+"Cancel Refresh" = "Cancel Refresh";
+"Open Folder" = "Open Folder";
+"Clear Folder" = "Clear Folder";
+"Quit" = "Quit";
+"Preferences" = "Preferences";
+"System Preferences" = "System Preferences";
+"About" = "About";

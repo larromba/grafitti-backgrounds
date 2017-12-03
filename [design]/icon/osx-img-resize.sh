@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cp "icon-1024.png" "16.png"
+cp "icon-1024.png" "16@2x.png"
+cp "icon-1024.png" "32.png"
+cp "icon-1024.png" "32@2x.png"
+cp "icon-1024.png" "128.png"
+cp "icon-1024.png" "128@2x.png"
+cp "icon-1024.png" "256.png"
+cp "icon-1024.png" "256@2x.png"
+cp "icon-1024.png" "512.png"
+cp "icon-1024.png" "512@2x.png"
+
+/opt/ImageMagick/bin/mogrify -resize 16x16 "16.png"
+/opt/ImageMagick/bin/mogrify -resize 32x32 "16@2x.png"
+/opt/ImageMagick/bin/mogrify -resize 32x32 "32.png"
+/opt/ImageMagick/bin/mogrify -resize 64x64 "32@2x.png"
+/opt/ImageMagick/bin/mogrify -resize 128x128 "128.png"
+/opt/ImageMagick/bin/mogrify -resize 256x256 "128@2x.png"
+/opt/ImageMagick/bin/mogrify -resize 256x256 "256.png"
+/opt/ImageMagick/bin/mogrify -resize 512x512 "256@2x.png"
+/opt/ImageMagick/bin/mogrify -resize 512x512 "512.png"
+/opt/ImageMagick/bin/mogrify -resize 1024x1024 "512@2x.png"

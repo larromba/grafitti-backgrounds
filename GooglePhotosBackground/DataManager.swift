@@ -11,7 +11,7 @@ import Foundation
 class DataManger {
     private let db = UserDefaults.standard
 
-    func save(_ data: Data, key: String) {
+    func save(_ data: Data?, key: String) {
         db.set(data, forKey: key)
     }
 

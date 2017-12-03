@@ -9,7 +9,7 @@
 import Cocoa
 
 class App: NSObject, NSApplicationDelegate {
-    let coordinator = AppCoordinator()
+    private let coordinator = AppCoordinator()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         coordinator.start()

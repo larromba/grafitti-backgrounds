@@ -1,0 +1,11 @@
+0.0.1 (02/12/2017) (Tier: 1)
+    Download grafitti photos to Pictures folder
+    Auto-update preferences
+
+SKU: ?
+Apple ID: ?
+
+----
+
+TODO:
+- unit tests

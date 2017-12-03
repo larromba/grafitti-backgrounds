@@ -45,5 +45,6 @@ class PhotoStorageService {
                 log(error.localizedDescription)
             }
         }
+        dataManager.save(nil, key: Key.photoResource.rawValue)
     }
 }
