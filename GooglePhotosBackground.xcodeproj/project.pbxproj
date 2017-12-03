@@ -1,0 +1,480 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7F247E651FD366D70077D878 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E641FD366D70077D878 /* PhotoService.swift */; };
+		7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E681FD375E90077D878 /* PhotoRequest.swift */; };
+		7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E6A1FD375F10077D878 /* PhotoResponse.swift */; };
+		7F247E6F1FD3858E0077D878 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E6E1FD3858E0077D878 /* DataManager.swift */; };
+		7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E731FD387470077D878 /* PhotoStorageService.swift */; };
+		7F247E761FD393A50077D878 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E751FD393A50077D878 /* ConcurrentOperation.swift */; };
+		7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E791FD3944B0077D878 /* NetworkOperation.swift */; };
+		7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAA11FD33DF100502804 /* AppDelegate.swift */; };
+		7F51DAA41FD33DF100502804 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F51DAA31FD33DF100502804 /* Assets.xcassets */; };
+		7F51DAA71FD33DF100502804 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F51DAA51FD33DF100502804 /* MainMenu.xib */; };
+		7F51DAB01FD33DFD00502804 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAAF1FD33DFD00502804 /* NetworkManager.swift */; };
+		7F51DAB21FD33E3200502804 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB11FD33E3200502804 /* Request.swift */; };
+		7F51DAB41FD33E6800502804 /* PhotoAlbumsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB31FD33E6800502804 /* PhotoAlbumsRequest.swift */; };
+		7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB51FD33E8F00502804 /* HTTPVerb.swift */; };
+		7F51DAB81FD33F1B00502804 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB71FD33F1B00502804 /* Response.swift */; };
+		7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */; };
+		7F51DABC1FD3405000502804 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABB1FD3405000502804 /* PhotoAlbum.swift */; };
+		7F51DABE1FD345EA00502804 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABD1FD345EA00502804 /* AppCoordinator.swift */; };
+		7F51DAC01FD345F100502804 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABF1FD345F100502804 /* App.swift */; };
+		7F51DAC21FD3482400502804 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAC11FD3482400502804 /* API.swift */; };
+		7F51DAC41FD348D500502804 /* PhotoAlbumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */; };
+		7F51DACE1FD34A4500502804 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DACD1FD34A4500502804 /* Log.swift */; };
+		7F51DAD11FD34B1200502804 /* PhotoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD01FD34B1200502804 /* PhotoResource.swift */; };
+		7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */; };
+		7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7F247E641FD366D70077D878 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
+		7F247E681FD375E90077D878 /* PhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRequest.swift; sourceTree = "<group>"; };
+		7F247E6A1FD375F10077D878 /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
+		7F247E6E1FD3858E0077D878 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		7F247E731FD387470077D878 /* PhotoStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStorageService.swift; sourceTree = "<group>"; };
+		7F247E751FD393A50077D878 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
+		7F247E791FD3944B0077D878 /* NetworkOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkOperation.swift; sourceTree = "<group>"; };
+		7F51DA9E1FD33DF100502804 /* GooglePhotosBackground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GooglePhotosBackground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F51DAA11FD33DF100502804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7F51DAA31FD33DF100502804 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7F51DAA61FD33DF100502804 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		7F51DAA81FD33DF100502804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F51DAA91FD33DF100502804 /* GooglePhotosBackground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GooglePhotosBackground.entitlements; sourceTree = "<group>"; };
+		7F51DAAF1FD33DFD00502804 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		7F51DAB11FD33E3200502804 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		7F51DAB31FD33E6800502804 /* PhotoAlbumsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumsRequest.swift; sourceTree = "<group>"; };
+		7F51DAB51FD33E8F00502804 /* HTTPVerb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPVerb.swift; sourceTree = "<group>"; };
+		7F51DAB71FD33F1B00502804 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumsResponse.swift; sourceTree = "<group>"; };
+		7F51DABB1FD3405000502804 /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
+		7F51DABD1FD345EA00502804 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		7F51DABF1FD345F100502804 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		7F51DAC11FD3482400502804 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumService.swift; sourceTree = "<group>"; };
+		7F51DACD1FD34A4500502804 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		7F51DAD01FD34B1200502804 /* PhotoResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResource.swift; sourceTree = "<group>"; };
+		7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceRequest.swift; sourceTree = "<group>"; };
+		7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceResponse.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7F51DA9B1FD33DF100502804 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7F247E611FD34EF80077D878 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DAA11FD33DF100502804 /* AppDelegate.swift */,
+				7F51DABF1FD345F100502804 /* App.swift */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		7F247E621FD34F040077D878 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DABD1FD345EA00502804 /* AppCoordinator.swift */,
+			);
+			name = Coordinator;
+			sourceTree = "<group>";
+		};
+		7F247E631FD34F0E0077D878 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */,
+				7F247E641FD366D70077D878 /* PhotoService.swift */,
+				7F247E731FD387470077D878 /* PhotoStorageService.swift */,
+			);
+			name = Service;
+			sourceTree = "<group>";
+		};
+		7F247E701FD385950077D878 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7F247E6E1FD3858E0077D878 /* DataManager.swift */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		7F51DA951FD33DF100502804 = {
+			isa = PBXGroup;
+			children = (
+				7F51DAA01FD33DF100502804 /* GooglePhotosBackground */,
+				7F51DA9F1FD33DF100502804 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7F51DA9F1FD33DF100502804 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DA9E1FD33DF100502804 /* GooglePhotosBackground.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7F51DAA01FD33DF100502804 /* GooglePhotosBackground */ = {
+			isa = PBXGroup;
+			children = (
+				7F247E611FD34EF80077D878 /* App */,
+				7F247E621FD34F040077D878 /* Coordinator */,
+				7F247E631FD34F0E0077D878 /* Service */,
+				7F51DAC61FD3498500502804 /* Network */,
+				7F247E701FD385950077D878 /* Data */,
+				7F51DACF1FD34A5400502804 /* Utility */,
+				7F51DAC51FD3497E00502804 /* Model */,
+				7F51DACB1FD349C200502804 /* Resource */,
+			);
+			path = GooglePhotosBackground;
+			sourceTree = "<group>";
+		};
+		7F51DAC51FD3497E00502804 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DABB1FD3405000502804 /* PhotoAlbum.swift */,
+				7F51DAD01FD34B1200502804 /* PhotoResource.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		7F51DAC61FD3498500502804 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DAC71FD3499300502804 /* Request */,
+				7F51DAC81FD3499800502804 /* Response */,
+				7F51DAAF1FD33DFD00502804 /* NetworkManager.swift */,
+				7F247E791FD3944B0077D878 /* NetworkOperation.swift */,
+				7F51DAB51FD33E8F00502804 /* HTTPVerb.swift */,
+				7F51DAC11FD3482400502804 /* API.swift */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		7F51DAC71FD3499300502804 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DAB11FD33E3200502804 /* Request.swift */,
+				7F247E681FD375E90077D878 /* PhotoRequest.swift */,
+				7F51DAB31FD33E6800502804 /* PhotoAlbumsRequest.swift */,
+				7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */,
+			);
+			name = Request;
+			sourceTree = "<group>";
+		};
+		7F51DAC81FD3499800502804 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DAB71FD33F1B00502804 /* Response.swift */,
+				7F247E6A1FD375F10077D878 /* PhotoResponse.swift */,
+				7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */,
+				7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */,
+			);
+			name = Response;
+			sourceTree = "<group>";
+		};
+		7F51DACB1FD349C200502804 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DAA31FD33DF100502804 /* Assets.xcassets */,
+				7F51DAA51FD33DF100502804 /* MainMenu.xib */,
+				7F51DAA81FD33DF100502804 /* Info.plist */,
+				7F51DAA91FD33DF100502804 /* GooglePhotosBackground.entitlements */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
+		7F51DACF1FD34A5400502804 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7F247E751FD393A50077D878 /* ConcurrentOperation.swift */,
+				7F51DACD1FD34A4500502804 /* Log.swift */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7F51DA9D1FD33DF100502804 /* GooglePhotosBackground */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F51DAAC1FD33DF100502804 /* Build configuration list for PBXNativeTarget "GooglePhotosBackground" */;
+			buildPhases = (
+				7F51DA9A1FD33DF100502804 /* Sources */,
+				7F51DA9B1FD33DF100502804 /* Frameworks */,
+				7F51DA9C1FD33DF100502804 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GooglePhotosBackground;
+			productName = GooglePhotosBackground;
+			productReference = 7F51DA9E1FD33DF100502804 /* GooglePhotosBackground.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7F51DA961FD33DF100502804 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Pink Chicken";
+				TargetAttributes = {
+					7F51DA9D1FD33DF100502804 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 7F51DA991FD33DF100502804 /* Build configuration list for PBXProject "GooglePhotosBackground" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7F51DA951FD33DF100502804;
+			productRefGroup = 7F51DA9F1FD33DF100502804 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7F51DA9D1FD33DF100502804 /* GooglePhotosBackground */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7F51DA9C1FD33DF100502804 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F51DAA41FD33DF100502804 /* Assets.xcassets in Resources */,
+				7F51DAA71FD33DF100502804 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7F51DA9A1FD33DF100502804 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F247E761FD393A50077D878 /* ConcurrentOperation.swift in Sources */,
+				7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */,
+				7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */,
+				7F247E6F1FD3858E0077D878 /* DataManager.swift in Sources */,
+				7F51DAD11FD34B1200502804 /* PhotoResource.swift in Sources */,
+				7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */,
+				7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */,
+				7F51DAB01FD33DFD00502804 /* NetworkManager.swift in Sources */,
+				7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */,
+				7F51DAB21FD33E3200502804 /* Request.swift in Sources */,
+				7F51DAC01FD345F100502804 /* App.swift in Sources */,
+				7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */,
+				7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */,
+				7F51DAB81FD33F1B00502804 /* Response.swift in Sources */,
+				7F51DAB41FD33E6800502804 /* PhotoAlbumsRequest.swift in Sources */,
+				7F51DACE1FD34A4500502804 /* Log.swift in Sources */,
+				7F51DABE1FD345EA00502804 /* AppCoordinator.swift in Sources */,
+				7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */,
+				7F247E651FD366D70077D878 /* PhotoService.swift in Sources */,
+				7F51DAC21FD3482400502804 /* API.swift in Sources */,
+				7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */,
+				7F51DAC41FD348D500502804 /* PhotoAlbumService.swift in Sources */,
+				7F51DABC1FD3405000502804 /* PhotoAlbum.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7F51DAA51FD33DF100502804 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F51DAA61FD33DF100502804 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7F51DAAA1FD33DF100502804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7F51DAAB1FD33DF100502804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+			};
+			name = Release;
+		};
+		7F51DAAD1FD33DF100502804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GooglePhotosBackground/GooglePhotosBackground.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = GooglePhotosBackground/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GooglePhotosBackground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		7F51DAAE1FD33DF100502804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GooglePhotosBackground/GooglePhotosBackground.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = GooglePhotosBackground/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GooglePhotosBackground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7F51DA991FD33DF100502804 /* Build configuration list for PBXProject "GooglePhotosBackground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F51DAAA1FD33DF100502804 /* Debug */,
+				7F51DAAB1FD33DF100502804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F51DAAC1FD33DF100502804 /* Build configuration list for PBXNativeTarget "GooglePhotosBackground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F51DAAD1FD33DF100502804 /* Debug */,
+				7F51DAAE1FD33DF100502804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7F51DA961FD33DF100502804 /* Project object */;
+}
