@@ -1,5 +1,5 @@
 //
-//  ConcurrentOperation.swift
+//  BaseOperation.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 02/12/2017.
@@ -8,31 +8,22 @@
 
 import Foundation
 
-class ConcurrentOperation: Operation {
+class BaseOperation: Operation {
     private enum State {
         case ready, executing, finished
     }
     private enum KVOKey: String {
         case isExecuting, isFinished
     }
-
-    private let lock = NSLock()
     private var _state: State = .ready
-
     private var state: State {
         get {
-            let current: State
-            lock.lock()
-            current = _state
-            lock.unlock()
-            return current
+            return _state
         }
         set {
-            lock.lock()
             guard _state != newValue else {
                 return
             }
-            lock.unlock()
 
             let kvoKey: String
             switch newValue {
@@ -45,14 +36,10 @@ class ConcurrentOperation: Operation {
             }
 
             willChangeValue(forKey: kvoKey)
-            lock.lock()
             _state = newValue
-            lock.unlock()
             didChangeValue(forKey: kvoKey)
         }
     }
-
-    // MARK: Overides
 
     final override func start() {
         if isCancelled {
@@ -61,10 +48,6 @@ class ConcurrentOperation: Operation {
             state = .executing
             execute()
         }
-    }
-
-    final override var isConcurrent: Bool {
-        return true
     }
 
     final override var isReady: Bool {

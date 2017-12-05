@@ -8,15 +8,19 @@
 
 import Cocoa
 
-class NetworkOperation: ConcurrentOperation {
-    var task: URLSessionTask!
+class NetworkOperation: BaseOperation {
+    var task: URLSessionTask?
+
+    override var isConcurrent: Bool {
+        return true
+    }
 
     override func execute() {
-        task.resume()
+        task?.resume()
     }
 
     override func cancel() {
-        task.cancel()
+        task?.cancel()
         super.cancel()
     }
 }

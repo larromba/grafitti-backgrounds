@@ -12,7 +12,7 @@
 		7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E6A1FD375F10077D878 /* PhotoResponse.swift */; };
 		7F247E6F1FD3858E0077D878 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E6E1FD3858E0077D878 /* DataManager.swift */; };
 		7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E731FD387470077D878 /* PhotoStorageService.swift */; };
-		7F247E761FD393A50077D878 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E751FD393A50077D878 /* ConcurrentOperation.swift */; };
+		7F247E761FD393A50077D878 /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E751FD393A50077D878 /* BaseOperation.swift */; };
 		7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E791FD3944B0077D878 /* NetworkOperation.swift */; };
 		7F247E7F1FD42E240077D878 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E7E1FD42E240077D878 /* MenuItem.swift */; };
 		7F247E841FD42FBF0077D878 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E831FD42FBF0077D878 /* StringExtensions.swift */; };
@@ -44,6 +44,10 @@
 		7F51DAD11FD34B1200502804 /* PhotoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD01FD34B1200502804 /* PhotoResource.swift */; };
 		7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */; };
 		7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */; };
+		7F615D941FD6A49E00DD519C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F615D931FD6A49E00DD519C /* MenuCoordinator.swift */; };
+		7FCF0EED1FD6C60300138D77 /* PhotoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */; };
+		7FCF0EF11FD6CAE300138D77 /* WorkspaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */; };
+		7FCF0EF31FD6CBC900138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF21FD6CBC900138D77 /* SystemPreference.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,7 +56,7 @@
 		7F247E6A1FD375F10077D878 /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
 		7F247E6E1FD3858E0077D878 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		7F247E731FD387470077D878 /* PhotoStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStorageService.swift; sourceTree = "<group>"; };
-		7F247E751FD393A50077D878 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
+		7F247E751FD393A50077D878 /* BaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseOperation.swift; sourceTree = "<group>"; };
 		7F247E791FD3944B0077D878 /* NetworkOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkOperation.swift; sourceTree = "<group>"; };
 		7F247E7E1FD42E240077D878 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		7F247E831FD42FBF0077D878 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -91,6 +95,10 @@
 		7F51DAD01FD34B1200502804 /* PhotoResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResource.swift; sourceTree = "<group>"; };
 		7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceRequest.swift; sourceTree = "<group>"; };
 		7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceResponse.swift; sourceTree = "<group>"; };
+		7F615D931FD6A49E00DD519C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
+		7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCoordinator.swift; sourceTree = "<group>"; };
+		7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCoordinator.swift; sourceTree = "<group>"; };
+		7FCF0EF21FD6CBC900138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemPreference.swift; path = ../../../../../../.Trash/SystemPreference.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +126,10 @@
 			isa = PBXGroup;
 			children = (
 				7F51DABD1FD345EA00502804 /* AppCoordinator.swift */,
+				7F615D931FD6A49E00DD519C /* MenuCoordinator.swift */,
 				7F247E8C1FD469440077D878 /* PreferencesCoordinator.swift */,
+				7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */,
+				7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */,
 			);
 			name = Coordinator;
 			sourceTree = "<group>";
@@ -235,6 +246,7 @@
 				7F51DABB1FD3405000502804 /* PhotoAlbum.swift */,
 				7F51DAD01FD34B1200502804 /* PhotoResource.swift */,
 				7F247E981FD46EA90077D878 /* Preferences.swift */,
+				7FCF0EF21FD6CBC900138D77 /* SystemPreference.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -289,7 +301,7 @@
 		7F51DACF1FD34A5400502804 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7F247E751FD393A50077D878 /* ConcurrentOperation.swift */,
+				7F247E751FD393A50077D878 /* BaseOperation.swift */,
 				7F51DACD1FD34A4500502804 /* Log.swift */,
 				7F247EB41FD495120077D878 /* Extension */,
 			);
@@ -386,7 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F247E911FD46AFF0077D878 /* main.swift in Sources */,
-				7F247E761FD393A50077D878 /* ConcurrentOperation.swift in Sources */,
+				7F247E761FD393A50077D878 /* BaseOperation.swift in Sources */,
 				7F247E971FD46E770077D878 /* PreferencesService.swift in Sources */,
 				7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */,
 				7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */,
@@ -396,7 +408,9 @@
 				7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */,
 				7F247E871FD430570077D878 /* Menu.swift in Sources */,
 				7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */,
+				7FCF0EF31FD6CBC900138D77 /* SystemPreference.swift in Sources */,
 				7F51DAB01FD33DFD00502804 /* NetworkManager.swift in Sources */,
+				7F615D941FD6A49E00DD519C /* MenuCoordinator.swift in Sources */,
 				7F247E8B1FD43F510077D878 /* NSViewExtensions.swift in Sources */,
 				7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */,
 				7F51DAB21FD33E3200502804 /* Request.swift in Sources */,
@@ -411,7 +425,9 @@
 				7F51DACE1FD34A4500502804 /* Log.swift in Sources */,
 				7F51DABE1FD345EA00502804 /* AppCoordinator.swift in Sources */,
 				7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */,
+				7FCF0EED1FD6C60300138D77 /* PhotoCoordinator.swift in Sources */,
 				7F247E951FD46D140077D878 /* StoryboardExtensions.swift in Sources */,
+				7FCF0EF11FD6CAE300138D77 /* WorkspaceCoordinator.swift in Sources */,
 				7F247E651FD366D70077D878 /* PhotoService.swift in Sources */,
 				7F51DAC21FD3482400502804 /* API.swift in Sources */,
 				7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */,
