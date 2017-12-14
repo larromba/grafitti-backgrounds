@@ -8,10 +8,14 @@
 
 import Cocoa
 
-class MenuItem: NSMenuItem {
-    var actionBlock: (() -> Void)?
+protocol MenuItemInterface {
+    var actionBlock: (() -> Void) { get set }
+}
 
-    init(title: String, actionBlock: (() -> Void)?, keyEquivalent: String = "", isEnabled: Bool = true) {
+class MenuItem: NSMenuItem {
+    var actionBlock: (() -> Void)
+
+    init(title: String, actionBlock: @escaping (() -> Void), keyEquivalent: String = "", isEnabled: Bool = true) {
         self.actionBlock = actionBlock
         super.init(title: title, action: #selector(action(_:)), keyEquivalent: keyEquivalent)
         self.isEnabled = isEnabled
@@ -25,6 +29,6 @@ class MenuItem: NSMenuItem {
     // MARK: - private
 
     @objc private func action(_ sender: NSMenuItem) {
-        actionBlock?()
+        actionBlock()
     }
 }

@@ -8,7 +8,13 @@
 
 import Foundation
 
-class NetworkManager {
+protocol NetworkManagerInterface {
+    func send(request: Request, success: @escaping ((Response) -> ()), failure: @escaping ((Error) -> ()))
+    func download(_ url: URL, success: @escaping ((URL) -> ()), failure: @escaping ((Error) -> ()))
+    func cancelAll()
+}
+
+class NetworkManager: NetworkManagerInterface {
     enum NetworkError: Error {
         case noData
     }

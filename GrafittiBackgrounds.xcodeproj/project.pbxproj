@@ -17,7 +17,7 @@
 		7F247E7F1FD42E240077D878 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E7E1FD42E240077D878 /* MenuItem.swift */; };
 		7F247E841FD42FBF0077D878 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E831FD42FBF0077D878 /* StringExtensions.swift */; };
 		7F247E871FD430570077D878 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E861FD430570077D878 /* Menu.swift */; };
-		7F247E891FD4366A0077D878 /* StatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E881FD4366A0077D878 /* StatusItem.swift */; };
+		7F247E891FD4366A0077D878 /* LoadingStatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E881FD4366A0077D878 /* LoadingStatusItem.swift */; };
 		7F247E8B1FD43F510077D878 /* NSViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E8A1FD43F510077D878 /* NSViewExtensions.swift */; };
 		7F247E8D1FD469440077D878 /* PreferencesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E8C1FD469440077D878 /* PreferencesCoordinator.swift */; };
 		7F247E911FD46AFF0077D878 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E901FD46AFF0077D878 /* main.swift */; };
@@ -27,6 +27,8 @@
 		7F247E9D1FD4763F0077D878 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E9C1FD4763F0077D878 /* PreferencesViewController.swift */; };
 		7F247E9F1FD476910077D878 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F247EA11FD476910077D878 /* Preferences.storyboard */; };
 		7F247EA41FD476A20077D878 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7F247EA61FD476A20077D878 /* Localized.strings */; };
+		7F509A9D1FDB399E00152B33 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F509A9C1FDB399E00152B33 /* AppMenu.swift */; };
+		7F509A9F1FDD6C0800152B33 /* NSWorkspaceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F509A9E1FDD6C0800152B33 /* NSWorkspaceInterface.swift */; };
 		7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAA11FD33DF100502804 /* AppDelegate.swift */; };
 		7F51DAA41FD33DF100502804 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F51DAA31FD33DF100502804 /* Assets.xcassets */; };
 		7F51DAB01FD33DFD00502804 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAAF1FD33DFD00502804 /* NetworkManager.swift */; };
@@ -37,7 +39,6 @@
 		7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */; };
 		7F51DABC1FD3405000502804 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABB1FD3405000502804 /* PhotoAlbum.swift */; };
 		7F51DABE1FD345EA00502804 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABD1FD345EA00502804 /* AppCoordinator.swift */; };
-		7F51DAC01FD345F100502804 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABF1FD345F100502804 /* App.swift */; };
 		7F51DAC21FD3482400502804 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAC11FD3482400502804 /* API.swift */; };
 		7F51DAC41FD348D500502804 /* PhotoAlbumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */; };
 		7F51DACE1FD34A4500502804 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DACD1FD34A4500502804 /* Log.swift */; };
@@ -45,9 +46,13 @@
 		7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */; };
 		7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */; };
 		7F615D941FD6A49E00DD519C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F615D931FD6A49E00DD519C /* MenuCoordinator.swift */; };
+		7F65672D1FE04B1200A6CB7F /* NSApplicationInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65672C1FE04B1200A6CB7F /* NSApplicationInterface.swift */; };
+		7F6567481FE2A9F200A6CB7F /* NSWindowControllerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6567471FE2A9F200A6CB7F /* NSWindowControllerInterface.swift */; };
+		7F6738B31FE2CE3A004DDAE1 /* FileManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B21FE2CE3A004DDAE1 /* FileManagerInterface.swift */; };
+		7F6738B51FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */; };
 		7FCF0EED1FD6C60300138D77 /* PhotoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */; };
 		7FCF0EF11FD6CAE300138D77 /* WorkspaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */; };
-		7FCF0EF31FD6CBC900138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF21FD6CBC900138D77 /* SystemPreference.swift */; };
+		7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +66,7 @@
 		7F247E7E1FD42E240077D878 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		7F247E831FD42FBF0077D878 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		7F247E861FD430570077D878 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
-		7F247E881FD4366A0077D878 /* StatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItem.swift; sourceTree = "<group>"; };
+		7F247E881FD4366A0077D878 /* LoadingStatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusItem.swift; sourceTree = "<group>"; };
 		7F247E8A1FD43F510077D878 /* NSViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSViewExtensions.swift; sourceTree = "<group>"; };
 		7F247E8C1FD469440077D878 /* PreferencesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCoordinator.swift; sourceTree = "<group>"; };
 		7F247E901FD46AFF0077D878 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -75,6 +80,8 @@
 		7F247EAA1FD4770E0077D878 /* base-lang.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "base-lang.sh"; sourceTree = "<group>"; };
 		7F247EB31FD485EA0077D878 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Preferences.strings; sourceTree = "<group>"; };
 		7F247EB51FD496860077D878 /* change-log.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "change-log.txt"; sourceTree = "<group>"; };
+		7F509A9C1FDB399E00152B33 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
+		7F509A9E1FDD6C0800152B33 /* NSWorkspaceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWorkspaceInterface.swift; sourceTree = "<group>"; };
 		7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Grafitti Backgrounds.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F51DAA11FD33DF100502804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F51DAA31FD33DF100502804 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -88,7 +95,6 @@
 		7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumsResponse.swift; sourceTree = "<group>"; };
 		7F51DABB1FD3405000502804 /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		7F51DABD1FD345EA00502804 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		7F51DABF1FD345F100502804 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		7F51DAC11FD3482400502804 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumService.swift; sourceTree = "<group>"; };
 		7F51DACD1FD34A4500502804 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -96,9 +102,13 @@
 		7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceRequest.swift; sourceTree = "<group>"; };
 		7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceResponse.swift; sourceTree = "<group>"; };
 		7F615D931FD6A49E00DD519C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
+		7F65672C1FE04B1200A6CB7F /* NSApplicationInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplicationInterface.swift; sourceTree = "<group>"; };
+		7F6567471FE2A9F200A6CB7F /* NSWindowControllerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWindowControllerInterface.swift; sourceTree = "<group>"; };
+		7F6738B21FE2CE3A004DDAE1 /* FileManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerInterface.swift; sourceTree = "<group>"; };
+		7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Configurator.swift"; sourceTree = "<group>"; };
 		7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCoordinator.swift; sourceTree = "<group>"; };
 		7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCoordinator.swift; sourceTree = "<group>"; };
-		7FCF0EF21FD6CBC900138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemPreference.swift; path = ../../../../../../.Trash/SystemPreference.swift; sourceTree = "<group>"; };
+		7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPreference.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,9 +125,9 @@
 		7F247E611FD34EF80077D878 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				7F51DAA11FD33DF100502804 /* AppDelegate.swift */,
 				7F247E901FD46AFF0077D878 /* main.swift */,
-				7F51DABF1FD345F100502804 /* App.swift */,
+				7F51DAA11FD33DF100502804 /* AppDelegate.swift */,
+				7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -158,7 +168,7 @@
 			children = (
 				7F247E7E1FD42E240077D878 /* MenuItem.swift */,
 				7F247E861FD430570077D878 /* Menu.swift */,
-				7F247E881FD4366A0077D878 /* StatusItem.swift */,
+				7F247E881FD4366A0077D878 /* LoadingStatusItem.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -205,6 +215,17 @@
 			name = Extension;
 			sourceTree = "<group>";
 		};
+		7F509AA01FDD6C1100152B33 /* Cocoa Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				7F509A9E1FDD6C0800152B33 /* NSWorkspaceInterface.swift */,
+				7F65672C1FE04B1200A6CB7F /* NSApplicationInterface.swift */,
+				7F6567471FE2A9F200A6CB7F /* NSWindowControllerInterface.swift */,
+				7F6738B21FE2CE3A004DDAE1 /* FileManagerInterface.swift */,
+			);
+			name = "Cocoa Interfaces";
+			sourceTree = "<group>";
+		};
 		7F51DA951FD33DF100502804 = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +257,7 @@
 				7F247E701FD385950077D878 /* Data */,
 				7F51DACF1FD34A5400502804 /* Utility */,
 				7F51DACB1FD349C200502804 /* Resource */,
+				7F509AA01FDD6C1100152B33 /* Cocoa Interfaces */,
 			);
 			path = GrafittiBackgrounds;
 			sourceTree = "<group>";
@@ -243,10 +265,11 @@
 		7F51DAC51FD3497E00502804 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7F509A9C1FDB399E00152B33 /* AppMenu.swift */,
 				7F51DABB1FD3405000502804 /* PhotoAlbum.swift */,
 				7F51DAD01FD34B1200502804 /* PhotoResource.swift */,
 				7F247E981FD46EA90077D878 /* Preferences.swift */,
-				7FCF0EF21FD6CBC900138D77 /* SystemPreference.swift */,
+				7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -404,22 +427,24 @@
 				7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */,
 				7F247E6F1FD3858E0077D878 /* DataManager.swift in Sources */,
 				7F247E8D1FD469440077D878 /* PreferencesCoordinator.swift in Sources */,
+				7F6738B31FE2CE3A004DDAE1 /* FileManagerInterface.swift in Sources */,
 				7F51DAD11FD34B1200502804 /* PhotoResource.swift in Sources */,
 				7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */,
 				7F247E871FD430570077D878 /* Menu.swift in Sources */,
 				7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */,
-				7FCF0EF31FD6CBC900138D77 /* SystemPreference.swift in Sources */,
+				7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */,
 				7F51DAB01FD33DFD00502804 /* NetworkManager.swift in Sources */,
 				7F615D941FD6A49E00DD519C /* MenuCoordinator.swift in Sources */,
+				7F509A9D1FDB399E00152B33 /* AppMenu.swift in Sources */,
 				7F247E8B1FD43F510077D878 /* NSViewExtensions.swift in Sources */,
 				7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */,
 				7F51DAB21FD33E3200502804 /* Request.swift in Sources */,
-				7F51DAC01FD345F100502804 /* App.swift in Sources */,
 				7F247E991FD46EA90077D878 /* Preferences.swift in Sources */,
 				7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */,
 				7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */,
 				7F247E9D1FD4763F0077D878 /* PreferencesViewController.swift in Sources */,
 				7F247E7F1FD42E240077D878 /* MenuItem.swift in Sources */,
+				7F6738B51FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift in Sources */,
 				7F51DAB81FD33F1B00502804 /* Response.swift in Sources */,
 				7F51DAB41FD33E6800502804 /* PhotoAlbumsRequest.swift in Sources */,
 				7F51DACE1FD34A4500502804 /* Log.swift in Sources */,
@@ -427,12 +452,15 @@
 				7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */,
 				7FCF0EED1FD6C60300138D77 /* PhotoCoordinator.swift in Sources */,
 				7F247E951FD46D140077D878 /* StoryboardExtensions.swift in Sources */,
+				7F509A9F1FDD6C0800152B33 /* NSWorkspaceInterface.swift in Sources */,
 				7FCF0EF11FD6CAE300138D77 /* WorkspaceCoordinator.swift in Sources */,
 				7F247E651FD366D70077D878 /* PhotoService.swift in Sources */,
 				7F51DAC21FD3482400502804 /* API.swift in Sources */,
+				7F6567481FE2A9F200A6CB7F /* NSWindowControllerInterface.swift in Sources */,
 				7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */,
 				7F51DAC41FD348D500502804 /* PhotoAlbumService.swift in Sources */,
-				7F247E891FD4366A0077D878 /* StatusItem.swift in Sources */,
+				7F247E891FD4366A0077D878 /* LoadingStatusItem.swift in Sources */,
+				7F65672D1FE04B1200A6CB7F /* NSApplicationInterface.swift in Sources */,
 				7F247E841FD42FBF0077D878 /* StringExtensions.swift in Sources */,
 				7F51DABC1FD3405000502804 /* PhotoAlbum.swift in Sources */,
 			);

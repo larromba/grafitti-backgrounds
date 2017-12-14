@@ -8,15 +8,29 @@
 
 import Foundation
 
-class PhotoStorageService {
+protocol PhotoStorageServiceInterface {
+    var dataManager: DataManagerInterface { get }
+    var fileManager: FileManagerInterface { get }
+
+    func save(_ resources: [PhotoResource])
+    func load() -> [PhotoResource]?
+    func remove(_ resources: [PhotoResource])
+}
+
+class PhotoStorageService: PhotoStorageServiceInterface {
     private enum Key: String {
         case photoResource
     }
-
-    private let dataManager = DataManger()
-    private let fileManager = FileManager.default
     private let encoder = PropertyListEncoder()
     private let decoder = PropertyListDecoder()
+
+    let dataManager: DataManagerInterface
+    let fileManager: FileManagerInterface
+
+    init(dataManager: DataManagerInterface, fileManager: FileManagerInterface) {
+        self.dataManager = dataManager
+        self.fileManager = fileManager
+    }
 
     func save(_ resources: [PhotoResource]) {
         do {

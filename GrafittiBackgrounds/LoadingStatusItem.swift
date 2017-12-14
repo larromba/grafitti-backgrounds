@@ -1,5 +1,5 @@
 //
-//  StatusItem.swift
+//  LoadingStatusItem.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 03/12/2017.
@@ -8,7 +8,15 @@
 
 import Cocoa
 
-class StatusItem {
+protocol LoadingStatusItemInterface {
+    var statusBar: NSStatusBar { get }
+    var item: NSStatusItem { get }
+    var menu: Menu? { get set }
+    var isLoading: Bool { get set }
+    var loadingPercentage: Double { get set }
+}
+
+class LoadingStatusItem: LoadingStatusItemInterface {
     struct Config {
         let image: NSImage
         let loadingImage: NSImage
@@ -22,9 +30,20 @@ class StatusItem {
             image.isTemplate = true
             loadingImage.isTemplate = true
         }
+
+        static var sprayCan = Config(image: #imageLiteral(resourceName: "spray-can"), loadingImage: #imageLiteral(resourceName: "download"), spinnerColor: NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8))
     }
 
-    let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    let statusBar: NSStatusBar
+    let item: NSStatusItem
+    var menu: Menu? {
+        get {
+            return item.menu as? Menu
+        }
+        set {
+            item.menu = menu
+        }
+    }
     var isLoading: Bool = false {
         didSet {
             if isLoading {
@@ -67,12 +86,14 @@ class StatusItem {
         return spinner
     }()
     
-    init(config: Config) {
+    init(config: Config, statusBar: NSStatusBar) {
         self.config = config
+        self.statusBar = statusBar
+        self.item = statusBar.statusItem(withLength: NSStatusItem.variableLength)
         item.image = config.image
     }
 
     deinit {
-        NSStatusBar.system.removeStatusItem(item)
+        statusBar.removeStatusItem(item)
     }
 }

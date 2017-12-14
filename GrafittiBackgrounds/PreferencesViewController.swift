@@ -14,13 +14,27 @@ protocol PreferencesViewControllerDelegate: class {
     func preferencesViewController(_ viewController: PreferencesViewController, didUpdateNumberOfPhotos numberOfPhotos: Int)
 }
 
-class PreferencesViewController: NSViewController {
-    @IBOutlet private weak var autoRefreshCheckBoxTextLabel: NSTextField!
-    @IBOutlet private weak var autoRefreshCheckBox: NSButton!
-    @IBOutlet private weak var autoRefreshIntervalTextLabel: NSTextField!
-    @IBOutlet private weak var autoRefreshIntervalTextField: NSTextField!
-    @IBOutlet private weak var numberOfPhotosTextLabel: NSTextField!
-    @IBOutlet private weak var numberOfPhotosTextField: NSTextField!
+protocol PreferencesViewControllerInterface {
+    var autoRefreshCheckBoxTextLabel: NSTextField! { get }
+    var autoRefreshCheckBox: NSButton! { get }
+    var autoRefreshIntervalTextLabel: NSTextField! { get }
+    var autoRefreshIntervalTextField: NSTextField! { get }
+    var numberOfPhotosTextLabel: NSTextField! { get }
+    var numberOfPhotosTextField: NSTextField! { get }
+    var delegate: PreferencesViewControllerDelegate? { get set }
+
+    func setIsAutoRefreshEnabled(_ isEnabled: Bool)
+    func setAutoRefreshTimeInterval(_ timeInterval: TimeInterval)
+    func setNumberOfPhotos(_ numberOfPhotos: Int)
+}
+
+class PreferencesViewController: NSViewController, PreferencesViewControllerInterface {
+    weak var autoRefreshCheckBoxTextLabel: NSTextField!
+    weak var autoRefreshCheckBox: NSButton!
+    weak var autoRefreshIntervalTextLabel: NSTextField!
+    weak var autoRefreshIntervalTextField: NSTextField!
+    weak var numberOfPhotosTextLabel: NSTextField!
+    weak var numberOfPhotosTextField: NSTextField!
 
     weak var delegate: PreferencesViewControllerDelegate?
 
@@ -42,6 +56,8 @@ class PreferencesViewController: NSViewController {
         delegate?.preferencesViewController(self, didUpdateAutoRefreshIsEnabled: sender.state == .on)
     }
 }
+
+// MARK: - NSTextFieldDelegate
 
 extension PreferencesViewController: NSTextFieldDelegate {
     override func controlTextDidChange(_ obj: Notification) {

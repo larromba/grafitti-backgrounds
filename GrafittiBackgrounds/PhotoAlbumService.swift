@@ -8,8 +8,20 @@
 
 import Cocoa
 
-class PhotoAlbumService {
-    private let networkManager = NetworkManager()
+protocol PhotoAlbumServiceInterface {
+    var networkManager: NetworkManagerInterface { get }
+
+    func getPhotoAlbums(success: @escaping (([PhotoAlbum]) -> ()), failure: ((Error) -> ())?)
+    func getPhotoResources(_ album: PhotoAlbum, success: @escaping (([PhotoResource]) -> ()), failure: ((Error) -> ())?)
+    func cancelAll()
+}
+
+class PhotoAlbumService: PhotoAlbumServiceInterface {
+    let networkManager: NetworkManagerInterface
+
+    init(networkManager: NetworkManagerInterface) {
+        self.networkManager = networkManager
+    }
 
     func getPhotoAlbums(success: @escaping (([PhotoAlbum]) -> ()), failure: ((Error) -> ())?) {
         let request = PhotoAlbumsRequest(url: API.photoAlbums.url)

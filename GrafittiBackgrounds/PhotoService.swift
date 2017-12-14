@@ -8,16 +8,27 @@
 
 import Cocoa
 
-class PhotoService {
+protocol PhotoServiceInterface {
+    var networkManager: NetworkManagerInterface { get }
+    var fileManager: FileManagerInterface { get }
+    var saveURL: URL { get }
+
+    func downloadPhoto(_ resource: PhotoResource, success: @escaping ((PhotoResource) -> ()), failure: ((Error) -> ())?)
+    func cancelAll()
+}
+
+class PhotoService: PhotoServiceInterface {
     enum PhotoError: Error {
         case badSaveLocation
     }
 
-    private let networkManager = NetworkManager()
-    private let fileManager = FileManager.default
+    let networkManager: NetworkManagerInterface
+    let fileManager: FileManagerInterface
     let saveURL: URL
 
-    init() {
+    init(networkManager: NetworkManagerInterface, fileManager: FileManagerInterface) {
+        self.networkManager = networkManager
+        self.fileManager = fileManager
         guard let path = NSSearchPathForDirectoriesInDomains(.picturesDirectory, .userDomainMask, true).first else {
             fatalError("shouldn't be nil")
         }

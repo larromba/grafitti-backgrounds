@@ -8,7 +8,12 @@
 
 import Foundation
 
-class DataManger {
+protocol DataManagerInterface {
+    func save(_ data: Data?, key: String)
+    func load(key: String) -> Data?
+}
+
+class DataManger: DataManagerInterface {
     private let db = UserDefaults.standard
 
     func save(_ data: Data?, key: String) {

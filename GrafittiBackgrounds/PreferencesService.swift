@@ -8,14 +8,26 @@
 
 import Foundation
 
-class PreferencesService {
+protocol PreferencesServiceInterface {
+    var dataManager: DataManagerInterface { get }
+
+    func save(_ preferences: Preferences)
+    func load() -> Preferences?
+}
+
+class PreferencesService: PreferencesServiceInterface {
     private enum Key: String {
         case preferences
     }
 
-    private let dataManager = DataManger()
     private let encoder = PropertyListEncoder()
     private let decoder = PropertyListDecoder()
+
+    let dataManager: DataManagerInterface
+
+    init(dataManager: DataManagerInterface) {
+        self.dataManager = dataManager
+    }
 
     func save(_ preferences: Preferences) {
         do {

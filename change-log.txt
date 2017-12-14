@@ -9,3 +9,5 @@ Apple ID: ?
 
 TODO:
 - unit tests
+- contact menu
+- help menu

@@ -8,7 +8,11 @@
 
 import Cocoa
 
-class Menu: NSMenu {
+protocol MenuInterface {
+    func item(at index: Int) -> MenuItemInterface?
+}
+
+class Menu: NSMenu, MenuInterface {
     init(title: String, items: [NSMenuItem]) {
         super.init(title: title)
         autoenablesItems = false
@@ -18,13 +22,11 @@ class Menu: NSMenu {
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
-extension NSMenu {
-    func item(at index: Int) -> NSMenuItem? {
+    func item(at index: Int) -> MenuItemInterface? {
         guard index >= items.startIndex, index < items.endIndex else {
             return nil
         }
-        return items[index]
+        return items[index] as? MenuItemInterface
     }
 }

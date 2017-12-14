@@ -13,17 +13,29 @@ protocol PhotoCoordinatorDelegate: class {
     func photoCoordinator(_ photoCoordinator: PhotoCoordinator, didChangeDownloadState inProgress: Bool)
 }
 
-class PhotoCoordinator {
-    private let photoAlbumService = PhotoAlbumService()
-    private let photoService = PhotoService()
-    private let photoStorageService = PhotoStorageService()
-    private var reloadTimer: Timer?
-    private var isDownloadInProgress = false {
+protocol PhotoCoordinatorInterface {
+    var photoAlbumService: PhotoAlbumServiceInterface { get }
+    var photoService: PhotoServiceInterface { get }
+    var photoStorageService: PhotoStorageServiceInterface { get }
+    var isDownloadInProgress: Bool { get set }
+    var preferences: Preferences { get set }
+    var folderURL: URL { get }
+    var delegate: PhotoCoordinatorDelegate? { get set }
+
+    func reloadPhotos()
+    func cancelReload()
+    func cleanFolder()
+}
+
+class PhotoCoordinator: PhotoCoordinatorInterface {
+    let photoAlbumService: PhotoAlbumServiceInterface
+    let photoService: PhotoServiceInterface
+    let photoStorageService: PhotoStorageServiceInterface
+    var isDownloadInProgress = false {
         didSet {
             delegate?.photoCoordinator(self, didChangeDownloadState: isDownloadInProgress)
         }
     }
-
     var preferences = Preferences() {
         didSet {
             setupTimer()
@@ -34,7 +46,12 @@ class PhotoCoordinator {
     }
     weak var delegate: PhotoCoordinatorDelegate?
 
-    init() {
+    private var reloadTimer: Timer?
+
+    init(photoAlbumService: PhotoAlbumServiceInterface, photoService: PhotoServiceInterface, photoStorageService: PhotoStorageServiceInterface) {
+        self.photoAlbumService = photoAlbumService
+        self.photoService = photoService
+        self.photoStorageService = photoStorageService
         setupTimer()
     }
 

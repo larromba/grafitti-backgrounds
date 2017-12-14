@@ -8,14 +8,25 @@
 
 import Cocoa
 
-class WorkspaceCoordinator {
-    private let workspace = NSWorkspace.shared
+protocol WorkspaceCoordinatorInterface {
+    var workspace: NSWorkspaceInterface { get }
+
+    func open(_ preference: SystemPreference)
+    func open(_ url: URL)
+}
+
+class WorkspaceCoordinator: WorkspaceCoordinatorInterface {
+    let workspace: NSWorkspaceInterface
+
+    init(workspace: NSWorkspaceInterface) {
+        self.workspace = workspace
+    }
 
     func open(_ preference: SystemPreference) {
-        workspace.open(preference.url)
+        _ = workspace.open(preference.url)
     }
 
     func open(_ url: URL) {
-        workspace.open(url)
+        _ = workspace.open(url)
     }
 }

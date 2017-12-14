@@ -8,22 +8,37 @@
 
 import Cocoa
 
-class AppCoordinator {
-    private let preferencesCoordinator = PreferencesCoordinator()
-    private let workspaceCoordinator = WorkspaceCoordinator()
-    private let menuCoordinator = MenuCoordinator()
-    private let photoCoordinator = PhotoCoordinator()
-    private let app = NSApp
+protocol AppCoordinatorInterface {
+    var preferencesCoordinator: PreferencesCoordinatorInterface { get }
+    var workspaceCoordinator: WorkspaceCoordinatorInterface { get }
+    var menuCoordinator: MenuCoordinatorInterface { get }
+    var photoCoordinator: PhotoCoordinatorInterface { get }
+    var app: NSApplicationInterface { get }
 
-    init() {
-        menuCoordinator.delegate = self
+    func start()
+}
+
+class AppCoordinator: AppCoordinatorInterface {
+    var preferencesCoordinator: PreferencesCoordinatorInterface
+    let workspaceCoordinator: WorkspaceCoordinatorInterface
+    var menuCoordinator: MenuCoordinatorInterface
+    var photoCoordinator: PhotoCoordinatorInterface
+    let app: NSApplicationInterface
+
+    init(preferencesCoordinator: PreferencesCoordinatorInterface, workspaceCoordinator: WorkspaceCoordinatorInterface, menuCoordinator: MenuCoordinatorInterface, photoCoordinator: PhotoCoordinatorInterface, app: NSApplicationInterface) {
+        self.preferencesCoordinator = preferencesCoordinator
+        self.workspaceCoordinator = workspaceCoordinator
+        self.menuCoordinator = menuCoordinator
+        self.photoCoordinator = photoCoordinator
+        self.app = app
+
+        self.preferencesCoordinator.delegate = self
+        self.menuCoordinator.delegate = self
+        self.photoCoordinator.delegate = self
+        self.photoCoordinator.preferences = preferencesCoordinator.preferences
     }
 
     func start() {
-        preferencesCoordinator.delegate = self
-        menuCoordinator.delegate = self
-        photoCoordinator.delegate = self
-        photoCoordinator.preferences = preferencesCoordinator.preferences
         photoCoordinator.reloadPhotos()
     }
 }
@@ -39,7 +54,7 @@ extension AppCoordinator: PreferencesCoordinatorDelegate {
 // MARK: - MenuCoordinatorDelegate
 
 extension AppCoordinator: MenuCoordinatorDelegate {
-    func menuCoordinator(_ coordinator: MenuCoordinator, selected action: MenuCoordinator.Action) {
+    func menuCoordinator(_ coordinator: MenuCoordinator, selected action: AppMenu.Action) {
         switch action {
         case .refreshFolder:
             photoCoordinator.reloadPhotos()
@@ -54,9 +69,9 @@ extension AppCoordinator: MenuCoordinatorDelegate {
         case .systemPreferences:
             workspaceCoordinator.open(.desktopScreenEffects)
         case .about:
-            app?.orderFrontStandardAboutPanel(self)
+            app.orderFrontStandardAboutPanel(self)
         case .quit:
-            app?.terminate(self)
+            app.terminate(self)
         }
     }
 }

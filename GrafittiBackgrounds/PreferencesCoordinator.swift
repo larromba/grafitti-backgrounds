@@ -12,18 +12,31 @@ protocol PreferencesCoordinatorDelegate: class {
     func preferencesCoordinator(_ coordinator: PreferencesCoordinator, didUpdatePreferences preferences: Preferences)
 }
 
-class PreferencesCoordinator {
-    private let windowController = NSStoryboard.preferences.instantiateInitialController() as! NSWindowController
-    private let preferencesViewController: PreferencesViewController
-    private let preferencesService = PreferencesService()
-    private(set) var preferences: Preferences
+protocol PreferencesCoordinatorInterface {
+    var windowController: NSWindowControllerInterface { get }
+    var preferencesViewController: PreferencesViewControllerInterface { get }
+    var preferencesService: PreferencesServiceInterface { get }
+    var preferences: Preferences { get }
+    var delegate: PreferencesCoordinatorDelegate? { get set }
+
+    func open()
+}
+
+class PreferencesCoordinator: PreferencesCoordinatorInterface {
+    let windowController: NSWindowControllerInterface
+    var preferencesViewController: PreferencesViewControllerInterface
+    let preferencesService: PreferencesServiceInterface
+    var preferences: Preferences
 
     weak var delegate: PreferencesCoordinatorDelegate?
 
-    init() {
+    init(windowController: NSWindowControllerInterface, preferencesService: PreferencesServiceInterface) {
+        self.windowController = windowController
+        self.preferencesService = preferencesService
+
         preferences = preferencesService.load() ?? Preferences()
 
-        preferencesViewController = windowController.contentViewController as! PreferencesViewController
+        preferencesViewController = windowController.contentViewController as! PreferencesViewControllerInterface
         preferencesViewController.delegate = self
     }
 

@@ -9,32 +9,24 @@
 import Cocoa
 
 protocol MenuCoordinatorDelegate: class {
-    func menuCoordinator(_ coordinator: MenuCoordinator, selected action: MenuCoordinator.Action)
+    func menuCoordinator(_ coordinator: MenuCoordinator, selected action: AppMenu.Action)
 }
 
-class MenuCoordinator {
-    enum Action {
-        case refreshFolder
-        case cancelRefresh
-        case openFolder
-        case clearFolder
-        case preferences
-        case systemPreferences
-        case about
-        case quit
-    }
-    enum RefreshAction {
-        case cancel
-        case refresh
-    }
+protocol MenuCoordinatorInterface {
+    var statusItem: LoadingStatusItemInterface { get }
+    var delegate: MenuCoordinatorDelegate? { get set }
 
-    private let statusItem = StatusItem(config:
-        StatusItem.Config(image: #imageLiteral(resourceName: "spray-can"), loadingImage: #imageLiteral(resourceName: "download"), spinnerColor: NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8))
-    )
+    func setLoadingPercentage(_ percentage: Double)
+    func setIsLoading(_ isLoading: Bool)
+    func setRefreshAction(_ action: AppMenu.RefreshAction)
+}
 
+class MenuCoordinator: MenuCoordinatorInterface {
+    var statusItem: LoadingStatusItemInterface
     weak var delegate: MenuCoordinatorDelegate?
 
-    init() {
+    init(statusItem: LoadingStatusItemInterface) {
+        self.statusItem = statusItem
         statusItem.item.menu = Menu(title: "", items: [
             MenuItem(title: "Refresh Folder".localized, actionBlock: { [unowned self] in
                 self.delegate?.menuCoordinator(self, selected: .refreshFolder)
@@ -63,15 +55,15 @@ class MenuCoordinator {
     }
 
     func setLoadingPercentage(_ percentage: Double) {
-        self.statusItem.loadingPercentage = percentage
+        statusItem.loadingPercentage = percentage
     }
 
     func setIsLoading(_ isLoading: Bool) {
-        self.statusItem.isLoading = isLoading
+        statusItem.isLoading = isLoading
     }
 
-    func setRefreshAction(_ action: RefreshAction) {
-        guard let refreshItem = self.statusItem.item.menu?.item(at: 0) as? MenuItem , let clearFolderItem = self.statusItem.item.menu?.item(at: 2) else {
+    func setRefreshAction(_ action: AppMenu.RefreshAction) {
+        guard let refreshItem = statusItem.item.menu?.item(at: 0) as? MenuItem , let clearFolderItem = statusItem.item.menu?.item(at: 2) else {
             return
         }
         switch action {

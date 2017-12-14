@@ -7,16 +7,11 @@
 //
 
 import Cocoa
-import Foundation
 
-private func main() {
-    let app = NSApplication.shared
-    NSApp = app
+let app = NSApplication.shared
+NSApp = app
 
-    let appDelegate = AppDelegate()
-    app.delegate = appDelegate
+let appDelegate = AppDelegate.configure(for: app)
+app.delegate = appDelegate
 
-    _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
-}
-
-main()
+_ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
