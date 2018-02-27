@@ -15,6 +15,7 @@ protocol PreferencesCoordinatorDelegate: class {
 protocol PreferencesCoordinatorInterface {
     var windowController: NSWindowControllerInterface { get }
     var preferencesViewController: PreferencesViewControllerInterface { get }
+    var preferencesDataSource: PreferencesDataSourceInterface { get }
     var preferencesService: PreferencesServiceInterface { get }
     var preferences: Preferences { get }
     var delegate: PreferencesCoordinatorDelegate? { get set }
@@ -26,13 +27,15 @@ class PreferencesCoordinator: PreferencesCoordinatorInterface {
     let windowController: NSWindowControllerInterface
     var preferencesViewController: PreferencesViewControllerInterface
     let preferencesService: PreferencesServiceInterface
+    let preferencesDataSource: PreferencesDataSourceInterface
     var preferences: Preferences
 
     weak var delegate: PreferencesCoordinatorDelegate?
 
-    init(windowController: NSWindowControllerInterface, preferencesService: PreferencesServiceInterface) {
+    init(windowController: NSWindowControllerInterface, preferencesService: PreferencesServiceInterface, preferencesDataSource: PreferencesDataSourceInterface) {
         self.windowController = windowController
         self.preferencesService = preferencesService
+        self.preferencesDataSource = preferencesDataSource
 
         preferences = preferencesService.load() ?? Preferences()
 
@@ -53,25 +56,30 @@ class PreferencesCoordinator: PreferencesCoordinatorInterface {
     }
 
     private func load(_ preferences: Preferences) {
-        preferencesViewController.setAutoRefreshTimeInterval(preferences.autoRefreshTimeIntervalHours)
-        preferencesViewController.setIsAutoRefreshEnabled(preferences.isAutoRefreshEnabled)
-        preferencesViewController.setNumberOfPhotos(preferences.numberOfPhotos)
+        preferencesViewController.viewModel = preferencesDataSource.viewModel(for: preferences)
+    }
+
+    private func refresh(_ preferences: Preferences) {
+        save(preferences)
+        load(preferences)
     }
 }
+
+// MARK: - PreferencesViewControllerDelegate
 
 extension PreferencesCoordinator: PreferencesViewControllerDelegate {
     func preferencesViewController(_ viewController: PreferencesViewController, didUpdateNumberOfPhotos numberOfPhotos: Int) {
         preferences.numberOfPhotos = numberOfPhotos
-        save(preferences)
+        refresh(preferences)
     }
 
     func preferencesViewController(_ viewController: PreferencesViewController, didUpdateAutoRefreshIsEnabled isEndabled: Bool) {
         preferences.isAutoRefreshEnabled = isEndabled
-        save(preferences)
+        refresh(preferences)
     }
 
     func preferencesViewController(_ viewController: PreferencesViewController, didUpdateTimeInterval timeInterval: TimeInterval) {
         preferences.autoRefreshTimeIntervalHours = timeInterval
-        save(preferences)
+        refresh(preferences)
     }
 }

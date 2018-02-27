@@ -11,9 +11,20 @@ import Cocoa
 protocol LoadingStatusItemInterface {
     var statusBar: NSStatusBar { get }
     var item: NSStatusItem { get }
-    var menu: Menu? { get set }
+    var menu: MenuInterface? { get set }
     var isLoading: Bool { get set }
     var loadingPercentage: Double { get set }
+}
+
+extension LoadingStatusItemInterface {
+    var menu: MenuInterface? {
+        get {
+            return item.menu as? MenuInterface
+        }
+        set {
+            item.menu = menu as? NSMenu
+        }
+    }
 }
 
 class LoadingStatusItem: LoadingStatusItemInterface {
@@ -36,14 +47,6 @@ class LoadingStatusItem: LoadingStatusItemInterface {
 
     let statusBar: NSStatusBar
     let item: NSStatusItem
-    var menu: Menu? {
-        get {
-            return item.menu as? Menu
-        }
-        set {
-            item.menu = menu
-        }
-    }
     var isLoading: Bool = false {
         didSet {
             if isLoading {

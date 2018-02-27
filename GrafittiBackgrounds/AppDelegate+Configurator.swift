@@ -13,7 +13,8 @@ extension AppDelegate {
         let preferencesWindow = NSStoryboard.preferences.instantiateInitialController() as! NSWindowController
         let dataManager = DataManger()
         let preferencesService = PreferencesService(dataManager: dataManager)
-        let preferencesCoordinator = PreferencesCoordinator(windowController: preferencesWindow, preferencesService: preferencesService)
+        let preferencesDataSource = PreferencesDataSource()
+        let preferencesCoordinator = PreferencesCoordinator(windowController: preferencesWindow, preferencesService: preferencesService, preferencesDataSource: preferencesDataSource)
 
         let workspace = NSWorkspace.shared
         let workspaceCoordinator = WorkspaceCoordinator(workspace: workspace)

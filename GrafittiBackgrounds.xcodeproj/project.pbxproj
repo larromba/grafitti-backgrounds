@@ -50,10 +50,24 @@
 		7F6567481FE2A9F200A6CB7F /* NSWindowControllerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6567471FE2A9F200A6CB7F /* NSWindowControllerInterface.swift */; };
 		7F6738B31FE2CE3A004DDAE1 /* FileManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B21FE2CE3A004DDAE1 /* FileManagerInterface.swift */; };
 		7F6738B51FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */; };
+		7F6738C31FE2E4CC004DDAE1 /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738C21FE2E4CC004DDAE1 /* AppCoordinatorTests.swift */; };
+		7F6738CB1FE2F3FE004DDAE1 /* Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738CA1FE2F3FE004DDAE1 /* Stubs.swift */; };
+		7F925E6520460B1C0071F249 /* PreferencesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6420460B1C0071F249 /* PreferencesDataSource.swift */; };
+		7F925E6720460B250071F249 /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewModel.swift */; };
 		7FCF0EED1FD6C60300138D77 /* PhotoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */; };
 		7FCF0EF11FD6CAE300138D77 /* WorkspaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */; };
 		7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7F6738C51FE2E4CC004DDAE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7F51DA961FD33DF100502804 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7F51DA9D1FD33DF100502804;
+			remoteInfo = GrafittiBackgrounds;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		7F247E641FD366D70077D878 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
@@ -106,6 +120,12 @@
 		7F6567471FE2A9F200A6CB7F /* NSWindowControllerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWindowControllerInterface.swift; sourceTree = "<group>"; };
 		7F6738B21FE2CE3A004DDAE1 /* FileManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerInterface.swift; sourceTree = "<group>"; };
 		7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Configurator.swift"; sourceTree = "<group>"; };
+		7F6738C01FE2E4CB004DDAE1 /* GrafittiBackgroundsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GrafittiBackgroundsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F6738C21FE2E4CC004DDAE1 /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
+		7F6738C41FE2E4CC004DDAE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F6738CA1FE2F3FE004DDAE1 /* Stubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubs.swift; sourceTree = "<group>"; };
+		7F925E6420460B1C0071F249 /* PreferencesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesDataSource.swift; sourceTree = "<group>"; };
+		7F925E6620460B250071F249 /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 		7FCF0EEC1FD6C60300138D77 /* PhotoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCoordinator.swift; sourceTree = "<group>"; };
 		7FCF0EF01FD6CAE300138D77 /* WorkspaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCoordinator.swift; sourceTree = "<group>"; };
 		7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPreference.swift; sourceTree = "<group>"; };
@@ -113,6 +133,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		7F51DA9B1FD33DF100502804 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6738BD1FE2E4CB004DDAE1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,7 +219,7 @@
 		7F247E9E1FD476490077D878 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7F247E9C1FD4763F0077D878 /* PreferencesViewController.swift */,
+				7F925E6820460B300071F249 /* Preferences */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -230,8 +257,9 @@
 			isa = PBXGroup;
 			children = (
 				7F247EB51FD496860077D878 /* change-log.txt */,
-				7F51DAA01FD33DF100502804 /* GrafittiBackgrounds */,
 				7F247EAD1FD4773F0077D878 /* Scripts */,
+				7F51DAA01FD33DF100502804 /* GrafittiBackgrounds */,
+				7F6738C11FE2E4CC004DDAE1 /* GrafittiBackgroundsTests */,
 				7F51DA9F1FD33DF100502804 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -240,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */,
+				7F6738C01FE2E4CB004DDAE1 /* GrafittiBackgroundsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -331,6 +360,26 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
+		7F6738C11FE2E4CC004DDAE1 /* GrafittiBackgroundsTests */ = {
+			isa = PBXGroup;
+			children = (
+				7F6738C21FE2E4CC004DDAE1 /* AppCoordinatorTests.swift */,
+				7F6738CA1FE2F3FE004DDAE1 /* Stubs.swift */,
+				7F6738C41FE2E4CC004DDAE1 /* Info.plist */,
+			);
+			path = GrafittiBackgroundsTests;
+			sourceTree = "<group>";
+		};
+		7F925E6820460B300071F249 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				7F247E9C1FD4763F0077D878 /* PreferencesViewController.swift */,
+				7F925E6420460B1C0071F249 /* PreferencesDataSource.swift */,
+				7F925E6620460B250071F249 /* PreferencesViewModel.swift */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -352,6 +401,24 @@
 			productReference = 7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7F6738BF1FE2E4CB004DDAE1 /* GrafittiBackgroundsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F6738C91FE2E4CC004DDAE1 /* Build configuration list for PBXNativeTarget "GrafittiBackgroundsTests" */;
+			buildPhases = (
+				7F6738BC1FE2E4CB004DDAE1 /* Sources */,
+				7F6738BD1FE2E4CB004DDAE1 /* Frameworks */,
+				7F6738BE1FE2E4CB004DDAE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7F6738C61FE2E4CC004DDAE1 /* PBXTargetDependency */,
+			);
+			name = GrafittiBackgroundsTests;
+			productName = GrafittiBackgroundsTests;
+			productReference = 7F6738C01FE2E4CB004DDAE1 /* GrafittiBackgroundsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -365,6 +432,11 @@
 					7F51DA9D1FD33DF100502804 = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
+					};
+					7F6738BF1FE2E4CB004DDAE1 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7F51DA9D1FD33DF100502804;
 					};
 				};
 			};
@@ -382,6 +454,7 @@
 			projectRoot = "";
 			targets = (
 				7F51DA9D1FD33DF100502804 /* GrafittiBackgrounds */,
+				7F6738BF1FE2E4CB004DDAE1 /* GrafittiBackgroundsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -394,6 +467,13 @@
 				7F247E9F1FD476910077D878 /* Preferences.storyboard in Resources */,
 				7F247EA41FD476A20077D878 /* Localized.strings in Resources */,
 				7F51DAA41FD33DF100502804 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6738BE1FE2E4CB004DDAE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +517,7 @@
 				7F615D941FD6A49E00DD519C /* MenuCoordinator.swift in Sources */,
 				7F509A9D1FDB399E00152B33 /* AppMenu.swift in Sources */,
 				7F247E8B1FD43F510077D878 /* NSViewExtensions.swift in Sources */,
+				7F925E6720460B250071F249 /* PreferencesViewModel.swift in Sources */,
 				7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */,
 				7F51DAB21FD33E3200502804 /* Request.swift in Sources */,
 				7F247E991FD46EA90077D878 /* Preferences.swift in Sources */,
@@ -455,6 +536,7 @@
 				7F509A9F1FDD6C0800152B33 /* NSWorkspaceInterface.swift in Sources */,
 				7FCF0EF11FD6CAE300138D77 /* WorkspaceCoordinator.swift in Sources */,
 				7F247E651FD366D70077D878 /* PhotoService.swift in Sources */,
+				7F925E6520460B1C0071F249 /* PreferencesDataSource.swift in Sources */,
 				7F51DAC21FD3482400502804 /* API.swift in Sources */,
 				7F6567481FE2A9F200A6CB7F /* NSWindowControllerInterface.swift in Sources */,
 				7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */,
@@ -466,7 +548,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7F6738BC1FE2E4CB004DDAE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F6738C31FE2E4CC004DDAE1 /* AppCoordinatorTests.swift in Sources */,
+				7F6738CB1FE2F3FE004DDAE1 /* Stubs.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7F6738C61FE2E4CC004DDAE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7F51DA9D1FD33DF100502804 /* GrafittiBackgrounds */;
+			targetProxy = 7F6738C51FE2E4CC004DDAE1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7F247EA11FD476910077D878 /* Preferences.storyboard */ = {
@@ -628,6 +727,38 @@
 			};
 			name = Release;
 		};
+		7F6738C71FE2E4CC004DDAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Q25J5XBNX4;
+				INFOPLIST_FILE = GrafittiBackgroundsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgroundsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Grafitti Backgrounds.app/Contents/MacOS/Grafitti Backgrounds";
+			};
+			name = Debug;
+		};
+		7F6738C81FE2E4CC004DDAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Q25J5XBNX4;
+				INFOPLIST_FILE = GrafittiBackgroundsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgroundsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Grafitti Backgrounds.app/Contents/MacOS/Grafitti Backgrounds";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -645,6 +776,15 @@
 			buildConfigurations = (
 				7F51DAAD1FD33DF100502804 /* Debug */,
 				7F51DAAE1FD33DF100502804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F6738C91FE2E4CC004DDAE1 /* Build configuration list for PBXNativeTarget "GrafittiBackgroundsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F6738C71FE2E4CC004DDAE1 /* Debug */,
+				7F6738C81FE2E4CC004DDAE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

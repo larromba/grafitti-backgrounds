@@ -12,7 +12,7 @@ protocol MenuItemInterface {
     var actionBlock: (() -> Void) { get set }
 }
 
-class MenuItem: NSMenuItem {
+class MenuItem: NSMenuItem, MenuItemInterface {
     var actionBlock: (() -> Void)
 
     init(title: String, actionBlock: @escaping (() -> Void), keyEquivalent: String = "", isEnabled: Bool = true) {

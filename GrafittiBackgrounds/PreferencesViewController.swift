@@ -22,10 +22,7 @@ protocol PreferencesViewControllerInterface {
     var numberOfPhotosTextLabel: NSTextField! { get }
     var numberOfPhotosTextField: NSTextField! { get }
     var delegate: PreferencesViewControllerDelegate? { get set }
-
-    func setIsAutoRefreshEnabled(_ isEnabled: Bool)
-    func setAutoRefreshTimeInterval(_ timeInterval: TimeInterval)
-    func setNumberOfPhotos(_ numberOfPhotos: Int)
+    var viewModel: PreferencesViewModel? { get set }
 }
 
 class PreferencesViewController: NSViewController, PreferencesViewControllerInterface {
@@ -37,23 +34,37 @@ class PreferencesViewController: NSViewController, PreferencesViewControllerInte
     weak var numberOfPhotosTextField: NSTextField!
 
     weak var delegate: PreferencesViewControllerDelegate?
-
-    func setIsAutoRefreshEnabled(_ isEnabled: Bool) {
-        autoRefreshCheckBox.state = isEnabled ? .on : .off
-    }
-
-    func setAutoRefreshTimeInterval(_ timeInterval: TimeInterval) {
-        autoRefreshIntervalTextField.stringValue = String(format: "%.0f", timeInterval)
-    }
-
-    func setNumberOfPhotos(_ numberOfPhotos: Int) {
-        numberOfPhotosTextField.stringValue = "\(numberOfPhotos)"
+    var viewModel: PreferencesViewModel? {
+        didSet {
+            refresh()
+        }
     }
 
     // MARK: - private
 
     @IBAction private func autoRefreshCheckBoxPressed(_ sender: NSButton) {
         delegate?.preferencesViewController(self, didUpdateAutoRefreshIsEnabled: sender.state == .on)
+    }
+
+    private func refresh() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        setAutoRefreshTimeInterval(viewModel.autoRefreshTimeIntervalHours)
+        setIsAutoRefreshEnabled(viewModel.isAutoRefreshEnabled)
+        setNumberOfPhotos(viewModel.numberOfPhotos)
+    }
+
+    private func setIsAutoRefreshEnabled(_ isEnabled: Bool) {
+        autoRefreshCheckBox.state = isEnabled ? .on : .off
+    }
+
+    private func setAutoRefreshTimeInterval(_ timeInterval: TimeInterval) {
+        autoRefreshIntervalTextField.stringValue = String(format: "%.0f", timeInterval)
+    }
+
+    private func setNumberOfPhotos(_ numberOfPhotos: Int) {
+        numberOfPhotosTextField.stringValue = "\(numberOfPhotos)"
     }
 }
 
