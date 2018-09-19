@@ -13,19 +13,26 @@ extension AppDelegate {
         let preferencesWindow = NSStoryboard.preferences.instantiateInitialController() as! NSWindowController
         let dataManager = DataManger()
         let preferencesService = PreferencesService(dataManager: dataManager)
-        let preferencesDataSource = PreferencesDataSource()
-        let preferencesCoordinator = PreferencesCoordinator(windowController: preferencesWindow, preferencesService: preferencesService, preferencesDataSource: preferencesDataSource)
+        let preferencesCoordinator = PreferencesCoordinator(windowController: preferencesWindow, preferencesService: preferencesService)
 
         let workspace = NSWorkspace.shared
         let workspaceCoordinator = WorkspaceCoordinator(workspace: workspace)
 
-        let statusItem = LoadingStatusItem(config: .sprayCan, statusBar: .system)
+		let viewModel = LoadingStatusItemViewModel(isLoading: false, loadingPercentage: 0, style: .sprayCan)
+		let statusItem = LoadingStatusItem(viewModel: viewModel, statusBar: .system)
         let menuCoordinator = MenuCoordinator(statusItem: statusItem)
 
         let networkManager = NetworkManager()
         let fileManager = FileManager.default
         let photoAlbumService = PhotoAlbumService(networkManager: networkManager)
-        let photoService = PhotoService(networkManager: networkManager, fileManager: fileManager)
+
+		// TODO: url chooser?
+		guard let path = NSSearchPathForDirectoriesInDomains(.picturesDirectory, .userDomainMask, true).first else {
+			fatalError("shouldn't be nil")
+		}
+		let saveURL = URL(fileURLWithPath: path).appendingPathComponent("GrafittiBackgrounds")
+
+		let photoService = PhotoService(networkManager: networkManager, fileManager: fileManager, saveURL: saveURL)
         let photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
         let photoCoordinator = PhotoCoordinator(photoAlbumService: photoAlbumService, photoService: photoService, photoStorageService: photoStorageService)
 

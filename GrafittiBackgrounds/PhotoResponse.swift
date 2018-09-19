@@ -34,4 +34,10 @@ class PhotoResponse: Response {
         }
         self.imageURL = url
     }
+
+	/// testing
+	init(imageURL: URL) {
+		data = Data()
+		self.imageURL = imageURL
+	}
 }

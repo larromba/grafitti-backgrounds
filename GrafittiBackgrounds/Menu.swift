@@ -9,14 +9,21 @@
 import Cocoa
 
 protocol MenuInterface {
+	var viewModel: MenuViewModel { get }
     func item(at index: Int) -> MenuItemInterface?
 }
 
 class Menu: NSMenu, MenuInterface {
-    init(title: String, items: [NSMenuItem]) {
-        super.init(title: title)
-        autoenablesItems = false
-        items.forEach({ addItem($0) })
+	var viewModel: MenuViewModel {
+		didSet {
+			update(viewModel: viewModel)
+		}
+	}
+
+	init(viewModel: MenuViewModel, items: [NSMenuItem]) {
+		self.viewModel = viewModel
+        super.init(title: viewModel.title)
+		items.forEach { addItem($0) }
     }
 
     required init(coder decoder: NSCoder) {
@@ -29,4 +36,11 @@ class Menu: NSMenu, MenuInterface {
         }
         return items[index] as? MenuItemInterface
     }
+
+	// MARK: - private
+
+	private func update(viewModel: MenuViewModel) {
+		title = viewModel.title
+		autoenablesItems = viewModel.autoenablesItems
+	}
 }

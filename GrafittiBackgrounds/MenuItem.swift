@@ -9,16 +9,26 @@
 import Cocoa
 
 protocol MenuItemInterface {
-    var actionBlock: (() -> Void) { get set }
+	var delegate: MenuItemDelegate? { get }
+	var viewModel: MenuItemViewModel { get }
+}
+
+protocol MenuItemDelegate: class {
+	func menuItemPressed(_ menuItem: MenuItemInterface)
 }
 
 class MenuItem: NSMenuItem, MenuItemInterface {
-    var actionBlock: (() -> Void)
+	weak var delegate: MenuItemDelegate?
+	var viewModel: MenuItemViewModel {
+		didSet {
+			refresh(viewModel: viewModel)
+		}
+	}
 
-    init(title: String, actionBlock: @escaping (() -> Void), keyEquivalent: String = "", isEnabled: Bool = true) {
-        self.actionBlock = actionBlock
-        super.init(title: title, action: #selector(action(_:)), keyEquivalent: keyEquivalent)
-        self.isEnabled = isEnabled
+	init(viewModel: MenuItemViewModel, delegate: MenuItemDelegate) {
+		self.delegate = delegate
+		self.viewModel = viewModel
+        super.init(title: viewModel.title, action: #selector(action(_:)), keyEquivalent: viewModel.keyEquivalent)
         self.target = self
     }
 
@@ -29,6 +39,12 @@ class MenuItem: NSMenuItem, MenuItemInterface {
     // MARK: - private
 
     @objc private func action(_ sender: NSMenuItem) {
-        actionBlock()
+        delegate?.menuItemPressed(self)
     }
+
+	private func refresh(viewModel: MenuItemViewModel) {
+		self.title = viewModel.title
+		self.keyEquivalent = viewModel.keyEquivalent
+		self.isEnabled = viewModel.isEnabled
+	}
 }

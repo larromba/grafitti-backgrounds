@@ -12,8 +12,9 @@ protocol LoadingStatusItemInterface {
     var statusBar: NSStatusBar { get }
     var item: NSStatusItem { get }
     var menu: MenuInterface? { get set }
-    var isLoading: Bool { get set }
-    var loadingPercentage: Double { get set }
+    var isLoading: Bool { get }
+    var loadingPercentage: Double { get }
+	var viewModel: LoadingStatusItemViewModel { get set }
 }
 
 extension LoadingStatusItemInterface {
@@ -28,40 +29,28 @@ extension LoadingStatusItemInterface {
 }
 
 class LoadingStatusItem: LoadingStatusItemInterface {
-    struct Config {
-        let image: NSImage
-        let loadingImage: NSImage
-        let spinnerColor: NSColor
-
-        init(image: NSImage, loadingImage: NSImage, spinnerColor: NSColor) {
-            self.image = image
-            self.loadingImage = loadingImage
-            self.spinnerColor = spinnerColor
-
-            image.isTemplate = true
-            loadingImage.isTemplate = true
-        }
-
-        static var sprayCan = Config(image: #imageLiteral(resourceName: "spray-can"), loadingImage: #imageLiteral(resourceName: "download"), spinnerColor: NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8))
-    }
-
     let statusBar: NSStatusBar
     let item: NSStatusItem
-    var isLoading: Bool = false {
+	var viewModel: LoadingStatusItemViewModel {
+		didSet {
+			update(viewModel: viewModel)
+		}
+	}
+    private(set) var isLoading: Bool = false {
         didSet {
             if isLoading {
-                item.image = config.loadingImage
+                item.image = viewModel.style.loadingImage
                 item.button?.addSubview(spinner)
                 spinner.startAnimation(self)
             } else {
-                item.image = config.image
+                item.image = viewModel.style.image
                 spinner.removeFromSuperview()
                 spinner.stopAnimation(self)
                 loadingPercentage = 0
             }
         }
     }
-    var loadingPercentage: Double {
+    private(set) var loadingPercentage: Double {
         get {
             return spinner.doubleValue
         }
@@ -70,8 +59,6 @@ class LoadingStatusItem: LoadingStatusItemInterface {
             spinner.displayIfNeeded()
         }
     }
-
-    private let config: Config
     private lazy var spinner: NSProgressIndicator = {
         let size = item.button?.visibleRect.width ?? 0
         let height: CGFloat = size * 0.17 // 17%
@@ -81,7 +68,7 @@ class LoadingStatusItem: LoadingStatusItemInterface {
 //        spinner.usesThreadedAnimation = true
         spinner.style = .bar
         spinner.wantsLayer = true
-        spinner.setCIColor(config.spinnerColor)
+        spinner.setCIColor(viewModel.style.spinnerColor)
         spinner.isIndeterminate = false
         spinner.minValue = 0.0
         spinner.maxValue = 1.0
@@ -89,14 +76,21 @@ class LoadingStatusItem: LoadingStatusItemInterface {
         return spinner
     }()
     
-    init(config: Config, statusBar: NSStatusBar) {
-        self.config = config
+    init(viewModel: LoadingStatusItemViewModel, statusBar: NSStatusBar) {
+		self.viewModel = viewModel
         self.statusBar = statusBar
         self.item = statusBar.statusItem(withLength: NSStatusItem.variableLength)
-        item.image = config.image
+        item.image = viewModel.style.image
     }
 
     deinit {
         statusBar.removeStatusItem(item)
     }
+
+	// MARK: - private
+
+	private func update(viewModel: LoadingStatusItemViewModel) {
+		isLoading = viewModel.isLoading
+		loadingPercentage = viewModel.loadingPercentage
+	}
 }

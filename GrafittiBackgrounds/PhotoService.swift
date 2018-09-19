@@ -26,14 +26,10 @@ class PhotoService: PhotoServiceInterface {
     let fileManager: FileManagerInterface
     let saveURL: URL
 
-    init(networkManager: NetworkManagerInterface, fileManager: FileManagerInterface) {
+	init(networkManager: NetworkManagerInterface, fileManager: FileManagerInterface, saveURL: URL) {
         self.networkManager = networkManager
         self.fileManager = fileManager
-        guard let path = NSSearchPathForDirectoriesInDomains(.picturesDirectory, .userDomainMask, true).first else {
-            fatalError("shouldn't be nil")
-        }
-        saveURL = URL(fileURLWithPath: path).appendingPathComponent("GrafittiBackgrounds")
-
+		self.saveURL = saveURL
         if !fileManager.fileExists(atPath: saveURL.absoluteString) {
             do {
                 try self.fileManager.createDirectory(at: saveURL, withIntermediateDirectories: true, attributes: nil)

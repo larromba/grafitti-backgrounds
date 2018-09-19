@@ -13,3 +13,11 @@ struct PreferencesViewModel {
     let autoRefreshTimeIntervalHours: TimeInterval
     let numberOfPhotos: Int
 }
+
+extension PreferencesViewModel {
+	init(preferences: Preferences) {
+		isAutoRefreshEnabled = preferences.isAutoRefreshEnabled
+		autoRefreshTimeIntervalHours = preferences.autoRefreshTimeIntervalHours
+		numberOfPhotos = preferences.numberOfPhotos
+	}
+}

@@ -23,7 +23,7 @@ struct PhotoAlbumsResponse: Response {
         }
         let regex = try NSRegularExpression(pattern: "https://photos.app.goo.gl/[a-zA-Z0-9]+|https://goo.gl/photos/[a-zA-Z0-9]+", options: [])
         let matches = regex.matches(in: html, options: .init(rawValue: 0), range: NSRange(location: 0, length: html.count))
-        photoAlbums = matches.flatMap({ result -> PhotoAlbum? in
+		photoAlbums = matches.compactMap({ result -> PhotoAlbum? in
             guard let range = Range(result.range, in: html), let url = URL(string: String(html[range])) else {
                 log("error getting album url")
                 return nil

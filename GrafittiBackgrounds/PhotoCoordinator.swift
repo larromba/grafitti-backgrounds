@@ -36,7 +36,7 @@ class PhotoCoordinator: PhotoCoordinatorInterface {
             delegate?.photoCoordinator(self, didChangeDownloadState: isDownloadInProgress)
         }
     }
-    var preferences = Preferences() {
+	var preferences: Preferences {
         didSet {
             setupTimer()
         }
@@ -48,10 +48,11 @@ class PhotoCoordinator: PhotoCoordinatorInterface {
 
     private var reloadTimer: Timer?
 
-    init(photoAlbumService: PhotoAlbumServiceInterface, photoService: PhotoServiceInterface, photoStorageService: PhotoStorageServiceInterface) {
+	init(photoAlbumService: PhotoAlbumServiceInterface, photoService: PhotoServiceInterface, photoStorageService: PhotoStorageServiceInterface, preferences: Preferences = Preferences()) {
         self.photoAlbumService = photoAlbumService
         self.photoService = photoService
         self.photoStorageService = photoStorageService
+		self.preferences = preferences
         setupTimer()
     }
 

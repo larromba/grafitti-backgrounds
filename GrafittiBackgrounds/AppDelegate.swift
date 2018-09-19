@@ -21,6 +21,9 @@ class AppDelegate: NSObject, AppDelegateInterface {
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+		guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
+			return
+		}
         appCoordinator.start()
     }
 }

@@ -43,7 +43,7 @@ struct PhotoResourceResponse: Response {
 
         regex = try NSRegularExpression(pattern: "\\\"[\\w-]+\\\",\\s*\\[\\\"https:", options: [])
         matches = regex.matches(in: photoURLBlock, options: .init(rawValue: 0), range: NSRange(location: 0, length: photoURLBlock.count))
-        photoResources = try matches.flatMap({ result -> PhotoResource? in
+		photoResources = try matches.compactMap({ result -> PhotoResource? in
             guard let range = Range(result.range, in: photoURLBlock) else {
                 log("error getting dirty urlComponent")
                 return nil

@@ -56,9 +56,9 @@ extension AppCoordinator: PreferencesCoordinatorDelegate {
 extension AppCoordinator: MenuCoordinatorDelegate {
     func menuCoordinator(_ coordinator: MenuCoordinator, selected action: AppMenu.Action) {
         switch action {
-        case .refreshFolder:
+        case .refreshFolder(action: .refresh):
             photoCoordinator.reloadPhotos()
-        case .cancelRefresh:
+		case .refreshFolder(action: .cancel):
             photoCoordinator.cancelReload()
         case .openFolder:
             workspaceCoordinator.open(photoCoordinator.folderURL)

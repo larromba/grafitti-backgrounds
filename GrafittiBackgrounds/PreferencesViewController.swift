@@ -36,7 +36,8 @@ class PreferencesViewController: NSViewController, PreferencesViewControllerInte
     weak var delegate: PreferencesViewControllerDelegate?
     var viewModel: PreferencesViewModel? {
         didSet {
-            refresh()
+			guard let viewModel = viewModel else { return }
+			update(viewModel: viewModel)
         }
     }
 
@@ -46,10 +47,7 @@ class PreferencesViewController: NSViewController, PreferencesViewControllerInte
         delegate?.preferencesViewController(self, didUpdateAutoRefreshIsEnabled: sender.state == .on)
     }
 
-    private func refresh() {
-        guard let viewModel = viewModel else {
-            return
-        }
+    private func update(viewModel: PreferencesViewModel) {
         setAutoRefreshTimeInterval(viewModel.autoRefreshTimeIntervalHours)
         setIsAutoRefreshEnabled(viewModel.isAutoRefreshEnabled)
         setNumberOfPhotos(viewModel.numberOfPhotos)

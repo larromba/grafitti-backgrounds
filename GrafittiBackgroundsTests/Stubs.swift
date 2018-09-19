@@ -13,7 +13,6 @@ class StubPreferencesCoordinator: PreferencesCoordinatorInterface {
     var windowController: NSWindowControllerInterface = StubWindowController()
     var preferencesViewController: PreferencesViewControllerInterface = PreferencesViewController()
     var preferencesService: PreferencesServiceInterface = StubPreferencesService()
-    var preferencesDataSource: PreferencesDataSourceInterface = PreferencesDataSource()
     var preferences = Preferences()
     var delegate: PreferencesCoordinatorDelegate?
 
@@ -49,7 +48,7 @@ class StubMenuCoordinator: MenuCoordinatorInterface {
 
     func setLoadingPercentage(_ percentage: Double) {}
     func setIsLoading(_ isLoading: Bool) {}
-    func setRefreshAction(_ action: AppMenu.RefreshAction) {}
+	func setRefreshAction(_ action: AppMenu.Action.Refresh) {}
 }
 
 class StubLoadingStatusItem: LoadingStatusItemInterface {
@@ -57,6 +56,7 @@ class StubLoadingStatusItem: LoadingStatusItemInterface {
     var item: NSStatusItem = NSStatusItem()
     var isLoading: Bool = false
     var loadingPercentage: Double = 0
+	var viewModel: LoadingStatusItemViewModel = LoadingStatusItemViewModel(isLoading: false, loadingPercentage: 0, style: .sprayCan)
 }
 
 class StubPhotoCoordinator: PhotoCoordinatorInterface {
@@ -89,7 +89,7 @@ class StubNetworkManager: NetworkManagerInterface {
 
 class StubPhotoService: PhotoServiceInterface {
     var networkManager: NetworkManagerInterface = StubNetworkManager()
-    var fileManager: FileManagerInterface = FileManager()
+    var fileManager: FileManagerInterface = StubFileManager()
     var saveURL: URL = URL.stub
 
     func downloadPhoto(_ resource: PhotoResource, success: @escaping ((PhotoResource) -> ()), failure: ((Error) -> ())?) {}
@@ -98,7 +98,7 @@ class StubPhotoService: PhotoServiceInterface {
 
 class StubPhotoStorageService: PhotoStorageServiceInterface {
     var dataManager: DataManagerInterface = StubDataManger()
-    var fileManager: FileManagerInterface = FileManager()
+    var fileManager: FileManagerInterface = StubFileManager()
 
     func save(_ resources: [PhotoResource]) {}
     func load() -> [PhotoResource]? { return nil }
@@ -134,6 +134,13 @@ class StubPreferencesViewController: NSViewController, PreferencesViewController
     var numberOfPhotosTextField: NSTextField! = NSTextField()
     var delegate: PreferencesViewControllerDelegate? = nil
     var viewModel: PreferencesViewModel? = nil
+}
+
+class StubFileManager: FileManagerInterface {
+	func removeItem(at URL: URL) throws {}
+	func moveItem(at srcURL: URL, to dstURL: URL) throws {}
+	func createDirectory(at url: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey : Any]?) throws {}
+	func fileExists(atPath path: String) -> Bool { return false }
 }
 
 extension URL {

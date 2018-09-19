@@ -15,7 +15,6 @@ protocol PreferencesCoordinatorDelegate: class {
 protocol PreferencesCoordinatorInterface {
     var windowController: NSWindowControllerInterface { get }
     var preferencesViewController: PreferencesViewControllerInterface { get }
-    var preferencesDataSource: PreferencesDataSourceInterface { get }
     var preferencesService: PreferencesServiceInterface { get }
     var preferences: Preferences { get }
     var delegate: PreferencesCoordinatorDelegate? { get set }
@@ -27,15 +26,13 @@ class PreferencesCoordinator: PreferencesCoordinatorInterface {
     let windowController: NSWindowControllerInterface
     var preferencesViewController: PreferencesViewControllerInterface
     let preferencesService: PreferencesServiceInterface
-    let preferencesDataSource: PreferencesDataSourceInterface
     var preferences: Preferences
 
     weak var delegate: PreferencesCoordinatorDelegate?
 
-    init(windowController: NSWindowControllerInterface, preferencesService: PreferencesServiceInterface, preferencesDataSource: PreferencesDataSourceInterface) {
+    init(windowController: NSWindowControllerInterface, preferencesService: PreferencesServiceInterface) {
         self.windowController = windowController
         self.preferencesService = preferencesService
-        self.preferencesDataSource = preferencesDataSource
 
         preferences = preferencesService.load() ?? Preferences()
 
@@ -56,7 +53,7 @@ class PreferencesCoordinator: PreferencesCoordinatorInterface {
     }
 
     private func load(_ preferences: Preferences) {
-        preferencesViewController.viewModel = preferencesDataSource.viewModel(for: preferences)
+        preferencesViewController.viewModel = PreferencesViewModel(preferences: preferences)
     }
 
     private func refresh(_ preferences: Preferences) {
