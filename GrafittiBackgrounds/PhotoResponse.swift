@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class PhotoResponse: Response {
+final class PhotoResponse: Response {
     enum ResponseError: Error {
         case badHTML
         case missingImageURL

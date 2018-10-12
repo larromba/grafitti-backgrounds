@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class NetworkOperation: BaseOperation {
+final class NetworkOperation: BaseOperation {
     var task: URLSessionTask?
 
     override var isConcurrent: Bool {

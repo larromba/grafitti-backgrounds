@@ -8,12 +8,13 @@
 
 import Cocoa
 
-protocol MenuInterface {
+// sourcery: name = Menu
+protocol Menuable: Mockable {
 	var viewModel: MenuViewModel { get }
-    func item(at index: Int) -> MenuItemInterface?
+    func item(at index: Int) -> MenuItemable?
 }
 
-class Menu: NSMenu, MenuInterface {
+class Menu: NSMenu, Menuable {
 	var viewModel: MenuViewModel {
 		didSet {
 			update(viewModel: viewModel)
@@ -30,11 +31,11 @@ class Menu: NSMenu, MenuInterface {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func item(at index: Int) -> MenuItemInterface? {
+    func item(at index: Int) -> MenuItemable? {
         guard index >= items.startIndex, index < items.endIndex else {
             return nil
         }
-        return items[index] as? MenuItemInterface
+        return items[index] as? MenuItemable
     }
 
 	// MARK: - private

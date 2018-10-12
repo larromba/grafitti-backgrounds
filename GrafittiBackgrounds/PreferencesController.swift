@@ -1,5 +1,5 @@
 //
-//  PreferencesCoordinator.swift
+//  PreferencesController.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 03/12/2017.
@@ -8,35 +8,37 @@
 
 import Cocoa
 
-protocol PreferencesCoordinatorDelegate: class {
-    func preferencesCoordinator(_ coordinator: PreferencesCoordinator, didUpdatePreferences preferences: Preferences)
+protocol PreferencesControllerDelegate: class {
+    func preferencesController(_ coordinator: PreferencesController, didUpdatePreferences preferences: Preferences)
 }
 
-protocol PreferencesCoordinatorInterface {
-    var windowController: NSWindowControllerInterface { get }
-    var preferencesViewController: PreferencesViewControllerInterface { get }
-    var preferencesService: PreferencesServiceInterface { get }
+// sourcery: name = PreferencesController
+protocol PreferencesControllable: Mockable {
+    var windowController: WindowControlling { get }
+    var preferencesViewController: PreferencesViewControllable { get }
+    var preferencesService: PreferencesServicing { get }
+	// sourcery: value = Preferences()
     var preferences: Preferences { get }
-    var delegate: PreferencesCoordinatorDelegate? { get set }
+    var delegate: PreferencesControllerDelegate? { get set }
 
     func open()
 }
 
-class PreferencesCoordinator: PreferencesCoordinatorInterface {
-    let windowController: NSWindowControllerInterface
-    var preferencesViewController: PreferencesViewControllerInterface
-    let preferencesService: PreferencesServiceInterface
-    var preferences: Preferences
+final class PreferencesController: PreferencesControllable {
+    let windowController: WindowControlling
+    private(set) var preferencesViewController: PreferencesViewControllable
+    let preferencesService: PreferencesServicing
+    private(set) var preferences: Preferences
 
-    weak var delegate: PreferencesCoordinatorDelegate?
+    weak var delegate: PreferencesControllerDelegate?
 
-    init(windowController: NSWindowControllerInterface, preferencesService: PreferencesServiceInterface) {
+    init(windowController: WindowControlling, preferencesService: PreferencesServicing) {
         self.windowController = windowController
         self.preferencesService = preferencesService
 
         preferences = preferencesService.load() ?? Preferences()
 
-        preferencesViewController = windowController.contentViewController as! PreferencesViewControllerInterface
+        preferencesViewController = windowController.contentViewController as! PreferencesViewControllable
         preferencesViewController.delegate = self
     }
 
@@ -49,7 +51,7 @@ class PreferencesCoordinator: PreferencesCoordinatorInterface {
 
     private func save(_ preferences: Preferences) {
         preferencesService.save(preferences)
-        delegate?.preferencesCoordinator(self, didUpdatePreferences: preferences)
+        delegate?.preferencesController(self, didUpdatePreferences: preferences)
     }
 
     private func load(_ preferences: Preferences) {
@@ -64,7 +66,7 @@ class PreferencesCoordinator: PreferencesCoordinatorInterface {
 
 // MARK: - PreferencesViewControllerDelegate
 
-extension PreferencesCoordinator: PreferencesViewControllerDelegate {
+extension PreferencesController: PreferencesViewControllerDelegate {
     func preferencesViewController(_ viewController: PreferencesViewController, didUpdateNumberOfPhotos numberOfPhotos: Int) {
         preferences.numberOfPhotos = numberOfPhotos
         refresh(preferences)

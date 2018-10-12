@@ -1,0 +1,6 @@
+sources:
+  - ./GrafittiBackgrounds
+templates:
+  - ./Templates
+output:
+  ./Output

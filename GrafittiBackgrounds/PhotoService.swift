@@ -8,25 +8,26 @@
 
 import Cocoa
 
-protocol PhotoServiceInterface {
-    var networkManager: NetworkManagerInterface { get }
-    var fileManager: FileManagerInterface { get }
+// sourcery: name = PhotoService
+protocol PhotoServicing: Mockable {
+    var networkManager: NetworkManaging { get }
+    var fileManager: FileManaging { get }
     var saveURL: URL { get }
 
     func downloadPhoto(_ resource: PhotoResource, success: @escaping ((PhotoResource) -> ()), failure: ((Error) -> ())?)
     func cancelAll()
 }
 
-class PhotoService: PhotoServiceInterface {
+final class PhotoService: PhotoServicing {
     enum PhotoError: Error {
         case badSaveLocation
     }
 
-    let networkManager: NetworkManagerInterface
-    let fileManager: FileManagerInterface
+    let networkManager: NetworkManaging
+    let fileManager: FileManaging
     let saveURL: URL
 
-	init(networkManager: NetworkManagerInterface, fileManager: FileManagerInterface, saveURL: URL) {
+	init(networkManager: NetworkManaging, fileManager: FileManaging, saveURL: URL) {
         self.networkManager = networkManager
         self.fileManager = fileManager
 		self.saveURL = saveURL

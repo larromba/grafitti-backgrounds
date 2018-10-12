@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BaseOperation: Operation {
+class BaseOperation: Operation { // please subclass
     private enum State {
         case ready, executing, finished
     }

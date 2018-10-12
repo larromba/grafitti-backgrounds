@@ -9,7 +9,7 @@
 import Cocoa
 @testable import Grafitti_Backgrounds
 
-extension MenuInterface {
+extension Menuable {
 	func click(at index: Int) -> Bool {
 		guard let menuItem = item(at: index) as? MenuItem else {
 			return false

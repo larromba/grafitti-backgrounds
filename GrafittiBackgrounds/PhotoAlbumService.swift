@@ -8,18 +8,19 @@
 
 import Cocoa
 
-protocol PhotoAlbumServiceInterface {
-    var networkManager: NetworkManagerInterface { get }
+// sourcery: name = PhotoAlbumService
+protocol PhotoAlbumServicing: Mockable {
+    var networkManager: NetworkManaging { get }
 
     func getPhotoAlbums(success: @escaping (([PhotoAlbum]) -> ()), failure: ((Error) -> ())?)
     func getPhotoResources(_ album: PhotoAlbum, success: @escaping (([PhotoResource]) -> ()), failure: ((Error) -> ())?)
     func cancelAll()
 }
 
-class PhotoAlbumService: PhotoAlbumServiceInterface {
-    let networkManager: NetworkManagerInterface
+final class PhotoAlbumService: PhotoAlbumServicing {
+    let networkManager: NetworkManaging
 
-    init(networkManager: NetworkManagerInterface) {
+    init(networkManager: NetworkManaging) {
         self.networkManager = networkManager
     }
 

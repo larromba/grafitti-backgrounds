@@ -8,19 +8,19 @@
 
 import Cocoa
 
-protocol LoadingStatusItemInterface {
+// sourcery: name = LoadingStatusItem
+protocol LoadingStatusItemable: Mockable {
     var statusBar: NSStatusBar { get }
     var item: NSStatusItem { get }
-    var menu: MenuInterface? { get set }
     var isLoading: Bool { get }
     var loadingPercentage: Double { get }
 	var viewModel: LoadingStatusItemViewModel { get set }
 }
 
-extension LoadingStatusItemInterface {
-    var menu: MenuInterface? {
+extension LoadingStatusItemable {
+    var menu: Menuable? {
         get {
-            return item.menu as? MenuInterface
+            return item.menu as? Menuable
         }
         set {
             item.menu = menu as? NSMenu
@@ -28,7 +28,7 @@ extension LoadingStatusItemInterface {
     }
 }
 
-class LoadingStatusItem: LoadingStatusItemInterface {
+final class LoadingStatusItem: LoadingStatusItemable {
     let statusBar: NSStatusBar
     let item: NSStatusItem
 	var viewModel: LoadingStatusItemViewModel {

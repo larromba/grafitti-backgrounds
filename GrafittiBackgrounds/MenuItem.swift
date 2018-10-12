@@ -8,16 +8,17 @@
 
 import Cocoa
 
-protocol MenuItemInterface {
+// sourcery: name = MenuItem
+protocol MenuItemable: Mockable {
 	var delegate: MenuItemDelegate? { get }
 	var viewModel: MenuItemViewModel { get }
 }
 
 protocol MenuItemDelegate: class {
-	func menuItemPressed(_ menuItem: MenuItemInterface)
+	func menuItemPressed(_ menuItem: MenuItemable)
 }
 
-class MenuItem: NSMenuItem, MenuItemInterface {
+final class MenuItem: NSMenuItem, MenuItemable {
 	weak var delegate: MenuItemDelegate?
 	var viewModel: MenuItemViewModel {
 		didSet {

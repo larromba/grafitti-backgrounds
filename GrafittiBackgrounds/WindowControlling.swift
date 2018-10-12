@@ -1,5 +1,5 @@
 //
-//  NSWindowControllerInterface.swift
+//  WindowControlling.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 14/12/2017.
@@ -8,10 +8,10 @@
 
 import Cocoa
 
-extension NSWindowController: NSWindowControllerInterface {}
-
-protocol NSWindowControllerInterface {
+// sourcery: name = WindowController
+protocol WindowControlling: Mockable {
     var contentViewController: NSViewController? { get set }
 
     func showWindow(_ sender: Any?)
 }
+extension NSWindowController: WindowControlling {}

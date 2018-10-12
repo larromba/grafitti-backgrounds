@@ -1,5 +1,5 @@
 //
-//  PhotoCoordinator.swift
+//  PhotoController.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 05/12/2017.
@@ -8,32 +8,33 @@
 
 import Foundation
 
-protocol PhotoCoordinatorDelegate: class {
-    func photoCoordinator(_ photoCoordinator: PhotoCoordinator, updatedDownloadPercentage percentage: Double)
-    func photoCoordinator(_ photoCoordinator: PhotoCoordinator, didChangeDownloadState inProgress: Bool)
+protocol PhotoControllerDelegate: class {
+    func photoController(_ photoController: PhotoController, updatedDownloadPercentage percentage: Double)
+    func photoController(_ photoController: PhotoController, didChangeDownloadState inProgress: Bool)
 }
 
-protocol PhotoCoordinatorInterface {
-    var photoAlbumService: PhotoAlbumServiceInterface { get }
-    var photoService: PhotoServiceInterface { get }
-    var photoStorageService: PhotoStorageServiceInterface { get }
+// sourcery: name = PhotoController
+protocol PhotoControllable: Mockable {
+    var photoAlbumService: PhotoAlbumServicing { get }
+    var photoService: PhotoServicing { get }
+    var photoStorageService: PhotoStorageServicing { get }
     var isDownloadInProgress: Bool { get set }
     var preferences: Preferences { get set }
     var folderURL: URL { get }
-    var delegate: PhotoCoordinatorDelegate? { get set }
+    var delegate: PhotoControllerDelegate? { get set }
 
     func reloadPhotos()
     func cancelReload()
     func cleanFolder()
 }
 
-class PhotoCoordinator: PhotoCoordinatorInterface {
-    let photoAlbumService: PhotoAlbumServiceInterface
-    let photoService: PhotoServiceInterface
-    let photoStorageService: PhotoStorageServiceInterface
+final class PhotoController: PhotoControllable {
+    let photoAlbumService: PhotoAlbumServicing
+    let photoService: PhotoServicing
+    let photoStorageService: PhotoStorageServicing
     var isDownloadInProgress = false {
         didSet {
-            delegate?.photoCoordinator(self, didChangeDownloadState: isDownloadInProgress)
+            delegate?.photoController(self, didChangeDownloadState: isDownloadInProgress)
         }
     }
 	var preferences: Preferences {
@@ -44,11 +45,11 @@ class PhotoCoordinator: PhotoCoordinatorInterface {
     var folderURL: URL {
         return photoService.saveURL
     }
-    weak var delegate: PhotoCoordinatorDelegate?
+    weak var delegate: PhotoControllerDelegate?
 
     private var reloadTimer: Timer?
 
-	init(photoAlbumService: PhotoAlbumServiceInterface, photoService: PhotoServiceInterface, photoStorageService: PhotoStorageServiceInterface, preferences: Preferences = Preferences()) {
+	init(photoAlbumService: PhotoAlbumServicing, photoService: PhotoServicing, photoStorageService: PhotoStorageServicing, preferences: Preferences = Preferences()) {
         self.photoAlbumService = photoAlbumService
         self.photoService = photoService
         self.photoStorageService = photoStorageService
@@ -119,13 +120,13 @@ class PhotoCoordinator: PhotoCoordinatorInterface {
                         var resources = self.photoStorageService.load() ?? []
                         resources.append(resource)
                         self.photoStorageService.save(resources)
-                        self.delegate?.photoCoordinator(self, updatedDownloadPercentage: Double(i) / Double(numberOfPhotos))
+                        self.delegate?.photoController(self, updatedDownloadPercentage: Double(i) / Double(numberOfPhotos))
                     }
                     group.leave()
                 }, failure: { [unowned self] error in
                     log(error.localizedDescription)
                     DispatchQueue.main.async {
-                        self.delegate?.photoCoordinator(self, updatedDownloadPercentage: Double(i) / Double(numberOfPhotos))
+                        self.delegate?.photoController(self, updatedDownloadPercentage: Double(i) / Double(numberOfPhotos))
                     }
                     group.leave()
                 })

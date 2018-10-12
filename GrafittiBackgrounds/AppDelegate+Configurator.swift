@@ -9,35 +9,41 @@
 import Cocoa
 
 extension AppDelegate {
-    static func configure(for app: NSApplication) -> AppDelegate {
+    static func configure(for app: NSApplication) -> AppDelegatable {
         let preferencesWindow = NSStoryboard.preferences.instantiateInitialController() as! NSWindowController
         let dataManager = DataManger()
         let preferencesService = PreferencesService(dataManager: dataManager)
-        let preferencesCoordinator = PreferencesCoordinator(windowController: preferencesWindow, preferencesService: preferencesService)
+        let preferencesController = PreferencesController(windowController: preferencesWindow, preferencesService: preferencesService)
 
         let workspace = NSWorkspace.shared
-        let workspaceCoordinator = WorkspaceCoordinator(workspace: workspace)
+        let workspaceController = WorkspaceController(workspace: workspace)
 
 		let viewModel = LoadingStatusItemViewModel(isLoading: false, loadingPercentage: 0, style: .sprayCan)
 		let statusItem = LoadingStatusItem(viewModel: viewModel, statusBar: .system)
-        let menuCoordinator = MenuCoordinator(statusItem: statusItem)
+        let menuController = MenuController(statusItem: statusItem)
 
         let networkManager = NetworkManager()
         let fileManager = FileManager.default
-        let photoAlbumService = PhotoAlbumService(networkManager: networkManager)
-
-		// TODO: url chooser?
-		guard let path = NSSearchPathForDirectoriesInDomains(.picturesDirectory, .userDomainMask, true).first else {
-			fatalError("shouldn't be nil")
-		}
-		let saveURL = URL(fileURLWithPath: path).appendingPathComponent("GrafittiBackgrounds")
-
-		let photoService = PhotoService(networkManager: networkManager, fileManager: fileManager, saveURL: saveURL)
+		let photoAlbumService = PhotoAlbumService(networkManager: networkManager)
+		let photoService = PhotoService(networkManager: networkManager, fileManager: fileManager, saveURL: .defaultSaveLocation)
         let photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
-        let photoCoordinator = PhotoCoordinator(photoAlbumService: photoAlbumService, photoService: photoService, photoStorageService: photoStorageService)
+        let photoController = PhotoController(photoAlbumService: photoAlbumService, photoService: photoService, photoStorageService: photoStorageService)
 
-        let appCoordinator = AppCoordinator(preferencesCoordinator: preferencesCoordinator, workspaceCoordinator: workspaceCoordinator, menuCoordinator: menuCoordinator, photoCoordinator: photoCoordinator, app: app)
-        let appDelegate = AppDelegate(appCoordinator: appCoordinator)
+        let appController = AppController(preferencesController: preferencesController, workspaceController: workspaceController, menuController: menuController, photoController: photoController, app: app)
+        let appDelegate = AppDelegate(appController: appController)
         return appDelegate
     }
+}
+
+// MARK: - URL Helper
+
+private extension URL {
+	static var defaultSaveLocation: URL {
+		guard let path = NSSearchPathForDirectoriesInDomains(.picturesDirectory, .userDomainMask, true).first else {
+			assertionFailure("shouldn't be nil")
+			return URL(string: "file://")!
+		}
+		let url = URL(fileURLWithPath: path).appendingPathComponent("GrafittiBackgrounds")
+		return url
+	}
 }

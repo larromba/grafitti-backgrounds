@@ -1,5 +1,5 @@
 //
-//  NSWorkspaceInterface.swift
+//  Workspacing.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 10/12/2017.
@@ -8,8 +8,9 @@
 
 import Cocoa
 
-extension NSWorkspace: NSWorkspaceInterface {}
-
-protocol NSWorkspaceInterface {
+// sourcery: name = Workspace
+protocol Workspacing: Mockable {
+	// sourcery: returnValue = true
     func open(_ url: URL) -> Bool
 }
+extension NSWorkspace: Workspacing {}

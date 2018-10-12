@@ -14,24 +14,49 @@ protocol PreferencesViewControllerDelegate: class {
     func preferencesViewController(_ viewController: PreferencesViewController, didUpdateNumberOfPhotos numberOfPhotos: Int)
 }
 
-protocol PreferencesViewControllerInterface {
-    var autoRefreshCheckBoxTextLabel: NSTextField! { get }
-    var autoRefreshCheckBox: NSButton! { get }
-    var autoRefreshIntervalTextLabel: NSTextField! { get }
-    var autoRefreshIntervalTextField: NSTextField! { get }
-    var numberOfPhotosTextLabel: NSTextField! { get }
-    var numberOfPhotosTextField: NSTextField! { get }
+// sourcery: name = PreferencesViewController, inherits = NSViewController
+protocol PreferencesViewControllable: Mockable {
+	// sourcery: value = NSTextField()
+    var autoRefreshCheckBoxTextLabel: ReadOnlyTextField! { get }
+	// sourcery: value = NSButton()
+    var autoRefreshCheckBox: ReadOnlyButton! { get }
+	// sourcery: value = NSTextField()
+    var autoRefreshIntervalTextLabel: ReadOnlyTextField! { get }
+	// sourcery: value = NSTextField()
+    var autoRefreshIntervalTextField: ReadOnlyTextField! { get }
+	// sourcery: value = NSTextField()
+    var numberOfPhotosTextLabel: ReadOnlyTextField! { get }
+	// sourcery: value = NSTextField()
+    var numberOfPhotosTextField: ReadOnlyTextField! { get }
     var delegate: PreferencesViewControllerDelegate? { get set }
     var viewModel: PreferencesViewModel? { get set }
 }
 
-class PreferencesViewController: NSViewController, PreferencesViewControllerInterface {
-    weak var autoRefreshCheckBoxTextLabel: NSTextField!
-    weak var autoRefreshCheckBox: NSButton!
-    weak var autoRefreshIntervalTextLabel: NSTextField!
-    weak var autoRefreshIntervalTextField: NSTextField!
-    weak var numberOfPhotosTextLabel: NSTextField!
-    weak var numberOfPhotosTextField: NSTextField!
+final class PreferencesViewController: NSViewController, PreferencesViewControllable {
+	@IBOutlet private weak var autoRefreshCheckBoxTextLabelInput: NSTextField!
+	var autoRefreshCheckBoxTextLabel: ReadOnlyTextField! {
+		return autoRefreshCheckBoxTextLabelInput
+	}
+	@IBOutlet private weak var autoRefreshCheckBoxInput: NSButton!
+	var autoRefreshCheckBox: ReadOnlyButton! {
+		return autoRefreshCheckBoxInput
+	}
+	@IBOutlet private weak var autoRefreshIntervalTextLabelInput: NSTextField!
+	var autoRefreshIntervalTextLabel: ReadOnlyTextField! {
+		return autoRefreshIntervalTextLabelInput
+	}
+	@IBOutlet private weak var autoRefreshIntervalTextFieldInput: NSTextField!
+	var autoRefreshIntervalTextField: ReadOnlyTextField! {
+		return autoRefreshIntervalTextFieldInput
+	}
+	@IBOutlet private weak var numberOfPhotosTextLabelInput: NSTextField!
+	var numberOfPhotosTextLabel: ReadOnlyTextField! {
+		return numberOfPhotosTextLabelInput
+	}
+	@IBOutlet private weak var numberOfPhotosTextFieldInput: NSTextField!
+	var numberOfPhotosTextField: ReadOnlyTextField! {
+		return numberOfPhotosTextFieldInput
+	}
 
     weak var delegate: PreferencesViewControllerDelegate?
     var viewModel: PreferencesViewModel? {
@@ -54,15 +79,15 @@ class PreferencesViewController: NSViewController, PreferencesViewControllerInte
     }
 
     private func setIsAutoRefreshEnabled(_ isEnabled: Bool) {
-        autoRefreshCheckBox.state = isEnabled ? .on : .off
+        autoRefreshCheckBoxInput.state = isEnabled ? .on : .off
     }
 
     private func setAutoRefreshTimeInterval(_ timeInterval: TimeInterval) {
-        autoRefreshIntervalTextField.stringValue = String(format: "%.0f", timeInterval)
+        autoRefreshIntervalTextFieldInput.stringValue = String(format: "%.0f", timeInterval)
     }
 
     private func setNumberOfPhotos(_ numberOfPhotos: Int) {
-        numberOfPhotosTextField.stringValue = "\(numberOfPhotos)"
+        numberOfPhotosTextFieldInput.stringValue = "\(numberOfPhotos)"
     }
 }
 
@@ -74,10 +99,10 @@ extension PreferencesViewController: NSTextFieldDelegate {
             return
         }
         switch textField {
-        case numberOfPhotosTextField:
+        case numberOfPhotosTextFieldInput:
             guard let value = Int(textField.stringValue) else { return }
             delegate?.preferencesViewController(self, didUpdateNumberOfPhotos: value)
-        case autoRefreshIntervalTextField:
+        case autoRefreshIntervalTextFieldInput:
             guard let value = TimeInterval(textField.stringValue) else { return }
             delegate?.preferencesViewController(self, didUpdateTimeInterval: value)
         default:

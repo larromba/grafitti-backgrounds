@@ -8,15 +8,16 @@
 
 import Cocoa
 
-protocol AppDelegateInterface: NSApplicationDelegate {
-    var appCoordinator: AppCoordinatorInterface { get }
+// sourcery: name = AppDelegate
+protocol AppDelegatable: NSApplicationDelegate, Mockable {
+    var appController: AppControllable { get }
 }
 
-class AppDelegate: NSObject, AppDelegateInterface {
-    let appCoordinator: AppCoordinatorInterface
+final class AppDelegate: NSObject, AppDelegatable {
+    let appController: AppControllable
 
-    init(appCoordinator: AppCoordinatorInterface) {
-        self.appCoordinator = appCoordinator
+    init(appController: AppControllable) {
+        self.appController = appController
         super.init()
     }
 
@@ -24,6 +25,6 @@ class AppDelegate: NSObject, AppDelegateInterface {
 		guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
 			return
 		}
-        appCoordinator.start()
+        appController.start()
     }
 }

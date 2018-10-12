@@ -1,5 +1,5 @@
 //
-//  MenuCoordinator.swift
+//  MenuController.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 05/12/2017.
@@ -8,24 +8,25 @@
 
 import Cocoa
 
-protocol MenuCoordinatorDelegate: class {
-    func menuCoordinator(_ coordinator: MenuCoordinator, selected action: AppMenu.Action)
+protocol MenuControllerDelegate: class {
+    func menuController(_ coordinator: MenuController, selected action: AppMenu.Action)
 }
 
-protocol MenuCoordinatorInterface {
-    var statusItem: LoadingStatusItemInterface { get }
-    var delegate: MenuCoordinatorDelegate? { get set }
+// sourcery: name = MenuController
+protocol MenuControllable: Mockable {
+    var statusItem: LoadingStatusItemable { get }
+    var delegate: MenuControllerDelegate? { get set }
 
     func setLoadingPercentage(_ percentage: Double)
     func setIsLoading(_ isLoading: Bool)
     func setRefreshAction(_ action: AppMenu.Action.Refresh)
 }
 
-class MenuCoordinator: MenuCoordinatorInterface {
-    var statusItem: LoadingStatusItemInterface
-    weak var delegate: MenuCoordinatorDelegate?
+final class MenuController: MenuControllable {
+    private(set) var statusItem: LoadingStatusItemable
+    weak var delegate: MenuControllerDelegate?
 
-    init(statusItem: LoadingStatusItemInterface) {
+    init(statusItem: LoadingStatusItemable) {
         self.statusItem = statusItem
 		statusItem.item.menu = Menu(
 			viewModel: MenuViewModel(title: "", autoenablesItems: false),
@@ -66,9 +67,9 @@ class MenuCoordinator: MenuCoordinatorInterface {
 
 // MARK: - MenuItemDelegate
 
-extension MenuCoordinator: MenuItemDelegate {
-	func menuItemPressed(_ menuItem: MenuItemInterface) {
+extension MenuController: MenuItemDelegate {
+	func menuItemPressed(_ menuItem: MenuItemable) {
 		guard let action = menuItem.viewModel.menuAction as? AppMenu.Action else { return }
-		self.delegate?.menuCoordinator(self, selected: action)
+		delegate?.menuController(self, selected: action)
 	}
 }

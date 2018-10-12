@@ -8,13 +8,14 @@
 
 import Foundation
 
-protocol NetworkManagerInterface {
+// sourcery: name = NetworkManager
+protocol NetworkManaging: Mockable {
     func send(request: Request, success: @escaping ((Response) -> ()), failure: @escaping ((Error) -> ()))
     func download(_ url: URL, success: @escaping ((URL) -> ()), failure: @escaping ((Error) -> ()))
     func cancelAll()
 }
 
-class NetworkManager: NetworkManagerInterface {
+final class NetworkManager: NetworkManaging {
     enum NetworkError: Error {
         case noData
     }

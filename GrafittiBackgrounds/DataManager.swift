@@ -8,12 +8,13 @@
 
 import Foundation
 
-protocol DataManagerInterface {
+// sourcery: name = DataManger
+protocol DataManaging: Mockable {
     func save(_ data: Data?, key: String)
     func load(key: String) -> Data?
 }
 
-class DataManger: DataManagerInterface {
+final class DataManger: DataManaging {
     private let db = UserDefaults.standard
 
     func save(_ data: Data?, key: String) {

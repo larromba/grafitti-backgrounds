@@ -8,14 +8,15 @@
 
 import Foundation
 
-protocol PreferencesServiceInterface {
-    var dataManager: DataManagerInterface { get }
+// sourcery: name = PreferencesService
+protocol PreferencesServicing: Mockable {
+    var dataManager: DataManaging { get }
 
     func save(_ preferences: Preferences)
     func load() -> Preferences?
 }
 
-class PreferencesService: PreferencesServiceInterface {
+final class PreferencesService: PreferencesServicing {
     private enum Key: String {
         case preferences
     }
@@ -23,9 +24,9 @@ class PreferencesService: PreferencesServiceInterface {
     private let encoder = PropertyListEncoder()
     private let decoder = PropertyListDecoder()
 
-    let dataManager: DataManagerInterface
+    let dataManager: DataManaging
 
-    init(dataManager: DataManagerInterface) {
+    init(dataManager: DataManaging) {
         self.dataManager = dataManager
     }
 

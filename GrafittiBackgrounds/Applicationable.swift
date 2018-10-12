@@ -1,5 +1,5 @@
 //
-//  NSApplicationInterface.swift
+//  Applicationable.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 12/12/2017.
@@ -8,10 +8,10 @@
 
 import Cocoa
 
-extension NSApplication: NSApplicationInterface {}
-
-protocol NSApplicationInterface {
+// sourcery: name = Application
+protocol Applicationable: Mockable {
     func orderFrontStandardAboutPanel(_ sender: Any?)
     func orderFrontStandardAboutPanel(options optionsDictionary: [NSApplication.AboutPanelOptionKey : Any])
     func terminate(_ sender: Any?)
 }
+extension NSApplication: Applicationable {}

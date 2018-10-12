@@ -11,3 +11,4 @@ TODO:
 - unit tests
 - contact menu
 - help menu
+- save location chooser?

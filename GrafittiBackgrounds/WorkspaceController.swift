@@ -1,5 +1,5 @@
 //
-//  WorkspaceCoordinator.swift
+//  WorkspaceController.swift
 //  GrafittiBackgrounds
 //
 //  Created by Lee Arromba on 05/12/2017.
@@ -8,17 +8,18 @@
 
 import Cocoa
 
-protocol WorkspaceCoordinatorInterface {
-    var workspace: NSWorkspaceInterface { get }
+// sourcery: name = WorkspaceController
+protocol WorkspaceControllable: Mockable {
+    var workspace: Workspacing { get }
 
     func open(_ preference: SystemPreference)
     func open(_ url: URL)
 }
 
-class WorkspaceCoordinator: WorkspaceCoordinatorInterface {
-    let workspace: NSWorkspaceInterface
+final class WorkspaceController: WorkspaceControllable {
+    let workspace: Workspacing
 
-    init(workspace: NSWorkspaceInterface) {
+    init(workspace: Workspacing) {
         self.workspace = workspace
     }
 
