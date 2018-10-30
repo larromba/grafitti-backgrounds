@@ -27,9 +27,12 @@
 		7F247E9D1FD4763F0077D878 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E9C1FD4763F0077D878 /* PreferencesViewController.swift */; };
 		7F247E9F1FD476910077D878 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F247EA11FD476910077D878 /* Preferences.storyboard */; };
 		7F247EA41FD476A20077D878 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7F247EA61FD476A20077D878 /* Localized.strings */; };
+		7F31E3382187ADB200571BC1 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31E3372187ADB200571BC1 /* ArrayExtensions.swift */; };
+		7F31E33A2187B0EA00571BC1 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31E3392187B0EA00571BC1 /* AlertController.swift */; };
 		7F334BEA216D08E30094780E /* Mockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F334BE9216D08E30094780E /* Mockable.swift */; };
-		7F334BEE216D6B5A0094780E /* ReadOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F334BED216D6B5A0094780E /* ReadOnly.swift */; };
-		7F365DF021007FE20074F0BF /* MenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F365DEF21007FE20074F0BF /* MenuItemViewModel.swift */; };
+		7F365DF021007FE20074F0BF /* MenuItemViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F365DEF21007FE20074F0BF /* MenuItemViewState.swift */; };
+		7F4291F5217B27AA003E64C2 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F4291F4217B27AA003E64C2 /* Colors.xcassets */; };
+		7F4291F7217B288D003E64C2 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4291F6217B288D003E64C2 /* ColorExtensions.swift */; };
 		7F509A9D1FDB399E00152B33 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F509A9C1FDB399E00152B33 /* AppMenu.swift */; };
 		7F509A9F1FDD6C0800152B33 /* Workspacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F509A9E1FDD6C0800152B33 /* Workspacing.swift */; };
 		7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAA11FD33DF100502804 /* AppDelegate.swift */; };
@@ -53,15 +56,19 @@
 		7F65672D1FE04B1200A6CB7F /* Applicationable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65672C1FE04B1200A6CB7F /* Applicationable.swift */; };
 		7F6567481FE2A9F200A6CB7F /* WindowControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6567471FE2A9F200A6CB7F /* WindowControlling.swift */; };
 		7F6738B31FE2CE3A004DDAE1 /* FileManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B21FE2CE3A004DDAE1 /* FileManaging.swift */; };
-		7F6738B51FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */; };
+		7F6738B51FE2D7E5004DDAE1 /* AppDelegateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B41FE2D7E5004DDAE1 /* AppDelegateFactory.swift */; };
 		7F6738C31FE2E4CC004DDAE1 /* FeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738C21FE2E4CC004DDAE1 /* FeatureTests.swift */; };
 		7F876CB4216E9E4900483E8F /* template.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F876CB3216E9E4900483E8F /* template.generated.swift */; };
-		7F925E6720460B250071F249 /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewModel.swift */; };
+		7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewState.swift */; };
+		7F98DB8D2180EBCA00656466 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F98DB8C2180EBCA00656466 /* Result.swift */; };
+		7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */; };
+		7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1E2177BFC20088E621 /* Keyable.swift */; };
+		7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */; };
 		7FCF0EED1FD6C60300138D77 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */; };
 		7FCF0EF11FD6CAE300138D77 /* WorkspaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */; };
 		7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */; };
-		7FED2CA52116145600AAE2A5 /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA42116145600AAE2A5 /* MenuViewModel.swift */; };
-		7FED2CA7211623E600AAE2A5 /* LoadingStatusItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewModel.swift */; };
+		7FED2CA52116145600AAE2A5 /* MenuViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA42116145600AAE2A5 /* MenuViewState.swift */; };
+		7FED2CA7211623E600AAE2A5 /* LoadingStatusItemViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */; };
 		7FED2CAF2118830200AAE2A5 /* MenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CAE2118830200AAE2A5 /* MenuAction.swift */; };
 /* End PBXBuildFile section */
 
@@ -99,9 +106,12 @@
 		7F247EA81FD476BF0077D878 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localized.strings; sourceTree = "<group>"; };
 		7F247EB31FD485EA0077D878 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Preferences.strings; sourceTree = "<group>"; };
 		7F247EB51FD496860077D878 /* change-log.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "change-log.txt"; sourceTree = "<group>"; };
+		7F31E3372187ADB200571BC1 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
+		7F31E3392187B0EA00571BC1 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		7F334BE9216D08E30094780E /* Mockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mockable.swift; sourceTree = "<group>"; };
-		7F334BED216D6B5A0094780E /* ReadOnly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadOnly.swift; sourceTree = "<group>"; };
-		7F365DEF21007FE20074F0BF /* MenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemViewModel.swift; sourceTree = "<group>"; };
+		7F365DEF21007FE20074F0BF /* MenuItemViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemViewState.swift; sourceTree = "<group>"; };
+		7F4291F4217B27AA003E64C2 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		7F4291F6217B288D003E64C2 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		7F509A9C1FDB399E00152B33 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		7F509A9E1FDD6C0800152B33 /* Workspacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspacing.swift; sourceTree = "<group>"; };
 		7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Grafitti Backgrounds.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,17 +138,21 @@
 		7F65672C1FE04B1200A6CB7F /* Applicationable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Applicationable.swift; sourceTree = "<group>"; };
 		7F6567471FE2A9F200A6CB7F /* WindowControlling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControlling.swift; sourceTree = "<group>"; };
 		7F6738B21FE2CE3A004DDAE1 /* FileManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManaging.swift; sourceTree = "<group>"; };
-		7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Configurator.swift"; sourceTree = "<group>"; };
+		7F6738B41FE2D7E5004DDAE1 /* AppDelegateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateFactory.swift; sourceTree = "<group>"; };
 		7F6738C01FE2E4CB004DDAE1 /* GrafittiBackgroundsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GrafittiBackgroundsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F6738C21FE2E4CC004DDAE1 /* FeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTests.swift; sourceTree = "<group>"; };
 		7F6738C41FE2E4CC004DDAE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7F876CB3216E9E4900483E8F /* template.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = template.generated.swift; path = Output/template.generated.swift; sourceTree = SOURCE_ROOT; };
-		7F925E6620460B250071F249 /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		7F925E6620460B250071F249 /* PreferencesViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewState.swift; sourceTree = "<group>"; };
+		7F98DB8C2180EBCA00656466 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
+		7FCA8F1E2177BFC20088E621 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
+		7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextFieldExtensions.swift; sourceTree = "<group>"; };
 		7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceController.swift; sourceTree = "<group>"; };
 		7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPreference.swift; sourceTree = "<group>"; };
-		7FED2CA42116145600AAE2A5 /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
-		7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusItemViewModel.swift; sourceTree = "<group>"; };
+		7FED2CA42116145600AAE2A5 /* MenuViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewState.swift; sourceTree = "<group>"; };
+		7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusItemViewState.swift; sourceTree = "<group>"; };
 		7FED2CAE2118830200AAE2A5 /* MenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +182,7 @@
 				7F247E8C1FD469440077D878 /* PreferencesController.swift */,
 				7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */,
 				7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */,
+				7F31E3392187B0EA00571BC1 /* AlertController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -195,11 +210,11 @@
 			isa = PBXGroup;
 			children = (
 				7F247E7E1FD42E240077D878 /* MenuItem.swift */,
-				7F365DEF21007FE20074F0BF /* MenuItemViewModel.swift */,
+				7F365DEF21007FE20074F0BF /* MenuItemViewState.swift */,
 				7F247E861FD430570077D878 /* Menu.swift */,
-				7FED2CA42116145600AAE2A5 /* MenuViewModel.swift */,
+				7FED2CA42116145600AAE2A5 /* MenuViewState.swift */,
 				7F247E881FD4366A0077D878 /* LoadingStatusItem.swift */,
-				7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewModel.swift */,
+				7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -223,7 +238,8 @@
 		7F247E9E1FD476490077D878 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7F925E6820460B300071F249 /* Preferences */,
+				7F247E9C1FD4763F0077D878 /* PreferencesViewController.swift */,
+				7F925E6620460B250071F249 /* PreferencesViewState.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -234,6 +250,10 @@
 				7F247E831FD42FBF0077D878 /* StringExtensions.swift */,
 				7F247E8A1FD43F510077D878 /* NSViewExtensions.swift */,
 				7F247E941FD46D140077D878 /* StoryboardExtensions.swift */,
+				7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */,
+				7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */,
+				7F4291F6217B288D003E64C2 /* ColorExtensions.swift */,
+				7F31E3372187ADB200571BC1 /* ArrayExtensions.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -241,12 +261,13 @@
 		7F509AA01FDD6C1100152B33 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				7FCA8F1E2177BFC20088E621 /* Keyable.swift */,
+				7FED2CAE2118830200AAE2A5 /* MenuAction.swift */,
 				7F509A9E1FDD6C0800152B33 /* Workspacing.swift */,
 				7F65672C1FE04B1200A6CB7F /* Applicationable.swift */,
 				7F6567471FE2A9F200A6CB7F /* WindowControlling.swift */,
 				7F6738B21FE2CE3A004DDAE1 /* FileManaging.swift */,
 				7F334BE9216D08E30094780E /* Mockable.swift */,
-				7F334BED216D6B5A0094780E /* ReadOnly.swift */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -275,7 +296,7 @@
 			children = (
 				7F247E901FD46AFF0077D878 /* main.swift */,
 				7F51DAA11FD33DF100502804 /* AppDelegate.swift */,
-				7F6738B41FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift */,
+				7F6738B41FE2D7E5004DDAE1 /* AppDelegateFactory.swift */,
 				7F247E621FD34F040077D878 /* Controller */,
 				7F247E9E1FD476490077D878 /* ViewController */,
 				7F247E7D1FD42D260077D878 /* View */,
@@ -283,10 +304,10 @@
 				7F247E631FD34F0E0077D878 /* Service */,
 				7F51DAC61FD3498500502804 /* Network */,
 				7F247E701FD385950077D878 /* Data */,
-				7F247EB41FD495120077D878 /* Extension */,
 				7F51DACF1FD34A5400502804 /* Utility */,
-				7F51DACB1FD349C200502804 /* Resource */,
+				7F247EB41FD495120077D878 /* Extension */,
 				7F509AA01FDD6C1100152B33 /* Protocol */,
+				7F51DACB1FD349C200502804 /* Resource */,
 			);
 			path = GrafittiBackgrounds;
 			sourceTree = "<group>";
@@ -344,6 +365,7 @@
 				7F51DAA81FD33DF100502804 /* Info.plist */,
 				7F51DAA91FD33DF100502804 /* GrafittiBackgrounds.entitlements */,
 				7F51DAA31FD33DF100502804 /* Assets.xcassets */,
+				7F4291F4217B27AA003E64C2 /* Colors.xcassets */,
 				7F247E9B1FD475350077D878 /* Strings */,
 				7F247E9A1FD4752D0077D878 /* Storyboard */,
 			);
@@ -355,7 +377,7 @@
 			children = (
 				7F247E751FD393A50077D878 /* BaseOperation.swift */,
 				7F51DACD1FD34A4500502804 /* Log.swift */,
-				7FED2CAE2118830200AAE2A5 /* MenuAction.swift */,
+				7F98DB8C2180EBCA00656466 /* Result.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -395,15 +417,6 @@
 			name = Generated;
 			sourceTree = "<group>";
 		};
-		7F925E6820460B300071F249 /* Preferences */ = {
-			isa = PBXGroup;
-			children = (
-				7F247E9C1FD4763F0077D878 /* PreferencesViewController.swift */,
-				7F925E6620460B250071F249 /* PreferencesViewModel.swift */,
-			);
-			name = Preferences;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -412,6 +425,7 @@
 			buildConfigurationList = 7F51DAAC1FD33DF100502804 /* Build configuration list for PBXNativeTarget "GrafittiBackgrounds" */;
 			buildPhases = (
 				7F247EA91FD476ED0077D878 /* ShellScript */,
+				7F4291F3217B2002003E64C2 /* ShellScript */,
 				7F51DA9A1FD33DF100502804 /* Sources */,
 				7F51DA9B1FD33DF100502804 /* Frameworks */,
 				7F51DA9C1FD33DF100502804 /* Resources */,
@@ -456,11 +470,12 @@
 				TargetAttributes = {
 					7F51DA9D1FD33DF100502804 = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 					7F6738BF1FE2E4CB004DDAE1 = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7F51DA9D1FD33DF100502804;
 					};
@@ -491,6 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F247E9F1FD476910077D878 /* Preferences.storyboard in Resources */,
+				7F4291F5217B27AA003E64C2 /* Colors.xcassets in Resources */,
 				7F247EA41FD476A20077D878 /* Localized.strings in Resources */,
 				7F51DAA41FD33DF100502804 /* Assets.xcassets in Resources */,
 			);
@@ -517,7 +533,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh base-lang.sh";
+			shellScript = "sh base-lang.sh\n";
+		};
+		7F4291F3217B2002003E64C2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		7F876CB5216EAEA000483E8F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -530,7 +563,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = sourcery;
+			shellScript = "sourcery\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -540,9 +573,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F247E911FD46AFF0077D878 /* main.swift in Sources */,
+				7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */,
 				7F247E761FD393A50077D878 /* BaseOperation.swift in Sources */,
 				7F247E971FD46E770077D878 /* PreferencesService.swift in Sources */,
-				7F334BEE216D6B5A0094780E /* ReadOnly.swift in Sources */,
 				7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */,
 				7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */,
 				7F247E6F1FD3858E0077D878 /* DataManager.swift in Sources */,
@@ -550,16 +583,19 @@
 				7F6738B31FE2CE3A004DDAE1 /* FileManaging.swift in Sources */,
 				7F51DAD11FD34B1200502804 /* PhotoResource.swift in Sources */,
 				7F334BEA216D08E30094780E /* Mockable.swift in Sources */,
+				7F31E33A2187B0EA00571BC1 /* AlertController.swift in Sources */,
 				7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */,
 				7F247E871FD430570077D878 /* Menu.swift in Sources */,
-				7FED2CA52116145600AAE2A5 /* MenuViewModel.swift in Sources */,
+				7FED2CA52116145600AAE2A5 /* MenuViewState.swift in Sources */,
 				7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */,
 				7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */,
 				7F51DAB01FD33DFD00502804 /* NetworkManager.swift in Sources */,
 				7F615D941FD6A49E00DD519C /* MenuController.swift in Sources */,
 				7F509A9D1FDB399E00152B33 /* AppMenu.swift in Sources */,
 				7F247E8B1FD43F510077D878 /* NSViewExtensions.swift in Sources */,
-				7F925E6720460B250071F249 /* PreferencesViewModel.swift in Sources */,
+				7F98DB8D2180EBCA00656466 /* Result.swift in Sources */,
+				7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */,
+				7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */,
 				7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */,
 				7F51DAB21FD33E3200502804 /* Request.swift in Sources */,
 				7F247E991FD46EA90077D878 /* Preferences.swift in Sources */,
@@ -567,12 +603,15 @@
 				7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */,
 				7F247E9D1FD4763F0077D878 /* PreferencesViewController.swift in Sources */,
 				7F247E7F1FD42E240077D878 /* MenuItem.swift in Sources */,
-				7F6738B51FE2D7E5004DDAE1 /* AppDelegate+Configurator.swift in Sources */,
-				7FED2CA7211623E600AAE2A5 /* LoadingStatusItemViewModel.swift in Sources */,
+				7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */,
+				7F6738B51FE2D7E5004DDAE1 /* AppDelegateFactory.swift in Sources */,
+				7FED2CA7211623E600AAE2A5 /* LoadingStatusItemViewState.swift in Sources */,
 				7F51DAB81FD33F1B00502804 /* Response.swift in Sources */,
 				7F51DAB41FD33E6800502804 /* PhotoAlbumsRequest.swift in Sources */,
 				7FED2CAF2118830200AAE2A5 /* MenuAction.swift in Sources */,
 				7F51DACE1FD34A4500502804 /* Log.swift in Sources */,
+				7F4291F7217B288D003E64C2 /* ColorExtensions.swift in Sources */,
+				7F31E3382187ADB200571BC1 /* ArrayExtensions.swift in Sources */,
 				7F51DABE1FD345EA00502804 /* AppController.swift in Sources */,
 				7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */,
 				7FCF0EED1FD6C60300138D77 /* PhotoController.swift in Sources */,
@@ -587,7 +626,7 @@
 				7F247E891FD4366A0077D878 /* LoadingStatusItem.swift in Sources */,
 				7F65672D1FE04B1200A6CB7F /* Applicationable.swift in Sources */,
 				7F247E841FD42FBF0077D878 /* StringExtensions.swift in Sources */,
-				7F365DF021007FE20074F0BF /* MenuItemViewModel.swift in Sources */,
+				7F365DF021007FE20074F0BF /* MenuItemViewState.swift in Sources */,
 				7F51DABC1FD3405000502804 /* PhotoAlbum.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -755,10 +794,11 @@
 				DEVELOPMENT_TEAM = PFC77GK3D7;
 				INFOPLIST_FILE = GrafittiBackgrounds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgrounds;
 				PRODUCT_NAME = "Grafitti Backgrounds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -773,10 +813,11 @@
 				DEVELOPMENT_TEAM = PFC77GK3D7;
 				INFOPLIST_FILE = GrafittiBackgrounds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgrounds;
 				PRODUCT_NAME = "Grafitti Backgrounds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -791,11 +832,12 @@
 				DEVELOPMENT_TEAM = PFC77GK3D7;
 				INFOPLIST_FILE = GrafittiBackgroundsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Grafitti Backgrounds.app/Contents/MacOS/Grafitti Backgrounds";
 			};
 			name = Debug;
@@ -811,10 +853,11 @@
 				DEVELOPMENT_TEAM = PFC77GK3D7;
 				INFOPLIST_FILE = GrafittiBackgroundsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Grafitti Backgrounds.app/Contents/MacOS/Grafitti Backgrounds";
 			};
 			name = Release;

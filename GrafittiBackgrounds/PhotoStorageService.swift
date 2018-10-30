@@ -1,66 +1,107 @@
-//
-//  PhotoStorageService.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 03/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Foundation
 
 // sourcery: name = PhotoStorageService
 protocol PhotoStorageServicing: Mockable {
-    var dataManager: DataManaging { get }
-    var fileManager: FileManaging { get }
+    func save(_ resources: [PhotoResource]) -> Result<Void>
+    func load() -> Result<[PhotoResource]>
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoStorageServiceDeletionResult]>
+}
 
-    func save(_ resources: [PhotoResource])
-    func load() -> [PhotoResource]?
-    func remove(_ resources: [PhotoResource])
+struct PhotoStorageServiceDeletionResult {
+    let resource: PhotoResource
+    let result: Result<Void>
 }
 
 final class PhotoStorageService: PhotoStorageServicing {
-    private enum Key: String {
+    enum PhotoError: Error {
+        case encodeError(Error)
+        case decodeError(Error)
+        case fileDeleteError(Error)
+        case noRecord
+    }
+    private enum Key: String, Keyable {
         case photoResource
     }
-	
+
     private let encoder = PropertyListEncoder()
     private let decoder = PropertyListDecoder()
-
-    let dataManager: DataManaging
-    let fileManager: FileManaging
+    private let dataManager: DataManaging
+    private let fileManager: FileManaging
 
     init(dataManager: DataManaging, fileManager: FileManaging) {
         self.dataManager = dataManager
         self.fileManager = fileManager
     }
 
-    func save(_ resources: [PhotoResource]) {
+    func save(_ resources: [PhotoResource]) -> Result<Void> {
         do {
             let data = try encoder.encode(resources)
-            dataManager.save(data, key: Key.photoResource.rawValue)
+            dataManager.save(data, key: Key.photoResource)
+            return .success(())
         } catch {
-            log(error.localizedDescription)
+            return .failure(PhotoError.encodeError(error))
         }
     }
 
-    func load() -> [PhotoResource]? {
-        guard let data = dataManager.load(key: Key.photoResource.rawValue) else {
-            return nil
-        }
-        return try? decoder.decode(Array<PhotoResource>.self, from: data)
-    }
-
-    func remove(_ resources: [PhotoResource]) {
-        resources.forEach { resource in
+    func load() -> Result<[PhotoResource]> {
+        let result = dataManager.load(key: Key.photoResource)
+        switch result {
+        case .success(let data):
             do {
-                guard let fileURL = resource.fileURL else {
-                    return
-                }
-                try self.fileManager.removeItem(at: fileURL)
+                let resources = try decoder.decode([PhotoResource].self, from: data)
+                return .success(resources)
             } catch {
-                log(error.localizedDescription)
+                return .failure(PhotoError.decodeError(error))
+            }
+        case .failure(let error):
+            switch error {
+            case DataManger.DataError.dataNotFound:
+                return .success([])
+            default:
+                return .failure(error)
             }
         }
-        dataManager.save(nil, key: Key.photoResource.rawValue)
+    }
+
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoStorageServiceDeletionResult]> {
+        var savedResources: [PhotoResource]
+        switch load() {
+        case .success(let resources):
+            savedResources = resources
+        case .failure(let error):
+            return .failure(error)
+        }
+
+        var results = [PhotoStorageServiceDeletionResult]()
+        resources.forEach { resource in
+            do {
+                if let fileURL = resource.fileURL, self.fileManager.fileExists(atPath: fileURL.path) {
+                    try self.fileManager.removeItem(at: fileURL)
+                }
+                if savedResources.remove(resource) {
+                    results += [PhotoStorageServiceDeletionResult(
+                        resource: resource,
+                        result: .success(())
+                        )]
+                } else {
+                    results += [PhotoStorageServiceDeletionResult(
+                        resource: resource,
+                        result: .failure(PhotoError.noRecord)
+                        )]
+                }
+            } catch {
+                results += [PhotoStorageServiceDeletionResult(
+                    resource: resource,
+                    result: .failure(PhotoError.fileDeleteError(error))
+                    )]
+            }
+        }
+
+        switch save(savedResources) {
+        case .success:
+            return .success(results)
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 }

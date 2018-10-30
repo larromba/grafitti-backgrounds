@@ -1,27 +1,26 @@
-//
-//  DataManager.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 03/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Foundation
 
 // sourcery: name = DataManger
 protocol DataManaging: Mockable {
-    func save(_ data: Data?, key: String)
-    func load(key: String) -> Data?
+    func save<T: Keyable>(_ data: Data?, key: T)
+    func load<T: Keyable>(key: T) -> Result<Data>
 }
 
 final class DataManger: DataManaging {
-    private let db = UserDefaults.standard
-
-    func save(_ data: Data?, key: String) {
-        db.set(data, forKey: key)
+    enum DataError: Error {
+        case dataNotFound
     }
 
-    func load(key: String) -> Data? {
-        return db.object(forKey: key) as? Data
+    private let database = UserDefaults.standard
+
+    func save<T: Keyable>(_ data: Data?, key: T) {
+        database.set(data, forKey: key.rawValue)
+    }
+
+    func load<T: Keyable>(key: T) -> Result<Data> {
+		guard let data = database.object(forKey: key.rawValue) as? Data else {
+			return .failure(DataError.dataNotFound)
+		}
+		return .success(data)
     }
 }

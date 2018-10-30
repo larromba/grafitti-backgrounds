@@ -12,3 +12,7 @@ TODO:
 - contact menu
 - help menu
 - save location chooser?
+- add connection in / out changes icon
+
+search case .failure
+dispatch queue

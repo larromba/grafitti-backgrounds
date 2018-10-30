@@ -1,20 +1,11 @@
-//
-//  AppDelegate.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 02/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Cocoa
 
 // sourcery: name = AppDelegate
 protocol AppDelegatable: NSApplicationDelegate, Mockable {
-    var appController: AppControllable { get }
 }
 
 final class AppDelegate: NSObject, AppDelegatable {
-    let appController: AppControllable
+    private let appController: AppControllable
 
     init(appController: AppControllable) {
         self.appController = appController
@@ -22,9 +13,12 @@ final class AppDelegate: NSObject, AppDelegatable {
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-		guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
-			return
-		}
+        #if DEBUG
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
+            log("app in test mode")
+            return
+        }
+        #endif
         appController.start()
     }
 }

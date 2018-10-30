@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aSx-RA-gKc">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aSx-RA-gKc">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,7 +10,7 @@
         <scene sceneID="1B3-K6-DwJ">
             <objects>
                 <windowController id="aSx-RA-gKc" sceneMemberID="viewController">
-                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="dLX-HB-WAX">
+                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="dLX-HB-WAX">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -30,7 +30,7 @@
         <!--Preferences View Controller-->
         <scene sceneID="J5J-oO-Jfn">
             <objects>
-                <viewController id="OrY-pY-lGR" customClass="PreferencesViewController" customModule="GooglePhotosBackground" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OrY-pY-lGR" customClass="PreferencesViewController" customModule="Grafitti_Backgrounds" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="v6H-mx-fpe">
                         <rect key="frame" x="0.0" y="0.0" width="350" height="123"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -50,7 +50,7 @@
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="AwD-kn-cQF">
                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#" numberStyle="decimal" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="2000000000" minusSign=" " id="Kpl-5q-45s"/>
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
@@ -73,7 +73,7 @@
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="bhC-wE-kgV">
                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#" numberStyle="decimal" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="2000000000" minusSign=" " id="9Bo-84-o7t"/>
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
@@ -99,7 +99,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y9N-8M-gpg">
-                                <rect key="frame" x="18" y="54" width="175" height="17"/>
+                                <rect key="frame" x="18" y="54" width="176" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="auto-refresh interval (hours)" id="r49-TA-WKR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -130,12 +130,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="autoRefreshCheckBox" destination="i2p-L4-W2C" id="PEe-Hu-gcb"/>
-                        <outlet property="autoRefreshCheckBoxTextLabel" destination="PUz-xT-PaX" id="qXG-OD-RUd"/>
-                        <outlet property="autoRefreshIntervalTextField" destination="92j-Kh-vsi" id="Lik-Wn-iAB"/>
-                        <outlet property="autoRefreshIntervalTextLabel" destination="Y9N-8M-gpg" id="S3S-Gf-On8"/>
-                        <outlet property="numberOfPhotosTextField" destination="Vw3-zq-qHa" id="NQU-Xr-PAx"/>
-                        <outlet property="numberOfPhotosTextLabel" destination="jEb-d9-GUA" id="dmL-er-5rh"/>
+                        <outlet property="autoRefreshCheckBox" destination="i2p-L4-W2C" id="mZ9-nI-ToK"/>
+                        <outlet property="autoRefreshCheckBoxTextLabelInput" destination="PUz-xT-PaX" id="fX9-Fh-FMh"/>
+                        <outlet property="autoRefreshIntervalTextField" destination="92j-Kh-vsi" id="mid-O7-PC7"/>
+                        <outlet property="autoRefreshIntervalTextLabelInput" destination="Y9N-8M-gpg" id="eW6-OG-K8N"/>
+                        <outlet property="numberOfPhotosTextField" destination="Vw3-zq-qHa" id="SPu-u9-3cK"/>
+                        <outlet property="numberOfPhotosTextLabelInput" destination="jEb-d9-GUA" id="M9k-9z-cId"/>
                     </connections>
                 </viewController>
                 <customObject id="Dc1-qy-exH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

@@ -1,33 +1,31 @@
-//
-//  WorkspaceController.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 05/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Cocoa
 
 // sourcery: name = WorkspaceController
 protocol WorkspaceControllable: Mockable {
-    var workspace: Workspacing { get }
-
-    func open(_ preference: SystemPreference)
-    func open(_ url: URL)
+    func open(_ preference: SystemPreference) -> Result<Void>
+    func open(_ url: URL) -> Result<Void>
 }
 
 final class WorkspaceController: WorkspaceControllable {
-    let workspace: Workspacing
+    enum WorkspaceError: Error {
+        case errorOpeningURL
+    }
+
+    private let workspace: Workspacing
 
     init(workspace: Workspacing) {
         self.workspace = workspace
     }
 
-    func open(_ preference: SystemPreference) {
-        _ = workspace.open(preference.url)
+    func open(_ preference: SystemPreference) -> Result<Void> {
+		return open(preference.url)
     }
 
-    func open(_ url: URL) {
-        _ = workspace.open(url)
+    func open(_ url: URL) -> Result<Void> {
+		if workspace.open(url) {
+			return .success(())
+		} else {
+			return .failure(WorkspaceError.errorOpeningURL)
+		}
     }
 }

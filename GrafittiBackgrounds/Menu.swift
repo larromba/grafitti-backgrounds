@@ -1,32 +1,26 @@
-//
-//  Menu.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 03/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Cocoa
 
 // sourcery: name = Menu
 protocol Menuable: Mockable {
-	var viewModel: MenuViewModel { get }
+    var viewState: MenuViewState { get set }
+
     func item(at index: Int) -> MenuItemable?
 }
 
 class Menu: NSMenu, Menuable {
-	var viewModel: MenuViewModel {
-		didSet {
-			update(viewModel: viewModel)
-		}
-	}
-
-	init(viewModel: MenuViewModel, items: [NSMenuItem]) {
-		self.viewModel = viewModel
-        super.init(title: viewModel.title)
-		items.forEach { addItem($0) }
+    var viewState: MenuViewState {
+        didSet {
+            update(viewState: viewState)
+        }
     }
 
+    init(viewState: MenuViewState, items: [NSMenuItem]) {
+        self.viewState = viewState
+        super.init(title: viewState.title)
+        items.forEach { addItem($0) }
+    }
+
+    @available(*, unavailable)
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -38,10 +32,10 @@ class Menu: NSMenu, Menuable {
         return items[index] as? MenuItemable
     }
 
-	// MARK: - private
+    // MARK: - private
 
-	private func update(viewModel: MenuViewModel) {
-		title = viewModel.title
-		autoenablesItems = viewModel.autoenablesItems
-	}
+    private func update(viewState: MenuViewState) {
+        title = viewState.title
+        autoenablesItems = viewState.autoenablesItems
+    }
 }

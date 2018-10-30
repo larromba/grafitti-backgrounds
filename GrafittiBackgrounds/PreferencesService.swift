@@ -1,48 +1,54 @@
-//
-//  PreferencesService.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 03/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Foundation
 
 // sourcery: name = PreferencesService
 protocol PreferencesServicing: Mockable {
-    var dataManager: DataManaging { get }
-
-    func save(_ preferences: Preferences)
-    func load() -> Preferences?
+    func save(_ preferences: Preferences) -> Result<Void>
+    func load() -> Result<Preferences>
 }
 
 final class PreferencesService: PreferencesServicing {
-    private enum Key: String {
+    enum PreferencesError: Error {
+        case encodeError(Error)
+        case decodeError(Error)
+    }
+    private enum Key: String, Keyable {
         case preferences
     }
 
     private let encoder = PropertyListEncoder()
     private let decoder = PropertyListDecoder()
-
-    let dataManager: DataManaging
+    private let dataManager: DataManaging
 
     init(dataManager: DataManaging) {
         self.dataManager = dataManager
     }
 
-    func save(_ preferences: Preferences) {
+    func save(_ preferences: Preferences) -> Result<Void> {
         do {
             let data = try encoder.encode(preferences)
-            dataManager.save(data, key: Key.preferences.rawValue)
+            dataManager.save(data, key: Key.preferences)
+            return .success(())
         } catch {
-            log(error.localizedDescription)
+            return .failure(PreferencesError.encodeError(error))
         }
     }
 
-    func load() -> Preferences? {
-        guard let data = dataManager.load(key: Key.preferences.rawValue) else {
-            return nil
+    func load() -> Result<Preferences> {
+        switch dataManager.load(key: Key.preferences) {
+        case .success(let data):
+            do {
+                let preferences = try decoder.decode(Preferences.self, from: data)
+                return .success(preferences)
+            } catch {
+                return .failure(PreferencesError.decodeError(error))
+            }
+        case .failure(let error):
+            switch error {
+            case DataManger.DataError.dataNotFound:
+                return .success(Preferences())
+            default:
+                return .failure(error)
+            }
         }
-        return try? decoder.decode(Preferences.self, from: data)
     }
 }

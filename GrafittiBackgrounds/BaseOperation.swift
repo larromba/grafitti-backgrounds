@@ -1,11 +1,3 @@
-//
-//  BaseOperation.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 02/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Foundation
 
 class BaseOperation: Operation { // please subclass
@@ -15,6 +7,7 @@ class BaseOperation: Operation { // please subclass
     private enum KVOKey: String {
         case isExecuting, isFinished
     }
+
     private var _state: State = .ready
     private var state: State {
         get {
@@ -28,7 +21,7 @@ class BaseOperation: Operation { // please subclass
             let kvoKey: String
             switch newValue {
             case .ready:
-                fatalError("Operations are not reusable")
+                fatalError("operations are not reusable")
             case .executing:
                 kvoKey = KVOKey.isExecuting.rawValue
             case .finished:

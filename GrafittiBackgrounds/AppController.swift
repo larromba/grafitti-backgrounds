@@ -1,74 +1,93 @@
- //
-//  AppController.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 02/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Cocoa
 
 // sourcery: name = AppController
 protocol AppControllable: Mockable {
-    var preferencesController: PreferencesControllable { get }
-    var workspaceController: WorkspaceControllable { get }
-    var menuController: MenuControllable { get }
-    var photoController: PhotoControllable { get }
-    var app: Applicationable { get }
-
     func start()
 }
 
 final class AppController: AppControllable {
-    private(set) var preferencesController: PreferencesControllable
-    let workspaceController: WorkspaceControllable
-    private(set) var menuController: MenuControllable
-    private(set) var photoController: PhotoControllable
-    let app: Applicationable
+    private var preferencesController: PreferencesControllable
+    private let workspaceController: WorkspaceControllable
+    private var menuController: MenuControllable
+    private var photoController: PhotoControllable
+    private let alertController: AlertControlling
+    private let app: Applicationable
 
-    init(preferencesController: PreferencesControllable, workspaceController: WorkspaceControllable, menuController: MenuControllable, photoController: PhotoControllable, app: Applicationable) {
+    init(preferencesController: PreferencesControllable,
+         workspaceController: WorkspaceControllable,
+         menuController: MenuControllable,
+         photoController: PhotoControllable,
+         alertController: AlertControlling,
+         app: Applicationable) {
         self.preferencesController = preferencesController
         self.workspaceController = workspaceController
         self.menuController = menuController
         self.photoController = photoController
+        self.alertController = alertController
         self.app = app
 
-        self.preferencesController.delegate = self
-        self.menuController.delegate = self
-        self.photoController.delegate = self
-        self.photoController.preferences = preferencesController.preferences
+        self.preferencesController.setDelegate(self)
+        self.menuController.setDelegate(self)
+        self.photoController.setDelegate(self)
+        self.photoController.setPreferences(preferencesController.preferences)
     }
 
     func start() {
-        photoController.reloadPhotos()
+        reloadPhotos()
+    }
+
+    // MARK: - private
+
+    private func reloadPhotos() {
+        photoController.reloadPhotos { [weak self] (result: Result<[PhotoControllerReloadResult]>) in
+            self?.handleResult(result)
+        }
+    }
+
+    private func handleResult<T>(_ result: Result<T>) {
+        switch result {
+        case .success:
+            break
+        case .failure(let error):
+            alertController.showAlert(error)
+        }
     }
 }
 
 // MARK: - PreferencesControllerDelegate
 
 extension AppController: PreferencesControllerDelegate {
-    func preferencesController(_ coordinator: PreferencesController, didUpdatePreferences preferences: Preferences) {
-        photoController.preferences = preferences
+    func preferencesController(_ coordinator: PreferencesController, didUpdatePreferences result: Result<Preferences>) {
+        switch result {
+        case .success(let preferences):
+            photoController.setPreferences(preferences)
+        case .failure(let error):
+            alertController.showAlert(error)
+        }
+    }
+
+    func preferencesController(_ controller: PreferencesController, errorLoadingPreferences error: Error) {
+        alertController.showAlert(error)
     }
 }
 
 // MARK: - MenuControllerDelegate
 
 extension AppController: MenuControllerDelegate {
-    func menuController(_ coordinator: MenuController, selected action: AppMenu.Action) {
+    func menuController(_ controller: MenuController, selected action: AppMenu.Action) {
         switch action {
         case .refreshFolder(action: .refresh):
-            photoController.reloadPhotos()
-		case .refreshFolder(action: .cancel):
+            reloadPhotos()
+        case .refreshFolder(action: .cancel):
             photoController.cancelReload()
         case .openFolder:
-            workspaceController.open(photoController.folderURL)
+            handleResult(workspaceController.open(photoController.folderURL))
         case .clearFolder:
-            photoController.cleanFolder()
+            handleResult(photoController.clearFolder())
         case .preferences:
             preferencesController.open()
         case .systemPreferences:
-            workspaceController.open(.desktopScreenEffects)
+            handleResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
         case .about:
             app.orderFrontStandardAboutPanel(self)
         case .quit:
@@ -77,9 +96,13 @@ extension AppController: MenuControllerDelegate {
     }
 }
 
- // MARK: - PhotoControllerDelegate
+// MARK: - PhotoControllerDelegate
 
 extension AppController: PhotoControllerDelegate {
+    func photoControllerTimerTriggered(_ photoController: PhotoController) {
+        reloadPhotos()
+    }
+
     func photoController(_ photoController: PhotoController, updatedDownloadPercentage percentage: Double) {
         menuController.setLoadingPercentage(percentage)
     }
@@ -88,4 +111,4 @@ extension AppController: PhotoControllerDelegate {
         menuController.setRefreshAction(inProgress ? .cancel : .refresh)
         menuController.setIsLoading(inProgress)
     }
- }
+}

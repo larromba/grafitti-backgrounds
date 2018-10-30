@@ -1,84 +1,76 @@
-//
-//  PreferencesController.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 03/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Cocoa
 
-protocol PreferencesControllerDelegate: class {
-    func preferencesController(_ coordinator: PreferencesController, didUpdatePreferences preferences: Preferences)
+protocol PreferencesControllerDelegate: AnyObject {
+    func preferencesController(_ controller: PreferencesController, errorLoadingPreferences error: Error)
+    func preferencesController(_ controller: PreferencesController, didUpdatePreferences result: Result<Preferences>)
 }
 
 // sourcery: name = PreferencesController
 protocol PreferencesControllable: Mockable {
-    var windowController: WindowControlling { get }
-    var preferencesViewController: PreferencesViewControllable { get }
-    var preferencesService: PreferencesServicing { get }
-	// sourcery: value = Preferences()
+    // sourcery: value = Preferences()
     var preferences: Preferences { get }
-    var delegate: PreferencesControllerDelegate? { get set }
 
     func open()
+    func setDelegate(_ delegate: PreferencesControllerDelegate)
 }
 
 final class PreferencesController: PreferencesControllable {
-    let windowController: WindowControlling
-    private(set) var preferencesViewController: PreferencesViewControllable
-    let preferencesService: PreferencesServicing
-    private(set) var preferences: Preferences
+    private let windowController: WindowControlling
+    private var preferencesViewController: PreferencesViewControllable
+    private let preferencesService: PreferencesServicing
+    private weak var delegate: PreferencesControllerDelegate?
 
-    weak var delegate: PreferencesControllerDelegate?
+    private(set) var preferences: Preferences
 
     init(windowController: WindowControlling, preferencesService: PreferencesServicing) {
         self.windowController = windowController
         self.preferencesService = preferencesService
-
-        preferences = preferencesService.load() ?? Preferences()
-
         preferencesViewController = windowController.contentViewController as! PreferencesViewControllable
-        preferencesViewController.delegate = self
+
+        switch preferencesService.load() {
+        case .success(let preferences):
+            self.preferences = preferences
+        case .failure(let error):
+            preferences = Preferences()
+            delegate?.preferencesController(self, errorLoadingPreferences: error)
+        }
+
+        preferencesViewController.setDelegate(self)
     }
 
     func open() {
         windowController.showWindow(self)
-        load(preferences)
+        render(preferences)
+    }
+
+    func setDelegate(_ delegate: PreferencesControllerDelegate) {
+        self.delegate = delegate
     }
 
     // MARK: - private
 
     private func save(_ preferences: Preferences) {
-        preferencesService.save(preferences)
-        delegate?.preferencesController(self, didUpdatePreferences: preferences)
+        switch preferencesService.save(preferences) {
+        case .success:
+            delegate?.preferencesController(self, didUpdatePreferences: .success(preferences))
+        case .failure(let error):
+            delegate?.preferencesController(self, didUpdatePreferences: .failure(error))
+        }
     }
 
-    private func load(_ preferences: Preferences) {
-        preferencesViewController.viewModel = PreferencesViewModel(preferences: preferences)
-    }
-
-    private func refresh(_ preferences: Preferences) {
-        save(preferences)
-        load(preferences)
+    private func render(_ preferences: Preferences) {
+        preferencesViewController.setViewState(PreferencesViewState(preferences: preferences))
     }
 }
 
 // MARK: - PreferencesViewControllerDelegate
 
 extension PreferencesController: PreferencesViewControllerDelegate {
-    func preferencesViewController(_ viewController: PreferencesViewController, didUpdateNumberOfPhotos numberOfPhotos: Int) {
-        preferences.numberOfPhotos = numberOfPhotos
-        refresh(preferences)
-    }
-
-    func preferencesViewController(_ viewController: PreferencesViewController, didUpdateAutoRefreshIsEnabled isEndabled: Bool) {
-        preferences.isAutoRefreshEnabled = isEndabled
-        refresh(preferences)
-    }
-
-    func preferencesViewController(_ viewController: PreferencesViewController, didUpdateTimeInterval timeInterval: TimeInterval) {
-        preferences.autoRefreshTimeIntervalHours = timeInterval
-        refresh(preferences)
+    func preferencesViewController(_ viewController: PreferencesViewController,
+                                   didUpdateViewState viewState: PreferencesViewState) {
+        preferences.numberOfPhotos = viewState.numberOfPhotos
+        preferences.isAutoRefreshEnabled = viewState.isAutoRefreshEnabled
+        preferences.autoRefreshTimeIntervalHours = viewState.autoRefreshTimeIntervalHours
+        save(preferences)
     }
 }

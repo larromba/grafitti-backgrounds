@@ -1,65 +1,69 @@
-//
-//  PhotoAlbumService.swift
-//  GrafittiBackgrounds
-//
-//  Created by Lee Arromba on 02/12/2017.
-//  Copyright © 2017 Pink Chicken. All rights reserved.
-//
-
 import Cocoa
 
 // sourcery: name = PhotoAlbumService
 protocol PhotoAlbumServicing: Mockable {
-    var networkManager: NetworkManaging { get }
-
-    func getPhotoAlbums(success: @escaping (([PhotoAlbum]) -> ()), failure: ((Error) -> ())?)
-    func getPhotoResources(_ album: PhotoAlbum, success: @escaping (([PhotoResource]) -> ()), failure: ((Error) -> ())?)
+    func fetchPhotoAlbums(completion: @escaping (Result<[PhotoAlbumServiceFetchResult]>) -> Void)
+    func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void)
     func cancelAll()
 }
 
+struct PhotoAlbumServiceFetchResult {
+    let album: PhotoAlbum
+    let result: Result<Void>
+}
+
 final class PhotoAlbumService: PhotoAlbumServicing {
-    let networkManager: NetworkManaging
+    private let networkManager: NetworkManaging
 
     init(networkManager: NetworkManaging) {
         self.networkManager = networkManager
     }
 
-    func getPhotoAlbums(success: @escaping (([PhotoAlbum]) -> ()), failure: ((Error) -> ())?) {
-        let request = PhotoAlbumsRequest(url: API.photoAlbums.url)
-        networkManager.send(request: request, success: { [unowned self] response in
-            guard let response = response as? PhotoAlbumsResponse else {
-                assertionFailure("expected PhotoAlbumsResponse")
-                return
+    func fetchPhotoAlbums(completion: @escaping (Result<[PhotoAlbumServiceFetchResult]>) -> Void) {
+        let request = PhotoAlbumsRequest()
+        networkManager.fetch(request: request, completion: { [weak self] (result: Result<PhotoAlbumsResponse>) in
+            switch result {
+            case .success(let response):
+                var albums = response.photoAlbums
+                let group = DispatchGroup()
+                var results = [PhotoAlbumServiceFetchResult]()
+                for (index, album) in albums.enumerated() {
+                    group.enter()
+                    self?.fetchPhotoResources(in: album, completion: { result in
+                        switch result {
+                        case .success(let resources):
+                            albums[index].resources = resources
+                            results += [PhotoAlbumServiceFetchResult(
+                                album: albums[index],
+                                result: .success(())
+                                )]
+                        case .failure(let error):
+                            results += [PhotoAlbumServiceFetchResult(
+                                album: albums[index],
+                                result: .failure(error)
+                                )]
+                        }
+                        group.leave()
+                    })
+                }
+                group.notify(queue: .global()) {
+                    completion(.success(results))
+                }
+            case .failure(let error):
+                completion(.failure(error))
             }
-            var albums = response.photoAlbums
-            let group = DispatchGroup()
-            for (index, album) in albums.enumerated() {
-                group.enter()
-                self.getPhotoResources(album, success: { resources in
-                    albums[index].resources = resources
-                    group.leave()
-                }, failure: { error in
-                    group.leave()
-                })
-            }
-            group.notify(queue: DispatchQueue.global()) {
-                success(albums)
-            }
-        }, failure: { error in
-            failure?(error)
         })
     }
 
-    func getPhotoResources(_ album: PhotoAlbum, success: @escaping (([PhotoResource]) -> ()), failure: ((Error) -> ())?) {
-        let request = PhotoResourceRequest(url: album.url)
-        networkManager.send(request: request, success: { response in
-            guard let response = response as? PhotoResourceResponse else {
-                assertionFailure("expected PhotoResourceResponse")
-                return
+    func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void) {
+        let request = PhotoResourceRequest(album: album)
+        networkManager.fetch(request: request, completion: { (result: Result<PhotoResourceResponse>) in
+            switch result {
+            case .success(let response):
+                completion(.success(response.photoResources))
+            case .failure(let error):
+                completion(.failure(error))
             }
-            success(response.photoResources)
-        }, failure: { error in
-            failure?(error)
         })
     }
 
