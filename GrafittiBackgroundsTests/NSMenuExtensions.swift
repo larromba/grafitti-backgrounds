@@ -18,12 +18,3 @@ extension NSMenuItem {
 		return NSApp.sendAction(action, to: target, from: nil)
 	}
 }
-
-extension MenuItemable {
-    func click() -> Bool {
-        guard let casted = self as? NSMenuItem else {
-            return false
-        }
-        return casted.click()
-    }
-}
