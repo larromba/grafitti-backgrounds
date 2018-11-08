@@ -11,7 +11,11 @@ final class DataManger: DataManaging {
         case dataNotFound
     }
 
-    private let database = UserDefaults.standard
+	private let database: UserDefaultable
+
+	init(database: UserDefaultable) {
+		self.database = database
+	}
 
     func save<T: Keyable>(_ data: Data?, key: T) {
         database.set(data, forKey: key.rawValue)

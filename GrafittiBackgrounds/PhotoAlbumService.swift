@@ -21,34 +21,11 @@ final class PhotoAlbumService: PhotoAlbumServicing {
 
     func fetchPhotoAlbums(completion: @escaping (Result<[PhotoAlbumServiceFetchResult]>) -> Void) {
         let request = PhotoAlbumsRequest()
+
         networkManager.fetch(request: request, completion: { [weak self] (result: Result<PhotoAlbumsResponse>) in
             switch result {
             case .success(let response):
-                var albums = response.photoAlbums
-                let group = DispatchGroup()
-                var results = [PhotoAlbumServiceFetchResult]()
-                for (index, album) in albums.enumerated() {
-                    group.enter()
-                    self?.fetchPhotoResources(in: album, completion: { result in
-                        switch result {
-                        case .success(let resources):
-                            albums[index].resources = resources
-                            results += [PhotoAlbumServiceFetchResult(
-                                album: albums[index],
-                                result: .success(())
-                                )]
-                        case .failure(let error):
-                            results += [PhotoAlbumServiceFetchResult(
-                                album: albums[index],
-                                result: .failure(error)
-                                )]
-                        }
-                        group.leave()
-                    })
-                }
-                group.notify(queue: .global()) {
-                    completion(.success(results))
-                }
+                self?.handleResponse(response, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -69,5 +46,36 @@ final class PhotoAlbumService: PhotoAlbumServicing {
 
     func cancelAll() {
         networkManager.cancelAll()
+    }
+
+    // MARK: - private
+
+    private func handleResponse(_ response: PhotoAlbumsResponse,
+                                completion: @escaping (Result<[PhotoAlbumServiceFetchResult]>) -> Void) {
+        var albums = response.photoAlbums
+        let group = DispatchGroup()
+        var results = [PhotoAlbumServiceFetchResult]()
+        for (index, album) in albums.enumerated() {
+            group.enter()
+            self.fetchPhotoResources(in: album, completion: { result in
+                switch result {
+                case .success(let resources):
+                    albums[index].resources = resources
+                    results += [PhotoAlbumServiceFetchResult(
+                        album: albums[index],
+                        result: .success(())
+                        )]
+                case .failure(let error):
+                    results += [PhotoAlbumServiceFetchResult(
+                        album: albums[index],
+                        result: .failure(error)
+                        )]
+                }
+                group.leave()
+            })
+        }
+        group.notify(queue: .global()) {
+            completion(.success(results))
+        }
     }
 }

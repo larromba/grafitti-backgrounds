@@ -41,7 +41,7 @@ import AppKit
         {% call actionsVariableName %}.closure(for: functionName)?()
         {% if not method.returnTypeName.isVoid and not method.isInitializer %}
         {% if method.annotations.returnValue %}
-        {% call actionsVariableName %}.setDefaultReturnValue({{ method.annotations.returnValue }}, for: functionName)
+        {% call actionsVariableName %}.set(defaultReturnValue: {{ method.annotations.returnValue }}, for: functionName)
         {% endif %}
         return {% call actionsVariableName %}.returnValue(for: functionName){% if method.isOptionalReturnType %} as? {% else %} as! {% endif %}{{ method.unwrappedReturnTypeName }}
         {% endif %}
@@ -124,9 +124,9 @@ final class {% call helperClassPrefix %}Actions {
 
   // MARK: - closure
 
-  func setClosure<T: {% call helperClassPrefix %}StringRawRepresentable>(_ value: @escaping () -> Void, for functionName: T) {
+  func set<T: {% call helperClassPrefix %}StringRawRepresentable>(closure: @escaping () -> Void, for functionName: T) {
     let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.closure)
+    invocation.set(parameter: closure, forKey: Keys.closure)
   }
   func closure<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> (() -> Void)? {
     let invocation = self.invocation(for: functionName)
@@ -135,7 +135,7 @@ final class {% call helperClassPrefix %}Actions {
 
   // MARK: - returnValue
 
-  func setReturnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(_ value: Any, for functionName: T) {
+  func set<T: {% call helperClassPrefix %}StringRawRepresentable>(returnValue value: Any, for functionName: T) {
     let invocation = self.invocation(for: functionName)
     invocation.set(parameter: value, forKey: Keys.returnValue)
   }
@@ -146,7 +146,7 @@ final class {% call helperClassPrefix %}Actions {
 
   // MARK: - defaultReturnValue
 
-  fileprivate func setDefaultReturnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(_ value: Any, for functionName: T) {
+  fileprivate func set<T: {% call helperClassPrefix %}StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
     let invocation = self.invocation(for: functionName)
     invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
   }
@@ -157,9 +157,9 @@ final class {% call helperClassPrefix %}Actions {
 
   // MARK: - error
 
-  func setError<T: {% call helperClassPrefix %}StringRawRepresentable>(_ value: Error, for functionName: T) {
+  func set<T: {% call helperClassPrefix %}StringRawRepresentable>(error: Error, for functionName: T) {
     let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.error)
+    invocation.set(parameter: error, forKey: Keys.error)
   }
   func error<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Error? {
     let invocation = self.invocation(for: functionName)

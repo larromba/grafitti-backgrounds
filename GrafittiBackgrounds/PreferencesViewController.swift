@@ -7,6 +7,8 @@ protocol PreferencesViewControllerDelegate: AnyObject {
 
 // sourcery: name = PreferencesViewController, inherits = NSViewController
 protocol PreferencesViewControllable: Mockable {
+    var viewState: PreferencesViewState? { get }
+
     func setViewState(_ viewState: PreferencesViewState)
     func setDelegate(_ delegate: PreferencesViewControllerDelegate)
 }

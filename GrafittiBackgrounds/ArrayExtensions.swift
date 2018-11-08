@@ -9,3 +9,12 @@ extension Array where Element: Equatable {
 		return true
 	}
 }
+
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        guard 0..<count ~= index else {
+            return nil
+        }
+        return self[index]
+    }
+}

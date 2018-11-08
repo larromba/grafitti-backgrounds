@@ -3,7 +3,7 @@ import Cocoa
 enum AppDelegateFactory {
     static func make(for app: NSApplication) -> AppDelegatable {
         let preferencesWindow = NSStoryboard.preferences.instantiateInitialController() as! NSWindowController
-        let dataManager = DataManger()
+        let dataManager = DataManger(database: UserDefaults.standard)
         let preferencesService = PreferencesService(dataManager: dataManager)
         let preferencesController = PreferencesController(
             windowController: preferencesWindow,

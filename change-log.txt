@@ -16,3 +16,8 @@ TODO:
 
 search case .failure
 dispatch queue
+
+
+- generate strings
+- generate colors
+- generate images

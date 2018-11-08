@@ -47,9 +47,9 @@ final class _Actions {
 
   // MARK: - closure
 
-  func setClosure<T: _StringRawRepresentable>(_ value: @escaping () -> Void, for functionName: T) {
+  func set<T: _StringRawRepresentable>(closure: @escaping () -> Void, for functionName: T) {
     let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.closure)
+    invocation.set(parameter: closure, forKey: Keys.closure)
   }
   func closure<T: _StringRawRepresentable>(for functionName: T) -> (() -> Void)? {
     let invocation = self.invocation(for: functionName)
@@ -58,7 +58,7 @@ final class _Actions {
 
   // MARK: - returnValue
 
-  func setReturnValue<T: _StringRawRepresentable>(_ value: Any, for functionName: T) {
+  func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
     let invocation = self.invocation(for: functionName)
     invocation.set(parameter: value, forKey: Keys.returnValue)
   }
@@ -69,7 +69,7 @@ final class _Actions {
 
   // MARK: - defaultReturnValue
 
-  fileprivate func setDefaultReturnValue<T: _StringRawRepresentable>(_ value: Any, for functionName: T) {
+  fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
     let invocation = self.invocation(for: functionName)
     invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
   }
@@ -80,9 +80,9 @@ final class _Actions {
 
   // MARK: - error
 
-  func setError<T: _StringRawRepresentable>(_ value: Error, for functionName: T) {
+  func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
     let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.error)
+    invocation.set(parameter: error, forKey: Keys.error)
   }
   func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
     let invocation = self.invocation(for: functionName)
@@ -358,7 +358,7 @@ class MockFileManager: NSObject, FileManaging {
         invocation.set(parameter: path, forKey: fileExists4.params.path)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        actions.setDefaultReturnValue(true, for: functionName)
+        actions.set(defaultReturnValue: true, for: functionName)
         return actions.returnValue(for: functionName) as! Bool
     }
 
@@ -937,6 +937,7 @@ class MockPreferencesService: NSObject, PreferencesServicing {
 }
 
 class MockPreferencesViewController: NSViewController, PreferencesViewControllable {
+    var viewState: PreferencesViewState?
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -971,6 +972,50 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
       case name = "setDelegate2"
       enum params: String, _StringRawRepresentable {
         case delegate = "setDelegate(_delegate:PreferencesViewControllerDelegate).delegate"
+      }
+    }
+}
+
+class MockUserDefaults: NSObject, UserDefaultable {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - object
+
+    func object(forKey defaultName: String) -> Any? {
+        let functionName = object1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: defaultName, forKey: object1.params.defaultName)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as? Any
+    }
+
+    enum object1: String, _StringRawRepresentable {
+      case name = "object1"
+      enum params: String, _StringRawRepresentable {
+        case defaultName = "object(forKeydefaultName:String).defaultName"
+      }
+    }
+
+    // MARK: - set
+
+    func set(_ value: Any?, forKey defaultName: String) {
+        let functionName = set2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        if let value = value {
+            invocation.set(parameter: value, forKey: set2.params.value)
+        }
+        invocation.set(parameter: defaultName, forKey: set2.params.defaultName)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum set2: String, _StringRawRepresentable {
+      case name = "set2"
+      enum params: String, _StringRawRepresentable {
+        case value = "set(_value:Any?,forKeydefaultName:String).value"
+        case defaultName = "set(_value:Any?,forKeydefaultName:String).defaultName"
       }
     }
 }
@@ -1053,7 +1098,7 @@ class MockWorkspace: NSObject, Workspacing {
         invocation.set(parameter: url, forKey: open1.params.url)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        actions.setDefaultReturnValue(true, for: functionName)
+        actions.set(defaultReturnValue: true, for: functionName)
         return actions.returnValue(for: functionName) as! Bool
     }
 
