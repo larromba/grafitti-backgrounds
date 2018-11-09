@@ -5,7 +5,7 @@ class PreferencesTests: XCTestCase {
 	func testPreferencesOpensOnMenuClick() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
-		let menuController = MenuController(statusItem: statusItem)
+		let menuController = AppMenuController(statusItem: statusItem)
 		let windowController = MockWindowController()
 		windowController.contentViewController = MockPreferencesViewController()
 		let preferencesService = MockPreferencesService()
@@ -30,16 +30,14 @@ class PreferencesTests: XCTestCase {
 	}
 
 	func testPreferencesRender() {
+		XCTFail("TODO")
 	}
 
 	func testPreferencesChange() {
+		XCTFail("TODO")
 	}
 
 	func testPreferencesPersist() {
-		enum Key: String, Keyable {
-			case preferences
-		}
-
 		// mocks
 		guard
 			let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
@@ -52,11 +50,11 @@ class PreferencesTests: XCTestCase {
 		let preferencesService = PreferencesService(dataManager: dataManager)
 
 		// sut
-		let controller = PreferencesController(
+		let preferencesController = PreferencesController(
 			windowController: windowController,
 			preferencesService: preferencesService
 		)
-		controller.open()
+		preferencesController.open()
 
 		// test
 		preferencesViewController.autoRefreshCheckBox.performClick(nil)
@@ -73,7 +71,27 @@ class PreferencesTests: XCTestCase {
 	}
 
 	func testPreferencesRestartDownloadTimerIfChanged() {
-		XCTFail("todo")
+		XCTFail("TODO")
+//		// mocks
+//		guard
+//			let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
+//			let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
+//				XCTFail("expected classes")
+//				return
+//		}
+//		let preferencesController = PreferencesController(
+//			windowController: windowController,
+//			preferencesService: PreferencesService(dataManager: MockDataManger())
+//		)
+//		let photoCoordinator = PhotoController(photoAlbumService: <#T##PhotoAlbumServicing#>, photoService: <#T##PhotoServicing#>, photoStorageService: <#T##PhotoStorageServicing#>)
+//
+//		// sut
+//		_ = AppController.testable(preferencesController: preferencesController, menuController: menuController)
+//
+//		// test
+//		preferencesController.open()
+//		preferencesViewController.autoRefreshCheckBox.performClick(nil)
+//		XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
 	}
 }
 

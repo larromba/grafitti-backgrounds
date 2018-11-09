@@ -1,12 +1,12 @@
 import Foundation
 
 enum PhotoAlbumsResponseError: Error {
-	case malformedHTML
-	case noPhotoAlbumsFound
+    case malformedHTML
+    case noPhotoAlbumsFound
 }
 
 struct PhotoAlbumsResponse: Response {
-	typealias ErrorType = PhotoAlbumsResponseError
+    typealias ErrorType = PhotoAlbumsResponseError
 
     let data: Data
     let photoAlbums: [PhotoAlbum]

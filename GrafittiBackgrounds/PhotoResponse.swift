@@ -1,13 +1,13 @@
 import Cocoa
 
 enum PhotoResponseError: Error {
-	case malformedHTML
-	case missingImageURL
-	case malformedImageURL
+    case malformedHTML
+    case missingImageURL
+    case malformedImageURL
 }
 
 final class PhotoResponse: Response {
-	typealias ErrorType = PhotoResponseError
+    typealias ErrorType = PhotoResponseError
 
     let data: Data
     let imageURL: URL

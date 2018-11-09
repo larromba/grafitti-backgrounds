@@ -151,21 +151,21 @@ final class PhotoController: PhotoControllable {
         photoAlbumService.fetchPhotoAlbums(completion: { [weak self] result in
             switch result {
             case .success(let results):
-				let successfulResults = results.filter {
-					switch $0.result {
-					case .success: return true
-					case .failure: return false
-					}
-				}
-				let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.album.resources.count })
-				guard numOfPossibleDownloads >= numberOfPhotos else {
-					DispatchQueue.main.async {
-						completion(.failure(PhotoError.notEnoughImages))
-					}
-					return
-				}
-				let albums = successfulResults.map { $0.album }
-				self?.downloadPhotos(from: albums, numberOfPhotos: numberOfPhotos, completion: completion)
+                let successfulResults = results.filter {
+                    switch $0.result {
+                    case .success: return true
+                    case .failure: return false
+                    }
+                }
+                let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.album.resources.count })
+                guard numOfPossibleDownloads >= numberOfPhotos else {
+                    DispatchQueue.main.async {
+                        completion(.failure(PhotoError.notEnoughImages))
+                    }
+                    return
+                }
+                let albums = successfulResults.map { $0.album }
+                self?.downloadPhotos(from: albums, numberOfPhotos: numberOfPhotos, completion: completion)
             case .failure(let error):
                 DispatchQueue.main.async {
                     completion(.failure(error))

@@ -8,9 +8,9 @@ struct PhotoResource: Codable {
 // MARK: - Equatable
 
 extension PhotoResource: Equatable {
-	static func == (lhs: PhotoResource, rhs: PhotoResource) -> Bool {
-		return
-			lhs.url == rhs.url &&
-			lhs.fileURL == rhs.fileURL
-	}
+    static func == (lhs: PhotoResource, rhs: PhotoResource) -> Bool {
+        return
+            lhs.url == rhs.url &&
+                lhs.fileURL == rhs.fileURL
+    }
 }

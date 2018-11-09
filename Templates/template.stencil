@@ -43,7 +43,7 @@ import AppKit
         {% if method.annotations.returnValue %}
         {% call actionsVariableName %}.set(defaultReturnValue: {{ method.annotations.returnValue }}, for: functionName)
         {% endif %}
-        return {% call actionsVariableName %}.returnValue(for: functionName){% if method.isOptionalReturnType %} as? {% else %} as! {% endif %}{{ method.unwrappedReturnTypeName }}
+        return {% call actionsVariableName %}.returnValue(for: functionName){% if method.isOptionalReturnType and method.unwrappedReturnTypeName != 'Any' %} as? {% elif method.isOptionalReturnType and method.unwrappedReturnTypeName == 'Any' %} as {% else %} as! {% endif %}{{ method.unwrappedReturnTypeName }}
         {% endif %}
     }
 {% endmacro %}
@@ -211,6 +211,9 @@ final class {% call helperClassPrefix %}Invocations {
 
 {% if type.name != "Mockable" %}
 class {% if type.annotations.name %}{% call mockedClassName type.annotations.name %}{% else %}{% call mockedClassName type.name %}{% endif %}{% if type.annotations.inherits %}: {{ type.annotations.inherits }}{% else %}: NSObject{% endif %}, {{ type.name }} {
+{% for value in type.annotations.associatedtype %}
+    typealias {{ value }} = Any
+{% endfor %}
 {% for variable in type.allVariables|!definedInExtension %}
     {% if variable.isOptional %}
     {% call mockOptionalVariable variable %}

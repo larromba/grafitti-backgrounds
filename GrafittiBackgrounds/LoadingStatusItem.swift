@@ -7,7 +7,7 @@ protocol LoadingStatusItemable: Mockable {
     var viewState: LoadingStatusItemViewState { get set }
     var menu: Menuable? { get set }
 
-    func item(at index: Int) -> MenuItemable?
+    func item<T: MenuItemable>(at index: Int) -> T?
 }
 
 final class LoadingStatusItem: LoadingStatusItemable {
@@ -74,8 +74,8 @@ final class LoadingStatusItem: LoadingStatusItemable {
         statusBar.removeStatusItem(item)
     }
 
-    func item(at index: Int) -> MenuItemable? {
-        return item.menu?.item(at: index) as? MenuItemable
+    func item<T: MenuItemable>(at index: Int) -> T? {
+        return item.menu?.item(at: index) as? T
     }
 
     // MARK: - private

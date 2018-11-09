@@ -27,9 +27,9 @@ final class NetworkManager: NetworkManaging {
 
         let operation = NetworkOperation()
         operation.task = urlSession.dataTask(with: request.url) { [weak operation] data, response, error in
-			defer {
-				operation?.finish()
-			}
+            defer {
+                operation?.finish()
+            }
             if let error = error {
                 completion(.failure(NetworkError.systemError(error)))
                 return
@@ -38,21 +38,21 @@ final class NetworkManager: NetworkManaging {
                 completion(.failure(NetworkError.noData))
                 return
             }
-			guard let httpResponse = response as? HTTPURLResponse else {
-				completion(.failure(NetworkError.httpErrorCode(500)))
-				return
-			}
-			guard httpResponse.isValidRange else {
-				completion(.failure(NetworkError.httpErrorCode(httpResponse.statusCode)))
-				return
-			}
-			do {
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NetworkError.httpErrorCode(500)))
+                return
+            }
+            guard httpResponse.isValidRange else {
+                completion(.failure(NetworkError.httpErrorCode(httpResponse.statusCode)))
+                return
+            }
+            do {
                 //log("fetched: \(request.url)\n\(String(data: data, encoding: .utf8) ?? "nil")")
-				let response = try T(data: data)
-				completion(.success(response))
-			} catch {
-				completion(.failure(NetworkError.badResponse(error)))
-			}
+                let response = try T(data: data)
+                completion(.success(response))
+            } catch {
+                completion(.failure(NetworkError.badResponse(error)))
+            }
         }
         queue.addOperation(operation)
     }
@@ -62,9 +62,9 @@ final class NetworkManager: NetworkManaging {
 
         let operation = NetworkOperation()
         operation.task = urlSession.downloadTask(with: url) { [weak operation] tempURL, response, error in
-			defer {
-				operation?.finish()
-			}
+            defer {
+                operation?.finish()
+            }
             if let error = error {
                 completion(.failure(NetworkError.systemError(error)))
                 return
@@ -73,14 +73,14 @@ final class NetworkManager: NetworkManaging {
                 completion(.failure(NetworkError.noData))
                 return
             }
-			guard let httpResponse = response as? HTTPURLResponse else {
-				completion(.failure(NetworkError.httpErrorCode(500)))
-				return
-			}
-			guard httpResponse.isValidRange else {
-				completion(.failure(NetworkError.httpErrorCode(httpResponse.statusCode)))
-				return
-			}
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NetworkError.httpErrorCode(500)))
+                return
+            }
+            guard httpResponse.isValidRange else {
+                completion(.failure(NetworkError.httpErrorCode(httpResponse.statusCode)))
+                return
+            }
 
             log("downloaded to: \(tempURL)")
             completion(.success(tempURL))

@@ -3,7 +3,7 @@ import Cocoa
 
 extension Menuable {
 	func click(at index: Int) -> Bool {
-		guard let menuItem = item(at: index) as? NSMenuItem else {
+		guard let menu = self as? NSMenu, let menuItem = menu.item(at: index) else {
 			return false
 		}
 		return menuItem.click()

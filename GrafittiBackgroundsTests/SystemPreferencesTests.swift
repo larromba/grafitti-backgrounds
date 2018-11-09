@@ -5,7 +5,7 @@ class SystemPreferencesTests: XCTestCase {
 	func testSystemPreferencesOpensOnMenuClick() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
-		let menuController = MenuController(statusItem: statusItem)
+		let menuController = AppMenuController(statusItem: statusItem)
 		let workspace = MockWorkspace()
 		let workspaceController = WorkspaceController(workspace: workspace)
 

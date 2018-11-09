@@ -4,20 +4,20 @@ import Cocoa
 protocol Menuable: Mockable {
     var viewState: MenuViewState { get set }
 
-    func item(at index: Int) -> MenuItemable?
+    func item<T: MenuItemable>(at index: Int) -> T?
 }
 
-class Menu: NSMenu, Menuable {
+final class Menu: NSMenu, Menuable {
     var viewState: MenuViewState {
         didSet {
             update(viewState: viewState)
         }
     }
 
-    init(viewState: MenuViewState, items: [NSMenuItem]) {
+    init(viewState: MenuViewState) {
         self.viewState = viewState
         super.init(title: viewState.title)
-        items.forEach { addItem($0) }
+        update(viewState: viewState)
     }
 
     @available(*, unavailable)
@@ -25,11 +25,8 @@ class Menu: NSMenu, Menuable {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func item(at index: Int) -> MenuItemable? {
-        guard index >= items.startIndex, index < items.endIndex else {
-            return nil
-        }
-        return items[index] as? MenuItemable
+    func item<T: MenuItemable>(at index: Int) -> T? {
+        return items[safe: index] as? T
     }
 
     // MARK: - private
@@ -37,5 +34,11 @@ class Menu: NSMenu, Menuable {
     private func update(viewState: MenuViewState) {
         title = viewState.title
         autoenablesItems = viewState.autoenablesItems
+        setItems(viewState.items)
+    }
+
+    private func setItems(_ items: [NSMenuItem]) {
+        removeAllItems()
+        items.forEach { addItem($0) }
     }
 }

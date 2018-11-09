@@ -1,14 +1,14 @@
 import Foundation
 
 enum PhotoResourceResponseError: Error {
-	case malformedHTML
-	case missingBaseURL
-	case malformedBaseURL
-	case missingPhotoURLs
+    case malformedHTML
+    case missingBaseURL
+    case malformedBaseURL
+    case missingPhotoURLs
 }
 
 struct PhotoResourceResponse: Response {
-	typealias ErrorType = PhotoResourceResponseError
+    typealias ErrorType = PhotoResourceResponseError
 
     let data: Data
     let photoResources: [PhotoResource]

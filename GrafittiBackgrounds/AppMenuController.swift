@@ -1,26 +1,25 @@
 import Cocoa
 
-protocol MenuControllerDelegate: AnyObject {
-    func menuController(_ controller: MenuController, selected action: AppMenu.Action)
+protocol AppMenuControllerDelegate: AnyObject {
+    func menuController(_ controller: AppMenuController, selected action: AppMenu.Action)
 }
 
-// sourcery: name = MenuController
-protocol MenuControllable: Mockable {
+// sourcery: name = AppMenuController
+protocol AppMenuControllable: Mockable {
     func setLoadingPercentage(_ percentage: Double)
     func setIsLoading(_ isLoading: Bool)
     func setRefreshAction(_ action: AppMenu.Action.Refresh)
-    func setDelegate(_ delegate: MenuControllerDelegate)
+    func setDelegate(_ delegate: AppMenuControllerDelegate)
 }
 
-final class MenuController: MenuControllable {
+final class AppMenuController: AppMenuControllable {
     private var statusItem: LoadingStatusItemable
-    private weak var delegate: MenuControllerDelegate?
+    private weak var delegate: AppMenuControllerDelegate?
 
     init(statusItem: LoadingStatusItemable) {
         self.statusItem = statusItem
-        self.statusItem.menu = Menu(
-            viewState: MenuViewState(title: "", autoenablesItems: false),
-            items: AppMenu.items(delegate: self)
+        self.statusItem.menu = Menu(viewState:
+            MenuViewState(title: "", autoenablesItems: false, items: AppMenu.defaultItems(delegate: self))
         )
     }
 
@@ -43,48 +42,45 @@ final class MenuController: MenuControllable {
     }
 
     func setRefreshAction(_ action: AppMenu.Action.Refresh) {
-        let order = AppMenu.Order.self
+        typealias MenuItemType = MenuItem<AppMenu.Action, AppMenuController>
         guard
-            var refreshItem = statusItem.item(at: order.refreshFolder.rawValue),
-            var clearFolderItem = statusItem.item(at: order.clearFolder.rawValue) else {
+            let refreshItem: MenuItemType = statusItem.item(at: AppMenu.Order.refreshFolder.rawValue),
+            let clearFolderItem: MenuItemType = statusItem.item(at: AppMenu.Order.clearFolder.rawValue) else {
                 return
         }
         switch action {
         case .refresh:
             let action = AppMenu.Action.refreshFolder(action: .refresh)
-            refreshItem.setMenuAction(action)
+            refreshItem.actionType = action
             refreshItem.viewState = MenuItemViewState(
                 title: action.localizedTitle,
                 keyEquivalent: action.keyEquivilent,
                 isEnabled: true
             )
-            clearFolderItem.viewState = clearFolderItem.viewState.copyWithIsEnabled(true)
+            clearFolderItem.viewState = clearFolderItem.viewState.copy(isEnabled: true)
         case .cancel:
             let action = AppMenu.Action.refreshFolder(action: .cancel)
-            refreshItem.setMenuAction(action)
+            refreshItem.actionType = action
             refreshItem.viewState = MenuItemViewState(
                 title: action.localizedTitle,
                 keyEquivalent: action.keyEquivilent,
                 isEnabled: true
             )
-            clearFolderItem.viewState = clearFolderItem.viewState.copyWithIsEnabled(false)
+            clearFolderItem.viewState = clearFolderItem.viewState.copy(isEnabled: false)
         }
     }
 
-    func setDelegate(_ delegate: MenuControllerDelegate) {
+    func setDelegate(_ delegate: AppMenuControllerDelegate) {
         self.delegate = delegate
     }
 }
 
 // MARK: - MenuItemDelegate
 
-extension MenuController: MenuItemDelegate {
-    func menuItemPressed(_ menuItem: MenuItemable) {
-		// TODO: better way of doing this?
-        guard let action = menuItem.menuAction as? AppMenu.Action else {
-            assertionFailure("expected AppMenu.Action")
-            return
-        }
-        delegate?.menuController(self, selected: action)
+extension AppMenuController: MenuItemDelegate {
+    typealias ActionType = AppMenu.Action
+
+    func menuItemPressed<T: MenuItemable>(_ menuItem: T) where T.ActionType == ActionType {
+        delegate?.menuController(self, selected: menuItem.actionType)
     }
 }

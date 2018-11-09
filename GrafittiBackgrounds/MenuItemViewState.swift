@@ -7,7 +7,7 @@ struct MenuItemViewState {
 }
 
 extension MenuItemViewState {
-    func copyWithIsEnabled(_ isEnabled: Bool) -> MenuItemViewState {
+    func copy(isEnabled: Bool) -> MenuItemViewState {
         return MenuItemViewState(
             title: title,
             keyEquivalent: keyEquivalent,

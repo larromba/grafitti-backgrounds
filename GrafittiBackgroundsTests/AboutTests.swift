@@ -5,7 +5,7 @@ class AboutTests: XCTestCase {
 	func testAboutOpensOnMenuClick() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
-		let menuController = MenuController(statusItem: statusItem)
+		let menuController = AppMenuController(statusItem: statusItem)
 		let app = MockApplication()
 
 		// sut

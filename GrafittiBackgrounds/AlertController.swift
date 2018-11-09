@@ -6,8 +6,8 @@ protocol AlertControlling: Mockable {
 }
 
 class AlertController: AlertControlling {
-	func showAlert(_ error: Error) {
-		let alert = NSAlert(error: error)
-		_ = alert.runModal()
-	}
+    func showAlert(_ error: Error) {
+        let alert = NSAlert(error: error)
+        _ = alert.runModal()
+    }
 }

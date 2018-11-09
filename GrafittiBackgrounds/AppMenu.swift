@@ -2,7 +2,7 @@ import Cocoa
 import Foundation
 
 enum AppMenu {
-    enum Action: MenuAction {
+    enum Action {
         enum Refresh {
             case cancel
             case refresh
@@ -52,10 +52,9 @@ enum AppMenu {
         case quit
     }
 
-    static func items(delegate: MenuItemDelegate) -> [NSMenuItem] {
-        var index = 0
+    static func defaultItems<T: MenuItemDelegate>(delegate: T) -> [NSMenuItem] where T.ActionType == Action {
         var items = [NSMenuItem]()
-        while let order = Order(rawValue: index) {
+        while let order = Order(rawValue: items.count) {
             let item: NSMenuItem
             switch order {
             case .refreshFolder:
@@ -76,7 +75,6 @@ enum AppMenu {
                 item = NSMenuItem.item(for: Action.quit, delegate: delegate)
             }
             items += [item]
-            index += 1
         }
         return items
     }
@@ -85,12 +83,9 @@ enum AppMenu {
 // MARK: - NSMenuItem
 
 private extension NSMenuItem {
-    static func item(for action: AppMenu.Action, delegate: MenuItemDelegate) -> NSMenuItem {
-        let viewState = MenuItemViewState(
-            title: action.localizedTitle,
-            keyEquivalent: "",
-            isEnabled: true
-        )
-        return MenuItem(viewState: viewState, menuAction: action, delegate: delegate)
+    static func item<T: MenuItemDelegate>(for action: AppMenu.Action,
+                                          delegate: T) -> NSMenuItem where T.ActionType == AppMenu.Action {
+        let viewState = MenuItemViewState(title: action.localizedTitle, keyEquivalent: "", isEnabled: true)
+        return MenuItem<AppMenu.Action, T>(viewState: viewState, actionType: action, delegate: delegate)
     }
 }

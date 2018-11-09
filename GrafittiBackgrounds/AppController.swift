@@ -8,14 +8,14 @@ protocol AppControllable: Mockable {
 final class AppController: AppControllable {
     private var preferencesController: PreferencesControllable
     private let workspaceController: WorkspaceControllable
-    private var menuController: MenuControllable
+    private var menuController: AppMenuControllable
     private var photoController: PhotoControllable
     private let alertController: AlertControlling
     private let app: Applicationable
 
     init(preferencesController: PreferencesControllable,
          workspaceController: WorkspaceControllable,
-         menuController: MenuControllable,
+         menuController: AppMenuControllable,
          photoController: PhotoControllable,
          alertController: AlertControlling,
          app: Applicationable) {
@@ -71,8 +71,8 @@ extension AppController: PreferencesControllerDelegate {
 
 // MARK: - MenuControllerDelegate
 
-extension AppController: MenuControllerDelegate {
-    func menuController(_ controller: MenuController, selected action: AppMenu.Action) {
+extension AppController: AppMenuControllerDelegate {
+    func menuController(_ controller: AppMenuController, selected action: AppMenu.Action) {
         switch action {
         case .refreshFolder(action: .refresh):
             reloadPhotos()

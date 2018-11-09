@@ -5,7 +5,7 @@ extension AppController {
 	static func testable(
 		preferencesController: PreferencesControllable = MockPreferencesController(),
 		workspaceController: WorkspaceControllable = MockWorkspaceController(),
-		menuController: MenuControllable = MockMenuController(),
+		menuController: AppMenuControllable = MockAppMenuController(),
 		photoController: PhotoControllable = MockPhotoController(),
 		alertController: AlertControlling = MockAlertController(),
 		app: Applicationable = MockApplication()) -> AppController {

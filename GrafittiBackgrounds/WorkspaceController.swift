@@ -18,14 +18,14 @@ final class WorkspaceController: WorkspaceControllable {
     }
 
     func open(_ preference: SystemPreference) -> Result<Void> {
-		return open(preference.url)
+        return open(preference.url)
     }
 
     func open(_ url: URL) -> Result<Void> {
-		if workspace.open(url) {
-			return .success(())
-		} else {
-			return .failure(WorkspaceError.errorOpeningURL)
-		}
+        if workspace.open(url) {
+            return .success(())
+        } else {
+            return .failure(WorkspaceError.errorOpeningURL)
+        }
     }
 }

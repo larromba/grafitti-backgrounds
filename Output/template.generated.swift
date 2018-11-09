@@ -174,6 +174,79 @@ class MockAppController: NSObject, AppControllable {
 class MockAppDelegate: NSObject, AppDelegatable {
 }
 
+class MockAppMenuController: NSObject, AppMenuControllable {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - setLoadingPercentage
+
+    func setLoadingPercentage(_ percentage: Double) {
+        let functionName = setLoadingPercentage1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: percentage, forKey: setLoadingPercentage1.params.percentage)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum setLoadingPercentage1: String, _StringRawRepresentable {
+      case name = "setLoadingPercentage1"
+      enum params: String, _StringRawRepresentable {
+        case percentage = "setLoadingPercentage(_percentage:Double).percentage"
+      }
+    }
+
+    // MARK: - setIsLoading
+
+    func setIsLoading(_ isLoading: Bool) {
+        let functionName = setIsLoading2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: isLoading, forKey: setIsLoading2.params.isLoading)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum setIsLoading2: String, _StringRawRepresentable {
+      case name = "setIsLoading2"
+      enum params: String, _StringRawRepresentable {
+        case isLoading = "setIsLoading(_isLoading:Bool).isLoading"
+      }
+    }
+
+    // MARK: - setRefreshAction
+
+    func setRefreshAction(_ action: AppMenu.Action.Refresh) {
+        let functionName = setRefreshAction3.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: action, forKey: setRefreshAction3.params.action)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum setRefreshAction3: String, _StringRawRepresentable {
+      case name = "setRefreshAction3"
+      enum params: String, _StringRawRepresentable {
+        case action = "setRefreshAction(_action:AppMenu.Action.Refresh).action"
+      }
+    }
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: AppMenuControllerDelegate) {
+        let functionName = setDelegate4.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate4.params.delegate)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum setDelegate4: String, _StringRawRepresentable {
+      case name = "setDelegate4"
+      enum params: String, _StringRawRepresentable {
+        case delegate = "setDelegate(_delegate:AppMenuControllerDelegate).delegate"
+      }
+    }
+}
+
 class MockApplication: NSObject, Applicationable {
     let invocations = _Invocations()
     let actions = _Actions()
@@ -390,104 +463,33 @@ class MockLoadingStatusItem: NSObject, LoadingStatusItemable {
     let invocations = _Invocations()
     let actions = _Actions()
 
-    // MARK: - item
+    // MARK: - item<T: MenuItemable>
 
-    func item(at index: Int) -> MenuItemable? {
+    func item<T: MenuItemable>(at index: Int) -> T? {
         let functionName = item1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: index, forKey: item1.params.index)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        return actions.returnValue(for: functionName) as? MenuItemable
+        return actions.returnValue(for: functionName) as? T
     }
 
     enum item1: String, _StringRawRepresentable {
       case name = "item1"
       enum params: String, _StringRawRepresentable {
-        case index = "item(atindex:Int).index"
-      }
-    }
-}
-
-class MockMenuController: NSObject, MenuControllable {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - setLoadingPercentage
-
-    func setLoadingPercentage(_ percentage: Double) {
-        let functionName = setLoadingPercentage1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: percentage, forKey: setLoadingPercentage1.params.percentage)
-        invocations.record(invocation)
-        actions.closure(for: functionName)?()
-    }
-
-    enum setLoadingPercentage1: String, _StringRawRepresentable {
-      case name = "setLoadingPercentage1"
-      enum params: String, _StringRawRepresentable {
-        case percentage = "setLoadingPercentage(_percentage:Double).percentage"
-      }
-    }
-
-    // MARK: - setIsLoading
-
-    func setIsLoading(_ isLoading: Bool) {
-        let functionName = setIsLoading2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: isLoading, forKey: setIsLoading2.params.isLoading)
-        invocations.record(invocation)
-        actions.closure(for: functionName)?()
-    }
-
-    enum setIsLoading2: String, _StringRawRepresentable {
-      case name = "setIsLoading2"
-      enum params: String, _StringRawRepresentable {
-        case isLoading = "setIsLoading(_isLoading:Bool).isLoading"
-      }
-    }
-
-    // MARK: - setRefreshAction
-
-    func setRefreshAction(_ action: AppMenu.Action.Refresh) {
-        let functionName = setRefreshAction3.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: action, forKey: setRefreshAction3.params.action)
-        invocations.record(invocation)
-        actions.closure(for: functionName)?()
-    }
-
-    enum setRefreshAction3: String, _StringRawRepresentable {
-      case name = "setRefreshAction3"
-      enum params: String, _StringRawRepresentable {
-        case action = "setRefreshAction(_action:AppMenu.Action.Refresh).action"
-      }
-    }
-
-    // MARK: - setDelegate
-
-    func setDelegate(_ delegate: MenuControllerDelegate) {
-        let functionName = setDelegate4.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: delegate, forKey: setDelegate4.params.delegate)
-        invocations.record(invocation)
-        actions.closure(for: functionName)?()
-    }
-
-    enum setDelegate4: String, _StringRawRepresentable {
-      case name = "setDelegate4"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:MenuControllerDelegate).delegate"
+        case index = "item<T:MenuItemable>(atindex:Int).index"
       }
     }
 }
 
 class MockMenuItem: NSObject, MenuItemable {
-    var menuAction: MenuAction {
-        get { return _menuAction }
-        set(value) { _menuAction = value }
+    typealias DelegateType = Any
+    typealias ActionType = Any
+    var actionType: ActionType {
+        get { return _actionType }
+        set(value) { _actionType = value }
     }
-    var _menuAction: MenuAction!
+    var _actionType: ActionType!
     var viewState: MenuItemViewState {
         get { return _viewState }
         set(value) { _viewState = value }
@@ -498,7 +500,7 @@ class MockMenuItem: NSObject, MenuItemable {
 
     // MARK: - setDelegate
 
-    func setDelegate(_ delegate: MenuItemDelegate) {
+    func setDelegate(_ delegate: DelegateType) {
         let functionName = setDelegate1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
@@ -509,24 +511,7 @@ class MockMenuItem: NSObject, MenuItemable {
     enum setDelegate1: String, _StringRawRepresentable {
       case name = "setDelegate1"
       enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:MenuItemDelegate).delegate"
-      }
-    }
-
-    // MARK: - setMenuAction
-
-    func setMenuAction(_ menuAction: MenuAction) {
-        let functionName = setMenuAction2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: menuAction, forKey: setMenuAction2.params.menuAction)
-        invocations.record(invocation)
-        actions.closure(for: functionName)?()
-    }
-
-    enum setMenuAction2: String, _StringRawRepresentable {
-      case name = "setMenuAction2"
-      enum params: String, _StringRawRepresentable {
-        case menuAction = "setMenuAction(_menuAction:MenuAction).menuAction"
+        case delegate = "setDelegate(_delegate:DelegateType).delegate"
       }
     }
 }
@@ -540,21 +525,21 @@ class MockMenu: NSObject, Menuable {
     let invocations = _Invocations()
     let actions = _Actions()
 
-    // MARK: - item
+    // MARK: - item<T: MenuItemable>
 
-    func item(at index: Int) -> MenuItemable? {
+    func item<T: MenuItemable>(at index: Int) -> T? {
         let functionName = item1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: index, forKey: item1.params.index)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        return actions.returnValue(for: functionName) as? MenuItemable
+        return actions.returnValue(for: functionName) as? T
     }
 
     enum item1: String, _StringRawRepresentable {
       case name = "item1"
       enum params: String, _StringRawRepresentable {
-        case index = "item(atindex:Int).index"
+        case index = "item<T:MenuItemable>(atindex:Int).index"
       }
     }
 }
@@ -988,7 +973,7 @@ class MockUserDefaults: NSObject, UserDefaultable {
         invocation.set(parameter: defaultName, forKey: object1.params.defaultName)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        return actions.returnValue(for: functionName) as? Any
+        return actions.returnValue(for: functionName) as Any
     }
 
     enum object1: String, _StringRawRepresentable {

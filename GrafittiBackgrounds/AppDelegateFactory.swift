@@ -15,7 +15,7 @@ enum AppDelegateFactory {
 
         let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan)
         let statusItem = LoadingStatusItem(viewState: viewState, statusBar: .system)
-        let menuController = MenuController(statusItem: statusItem)
+        let menuController = AppMenuController(statusItem: statusItem)
 
         let networkManager = NetworkManager()
         let fileManager = FileManager.default
