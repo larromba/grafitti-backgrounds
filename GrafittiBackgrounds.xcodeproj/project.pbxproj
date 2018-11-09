@@ -80,6 +80,7 @@
 		7FED2CA52116145600AAE2A5 /* MenuViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA42116145600AAE2A5 /* MenuViewState.swift */; };
 		7FED2CA7211623E600AAE2A5 /* LoadingStatusItemViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */; };
 		7FED2CAF2118830200AAE2A5 /* MenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CAE2118830200AAE2A5 /* MenuAction.swift */; };
+		7FF2905F2195872C0018C003 /* ResultExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2905E2195872C0018C003 /* ResultExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +175,7 @@
 		7FED2CA42116145600AAE2A5 /* MenuViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewState.swift; sourceTree = "<group>"; };
 		7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusItemViewState.swift; sourceTree = "<group>"; };
 		7FED2CAE2118830200AAE2A5 /* MenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAction.swift; sourceTree = "<group>"; };
+		7FF2905E2195872C0018C003 /* ResultExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -425,6 +427,7 @@
 				7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */,
 				7F65C8A82189E6D700634454 /* Testable.swift */,
 				7F635A41218A6D7A0013E970 /* NSTextFieldExensions.swift */,
+				7FF2905E2195872C0018C003 /* ResultExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -684,6 +687,7 @@
 				7F24BE422194D679006BE4D0 /* template.generated.swift in Sources */,
 				7F65C8B3218A014600634454 /* RefreshTests.swift in Sources */,
 				7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */,
+				7FF2905F2195872C0018C003 /* ResultExtensions.swift in Sources */,
 				7F65C8AF218A012A00634454 /* PreferencesTests.swift in Sources */,
 				7F635A42218A6D7A0013E970 /* NSTextFieldExensions.swift in Sources */,
 			);

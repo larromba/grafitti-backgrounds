@@ -39,9 +39,7 @@ final class AppController: AppControllable {
     // MARK: - private
 
     private func reloadPhotos() {
-        photoController.reloadPhotos { [weak self] (result: Result<[PhotoControllerReloadResult]>) in
-            self?.handleResult(result)
-        }
+        photoController.reloadPhotos(completion: handleResult)
     }
 
     private func handleResult<T>(_ result: Result<T>) {

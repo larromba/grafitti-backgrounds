@@ -188,7 +188,7 @@ final class PhotoController: PhotoControllable {
             return
         }
 
-        let allResources = albums.map({ $0.resources }).reduce([], +)
+        let allResources = albums.map { $0.resources }.reduce([], +)
         let group = DispatchGroup()
         var results = [PhotoControllerReloadResult]()
 
@@ -198,7 +198,7 @@ final class PhotoController: PhotoControllable {
             photoService.downloadPhoto(resource, completion: { result in
                 switch result {
                 case .success(let resource):
-                    savedResources.append(resource)
+                    savedResources += [resource]
                     switch self.photoStorageService.save(savedResources) {
                     case .success:
                         results += [PhotoControllerReloadResult(photo: resource, result: .success(()))]

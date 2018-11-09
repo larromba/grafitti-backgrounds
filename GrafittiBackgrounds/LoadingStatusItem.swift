@@ -11,6 +11,19 @@ protocol LoadingStatusItemable: Mockable {
 }
 
 final class LoadingStatusItem: LoadingStatusItemable {
+    var viewState: LoadingStatusItemViewState {
+        didSet {
+            update(viewState: viewState)
+        }
+    }
+    var menu: Menuable? {
+        get {
+            return item.menu as? Menuable
+        }
+        set {
+            item.menu = newValue as? NSMenu
+        }
+    }
     private(set) var statusBar: NSStatusBar
     private(set) var item: NSStatusItem
     private(set) var isLoading: Bool = false {
@@ -49,20 +62,6 @@ final class LoadingStatusItem: LoadingStatusItemable {
         spinner.doubleValue = 0.0
         return spinner
     }()
-
-    var viewState: LoadingStatusItemViewState {
-        didSet {
-            update(viewState: viewState)
-        }
-    }
-    var menu: Menuable? {
-        get {
-            return item.menu as? Menuable
-        }
-        set {
-            item.menu = newValue as? NSMenu
-        }
-    }
 
     init(viewState: LoadingStatusItemViewState, statusBar: NSStatusBar) {
         self.viewState = viewState

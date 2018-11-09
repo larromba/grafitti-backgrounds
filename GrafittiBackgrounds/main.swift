@@ -1,5 +1,6 @@
 import Cocoa
 
+// using custom NSApplicationMain as this is a UIElement app
 private func main() {
     let app = NSApplication.shared
     NSApp = app
