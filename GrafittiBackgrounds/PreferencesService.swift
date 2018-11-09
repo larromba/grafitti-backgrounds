@@ -7,10 +7,6 @@ protocol PreferencesServicing: Mockable {
 }
 
 final class PreferencesService: PreferencesServicing {
-    enum PreferencesError: Error {
-        case encodeError(Error)
-        case decodeError(Error)
-    }
     private enum Key: String, Keyable {
         case preferences
     }
@@ -44,7 +40,7 @@ final class PreferencesService: PreferencesServicing {
             }
         case .failure(let error):
             switch error {
-            case DataManger.DataError.dataNotFound:
+            case DataError.dataNotFound:
                 return .success(Preferences())
             default:
                 return .failure(error)

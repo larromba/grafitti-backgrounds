@@ -16,7 +16,7 @@ protocol PreferencesControllable: Mockable {
 
 final class PreferencesController: PreferencesControllable {
     private let windowController: WindowControlling
-    private var preferencesViewController: PreferencesViewControllable
+    private let preferencesViewController: PreferencesViewControllable
     private let preferencesService: PreferencesServicing
     private weak var delegate: PreferencesControllerDelegate?
 

@@ -7,10 +7,6 @@ protocol WorkspaceControllable: Mockable {
 }
 
 final class WorkspaceController: WorkspaceControllable {
-    enum WorkspaceError: Error {
-        case errorOpeningURL
-    }
-
     private let workspace: Workspacing
 
     init(workspace: Workspacing) {

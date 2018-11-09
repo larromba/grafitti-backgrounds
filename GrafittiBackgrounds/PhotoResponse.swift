@@ -1,11 +1,5 @@
 import Cocoa
 
-enum PhotoResponseError: Error {
-    case malformedHTML
-    case missingImageURL
-    case malformedImageURL
-}
-
 final class PhotoResponse: Response {
     typealias ErrorType = PhotoResponseError
 

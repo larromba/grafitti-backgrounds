@@ -84,6 +84,9 @@
 		7FF29062219601DF0018C003 /* UserNotificationCentering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29061219601DF0018C003 /* UserNotificationCentering.swift */; };
 		7FF290642196030B0018C003 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290632196030B0018C003 /* Alert.swift */; };
 		7FF29066219617FC0018C003 /* ResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29065219617FC0018C003 /* ResponseTests.swift */; };
+		7FF29068219622BD0018C003 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29067219622BD0018C003 /* Error.swift */; };
+		7FF2906A2196279A0018C003 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290692196279A0018C003 /* Reachability.swift */; };
+		7FF2906C21962D190018C003 /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2906B21962D190018C003 /* NetworkTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +185,9 @@
 		7FF29061219601DF0018C003 /* UserNotificationCentering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationCentering.swift; sourceTree = "<group>"; };
 		7FF290632196030B0018C003 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		7FF29065219617FC0018C003 /* ResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseTests.swift; sourceTree = "<group>"; };
+		7FF29067219622BD0018C003 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		7FF290692196279A0018C003 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		7FF2906B21962D190018C003 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,6 +362,7 @@
 				7F247E981FD46EA90077D878 /* Preferences.swift */,
 				7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */,
 				7FF290632196030B0018C003 /* Alert.swift */,
+				7FF29067219622BD0018C003 /* Error.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -414,6 +421,7 @@
 				7F247E751FD393A50077D878 /* BaseOperation.swift */,
 				7F51DACD1FD34A4500502804 /* Log.swift */,
 				7F98DB8C2180EBCA00656466 /* Result.swift */,
+				7FF290692196279A0018C003 /* Reachability.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -449,6 +457,7 @@
 				7F65C8B4218A015600634454 /* ClearFolderTests.swift */,
 				7F65C8B6218A016D00634454 /* AlertTests.swift */,
 				7FF29065219617FC0018C003 /* ResponseTests.swift */,
+				7FF2906B21962D190018C003 /* NetworkTests.swift */,
 				7F6BC6BC216E9B2900353FA1 /* Generated */,
 				7F543E97214E8358008C2D5D /* Extensions */,
 				7F543E96214E8342008C2D5D /* Resources */,
@@ -633,6 +642,7 @@
 				7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */,
 				7F247E761FD393A50077D878 /* BaseOperation.swift in Sources */,
 				7F247E971FD46E770077D878 /* PreferencesService.swift in Sources */,
+				7FF2906A2196279A0018C003 /* Reachability.swift in Sources */,
 				7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */,
 				7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */,
 				7FF29062219601DF0018C003 /* UserNotificationCentering.swift in Sources */,
@@ -658,6 +668,7 @@
 				7F24BE402194D243006BE4D0 /* AppDelegateFactory.swift in Sources */,
 				7F51DAB61FD33E9000502804 /* HTTPVerb.swift in Sources */,
 				7F51DAB21FD33E3200502804 /* Request.swift in Sources */,
+				7FF29068219622BD0018C003 /* Error.swift in Sources */,
 				7F247E991FD46EA90077D878 /* Preferences.swift in Sources */,
 				7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */,
 				7F24BE3E2194D210006BE4D0 /* main.swift in Sources */,
@@ -708,6 +719,7 @@
 				7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */,
 				7FF29066219617FC0018C003 /* ResponseTests.swift in Sources */,
 				7FF2905F2195872C0018C003 /* ResultExtensions.swift in Sources */,
+				7FF2906C21962D190018C003 /* NetworkTests.swift in Sources */,
 				7F65C8AF218A012A00634454 /* PreferencesTests.swift in Sources */,
 				7F635A42218A6D7A0013E970 /* NSTextFieldExensions.swift in Sources */,
 			);

@@ -9,9 +9,6 @@ protocol PhotoServicing: Mockable {
 }
 
 final class PhotoService: PhotoServicing {
-    enum PhotoError: Error {
-        case badSaveLocation
-    }
     private enum FileExtension: String {
         case tmp = ".tmp"
         case png = ".png"
@@ -57,7 +54,7 @@ final class PhotoService: PhotoServicing {
                     .absoluteString.replacingOccurrences(of: FileExtension.tmp.rawValue,
                                                          with: FileExtension.png.rawValue)
                 guard let fileURL = URL(string: filePath) else {
-                    completion(.failure(PhotoError.badSaveLocation))
+                    completion(.failure(PhotoServiceError.badSaveLocation))
                     return
                 }
                 do {

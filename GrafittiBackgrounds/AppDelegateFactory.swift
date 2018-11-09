@@ -13,9 +13,10 @@ enum AppDelegateFactory {
         let workspace = NSWorkspace.shared
         let workspaceController = WorkspaceController(workspace: workspace)
 
-        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan)
+        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
         let statusItem = LoadingStatusItem(viewState: viewState, statusBar: .system)
-        let menuController = AppMenuController(statusItem: statusItem)
+        let reachability = Reachability()
+        let menuController = AppMenuController(statusItem: statusItem, reachability: reachability)
 
         let networkManager = NetworkManager()
         let fileManager = FileManager.default

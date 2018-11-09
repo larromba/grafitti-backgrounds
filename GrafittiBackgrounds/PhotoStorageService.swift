@@ -13,12 +13,6 @@ struct PhotoStorageServiceDeletionResult {
 }
 
 final class PhotoStorageService: PhotoStorageServicing {
-    enum PhotoError: Error {
-        case encodeError(Error)
-        case decodeError(Error)
-        case fileDeleteError(Error)
-        case noRecord
-    }
     private enum Key: String, Keyable {
         case photoResource
     }
@@ -39,7 +33,7 @@ final class PhotoStorageService: PhotoStorageServicing {
             dataManager.save(data, key: Key.photoResource)
             return .success(())
         } catch {
-            return .failure(PhotoError.encodeError(error))
+            return .failure(PhotoStorageError.encodeError(error))
         }
     }
 
@@ -51,11 +45,11 @@ final class PhotoStorageService: PhotoStorageServicing {
                 let resources = try decoder.decode([PhotoResource].self, from: data)
                 return .success(resources)
             } catch {
-                return .failure(PhotoError.decodeError(error))
+                return .failure(PhotoStorageError.decodeError(error))
             }
         case .failure(let error):
             switch error {
-            case DataManger.DataError.dataNotFound:
+            case DataError.dataNotFound:
                 return .success([])
             default:
                 return .failure(error)
@@ -86,13 +80,13 @@ final class PhotoStorageService: PhotoStorageServicing {
                 } else {
                     results += [PhotoStorageServiceDeletionResult(
                         resource: resource,
-                        result: .failure(PhotoError.noRecord)
+                        result: .failure(PhotoStorageError.noRecord)
                         )]
                 }
             } catch {
                 results += [PhotoStorageServiceDeletionResult(
                     resource: resource,
-                    result: .failure(PhotoError.fileDeleteError(error))
+                    result: .failure(PhotoStorageError.fileDeleteError(error))
                     )]
             }
         }

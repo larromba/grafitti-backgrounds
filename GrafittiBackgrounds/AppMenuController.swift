@@ -13,32 +13,25 @@ protocol AppMenuControllable: Mockable {
 }
 
 final class AppMenuController: AppMenuControllable {
-    private var statusItem: LoadingStatusItemable
+    private let statusItem: LoadingStatusItemable
+    private let reachability: Reachable
     private weak var delegate: AppMenuControllerDelegate?
 
-    init(statusItem: LoadingStatusItemable) {
+    init(statusItem: LoadingStatusItemable, reachability: Reachable) {
         self.statusItem = statusItem
+        self.reachability = reachability
         self.statusItem.menu = Menu(viewState:
             MenuViewState(title: "", autoenablesItems: false, items: AppMenu.defaultItems(delegate: self))
         )
+        reachability.setDelegate(self)
     }
 
     func setLoadingPercentage(_ percentage: Double) {
-        let viewState = LoadingStatusItemViewState(
-            isLoading: statusItem.viewState.isLoading,
-            loadingPercentage: percentage,
-            style: statusItem.viewState.style
-        )
-        statusItem.viewState = viewState
+        statusItem.viewState = statusItem.viewState.copy(loadingPercentage: percentage)
     }
 
     func setIsLoading(_ isLoading: Bool) {
-        let viewState = LoadingStatusItemViewState(
-            isLoading: isLoading,
-            loadingPercentage: statusItem.viewState.loadingPercentage,
-            style: statusItem.viewState.style
-        )
-        statusItem.viewState = viewState
+        statusItem.viewState = statusItem.viewState.copy(isLoading: isLoading)
     }
 
     func setRefreshAction(_ action: AppMenu.Action.Refresh) {
@@ -82,5 +75,13 @@ extension AppMenuController: MenuItemDelegate {
 
     func menuItemPressed<T: MenuItemable>(_ menuItem: T) where T.ActionType == ActionType {
         delegate?.menuController(self, selected: menuItem.actionType)
+    }
+}
+
+// MARK: - ReachabilityDelegate
+
+extension AppMenuController: ReachabilityDelegate {
+    func reachabilityDidChange(_ reachability: Reachable, isReachable: Bool) {
+        statusItem.viewState = statusItem.viewState.copy(alpha: isReachable ? 1.0 : 0.5)
     }
 }

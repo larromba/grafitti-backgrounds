@@ -7,10 +7,6 @@ protocol DataManaging: Mockable {
 }
 
 final class DataManger: DataManaging {
-    enum DataError: Error {
-        case dataNotFound
-    }
-
     private let database: UserDefaultable
 
     init(database: UserDefaultable) {

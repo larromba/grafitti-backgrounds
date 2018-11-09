@@ -82,7 +82,7 @@ final class PhotoAlbumService: PhotoAlbumServicing {
 		return results.compactMap {
 			switch $0.result {
 			case .success: break
-			case .failure(let error as NetworkManager.NetworkError):
+			case .failure(let error as NetworkError):
 				if error.isCancelled { return error }
 			case .failure: break
 			}

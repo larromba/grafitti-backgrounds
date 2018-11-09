@@ -1,7 +1,7 @@
 import Cocoa
 
 // sourcery: name = LoadingStatusItem
-protocol LoadingStatusItemable: Mockable {
+protocol LoadingStatusItemable: AnyObject, Mockable {
     var isLoading: Bool { get }
     var loadingPercentage: Double { get }
     var viewState: LoadingStatusItemViewState { get set }
@@ -24,8 +24,8 @@ final class LoadingStatusItem: LoadingStatusItemable {
             item.menu = newValue as? NSMenu
         }
     }
-    private(set) var statusBar: NSStatusBar
-    private(set) var item: NSStatusItem
+    let statusBar: NSStatusBar
+    let item: NSStatusItem
     private(set) var isLoading: Bool = false {
         didSet {
             if isLoading {
@@ -83,5 +83,6 @@ final class LoadingStatusItem: LoadingStatusItemable {
     private func update(viewState: LoadingStatusItemViewState) {
         isLoading = viewState.isLoading
         loadingPercentage = viewState.loadingPercentage
+        item.button?.alphaValue = viewState.alpha
     }
 }

@@ -8,22 +8,6 @@ protocol NetworkManaging: Mockable {
 }
 
 final class NetworkManager: NetworkManaging {
-    enum NetworkError: Error {
-        case noData
-        case systemError(Error)
-        case httpErrorCode(Int)
-        case badResponse(Error)
-
-		var isCancelled: Bool {
-			switch self {
-			case .systemError(let error):
-				return (error as NSError).code == NSURLErrorCancelled
-			default:
-				return false
-			}
-		}
-    }
-
     private let urlSession = URLSession(configuration: .default)
     private let queue: OperationQueue = {
         let queue = OperationQueue()

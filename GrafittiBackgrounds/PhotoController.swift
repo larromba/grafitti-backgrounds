@@ -24,12 +24,6 @@ struct PhotoControllerReloadResult {
 }
 
 final class PhotoController: PhotoControllable {
-    enum PhotoError: Error {
-        case downloadInProgress
-        case notEnoughImages
-        case fileDeleteError([PhotoResource])
-    }
-
     private let photoAlbumService: PhotoAlbumServicing
     private let photoService: PhotoServicing
     private let photoStorageService: PhotoStorageServicing

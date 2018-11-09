@@ -1,10 +1,5 @@
 import Foundation
 
-enum PhotoAlbumsResponseError: Error {
-    case malformedHTML
-    case noPhotoAlbumsFound
-}
-
 struct PhotoAlbumsResponse: Response {
     typealias ErrorType = PhotoAlbumsResponseError
 

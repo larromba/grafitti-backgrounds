@@ -25,4 +25,32 @@ struct LoadingStatusItemViewState {
     let isLoading: Bool
     let loadingPercentage: Double
     let style: Style
+    let alpha: CGFloat
+
+    func copy(isLoading: Bool) -> LoadingStatusItemViewState {
+        return LoadingStatusItemViewState(
+            isLoading: isLoading,
+            loadingPercentage: loadingPercentage,
+            style: style,
+            alpha: alpha
+        )
+    }
+
+    func copy(loadingPercentage: Double) -> LoadingStatusItemViewState {
+        return LoadingStatusItemViewState(
+            isLoading: isLoading,
+            loadingPercentage: loadingPercentage,
+            style: style,
+            alpha: alpha
+        )
+    }
+
+    func copy(alpha: CGFloat) -> LoadingStatusItemViewState {
+        return LoadingStatusItemViewState(
+            isLoading: isLoading,
+            loadingPercentage: loadingPercentage,
+            style: style,
+            alpha: alpha
+        )
+    }
 }

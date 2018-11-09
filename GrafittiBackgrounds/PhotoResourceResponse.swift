@@ -1,12 +1,5 @@
 import Foundation
 
-enum PhotoResourceResponseError: Error {
-    case malformedHTML
-    case missingBaseURL
-    case malformedBaseURL
-    case missingPhotoURLs
-}
-
 struct PhotoResourceResponse: Response {
     typealias ErrorType = PhotoResourceResponseError
 

@@ -13,8 +13,10 @@ enum AppMenu {
         case preferences
         case systemPreferences
         case about
+        case contact
         case quit
 
+        //TODO: localize
         var localizedTitle: String {
             switch self {
             case .refreshFolder(action: .cancel):
@@ -31,6 +33,8 @@ enum AppMenu {
                 return "System Preferences".localized
             case .about:
                 return "About".localized
+            case .contact:
+                return "Report Bug".localized
             case .quit:
                 return "Quit".localized
             }
@@ -49,6 +53,7 @@ enum AppMenu {
         case systemPreferences
         case separator2
         case about
+        case contact
         case quit
     }
 
@@ -71,6 +76,8 @@ enum AppMenu {
                 item = NSMenuItem.item(for: Action.systemPreferences, delegate: delegate)
             case .about:
                 item = NSMenuItem.item(for: Action.about, delegate: delegate)
+            case .contact:
+                item = NSMenuItem.item(for: Action.contact, delegate: delegate)
             case .quit:
                 item = NSMenuItem.item(for: Action.quit, delegate: delegate)
             }

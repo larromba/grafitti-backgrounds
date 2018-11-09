@@ -6,10 +6,10 @@ protocol AppControllable: Mockable {
 }
 
 final class AppController: AppControllable {
-    private var preferencesController: PreferencesControllable
+    private let preferencesController: PreferencesControllable
     private let workspaceController: WorkspaceControllable
-    private var menuController: AppMenuControllable
-    private var photoController: PhotoControllable
+    private let menuController: AppMenuControllable
+    private let photoController: PhotoControllable
     private let alertController: AlertControlling
     private let app: Applicationable
 
@@ -44,7 +44,7 @@ final class AppController: AppControllable {
 			switch result {
 			case .success:
 				self?.alertController.showAlert(.reloadPhotosSuccess)
-			case .failure(let error as NetworkManager.NetworkError):
+			case .failure(let error as NetworkError):
 				guard !error.isCancelled else { return }
 				self?.alertController.showAlert(.error(error))
 			case .failure(let error):
@@ -103,6 +103,9 @@ extension AppController: AppMenuControllerDelegate {
             handleNoSuccessResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
         case .about:
             app.orderFrontStandardAboutPanel(self)
+        case .contact:
+            // TODO: add email contact
+            break
         case .quit:
             app.terminate(self)
         }
