@@ -32,12 +32,13 @@ enum AppDelegateFactory {
             photoStorageService: photoStorageService
         )
 
+		let alertController = AlertController(notificationCenter: NSUserNotificationCenter.default)
         let appController = AppController(
             preferencesController: preferencesController,
             workspaceController: workspaceController,
             menuController: menuController,
             photoController: photoController,
-            alertController: AlertController(),
+            alertController: alertController,
             app: app
         )
         let appDelegate = AppDelegate(appController: appController)

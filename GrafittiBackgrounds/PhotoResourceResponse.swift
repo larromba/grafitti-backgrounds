@@ -57,7 +57,7 @@ struct PhotoResourceResponse: Response {
         photoResources = try matches.compactMap { result -> PhotoResource? in
             // get dirty url component: "\"AF1QipNny8uQfuLxogrp1MpXAIS3sn8m0HSyfszcXsLz\",[\"https:"
             guard let range = Range(result.range, in: photoURLBlock) else {
-                log("error getting dirty urlComponent")
+                log_error("couldn't get dirty urlComponent")
                 return nil
             }
             let dirtyURLComponent = String(photoURLBlock[range])
@@ -72,7 +72,7 @@ struct PhotoResourceResponse: Response {
             guard
                 let urlComponentResult = urlComponentResults.first,
                 let urlComponentRange = Range(urlComponentResult.range, in: dirtyURLComponent) else {
-                    log("error getting urlComponent")
+                    log_error("couldn't get clean urlComponent")
                     return nil
             }
             let urlComponent = String(dirtyURLComponent[urlComponentRange]).replacingOccurrences(of: "\"", with: "")
@@ -81,7 +81,7 @@ struct PhotoResourceResponse: Response {
             var components = baseURLComponenets
             components.path = components.path.appending("/photo/").appending(urlComponent)
             guard let url = components.url else {
-                log("error with url")
+                log_error("components missing url")
                 return nil
             }
             return PhotoResource(url: url, fileURL: nil)

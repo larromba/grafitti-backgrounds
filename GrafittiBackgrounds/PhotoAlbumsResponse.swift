@@ -28,9 +28,9 @@ struct PhotoAlbumsResponse: Response {
         guard !matches.isEmpty else {
             throw PhotoAlbumsResponseError.noPhotoAlbumsFound
         }
-        photoAlbums = matches.compactMap { result -> PhotoAlbum? in
-            guard let range = Range(result.range, in: html), let url = URL(string: String(html[range])) else {
-                log("can't create photo album url")
+        photoAlbums = matches.compactMap {
+            guard let range = Range($0.range, in: html), let url = URL(string: String(html[range])) else {
+                log_error("couldn't create photo album url")
                 return nil
             }
             return PhotoAlbum(url: url, resources: [])

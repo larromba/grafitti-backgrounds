@@ -92,12 +92,7 @@ final class PhotoController: PhotoControllable {
         case .success(let resources):
             switch photoStorageService.remove(resources) {
             case .success(let results):
-                let badResults = results.filter {
-                    switch $0.result {
-                    case .success: return false
-                    case .failure: return true
-                    }
-                }
+                let badResults = results.filter { $0.result.isFailure }
                 if badResults.isEmpty {
                     return .success(())
                 } else {
@@ -151,12 +146,7 @@ final class PhotoController: PhotoControllable {
         photoAlbumService.fetchPhotoAlbums(completion: { [weak self] result in
             switch result {
             case .success(let results):
-                let successfulResults = results.filter {
-                    switch $0.result {
-                    case .success: return true
-                    case .failure: return false
-                    }
-                }
+                let successfulResults = results.filter { $0.result.isSuccess }
                 let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.album.resources.count })
                 guard numOfPossibleDownloads >= numberOfPhotos else {
                     DispatchQueue.main.async {
@@ -218,12 +208,7 @@ final class PhotoController: PhotoControllable {
 
         group.notify(queue: .main) {
             self.isDownloadInProgress = false
-            let successfulResults = results.filter {
-                switch $0.result {
-                case .success: return true
-                case .failure: return false
-                }
-            }
+			let successfulResults = results.filter { $0.result.isSuccess }
             guard successfulResults.count >= numberOfPhotos else {
                 completion(.failure(PhotoError.notEnoughImages))
                 return

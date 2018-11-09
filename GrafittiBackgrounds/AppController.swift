@@ -39,17 +39,27 @@ final class AppController: AppControllable {
     // MARK: - private
 
     private func reloadPhotos() {
-        photoController.reloadPhotos(completion: handleResult)
+		alertController.showAlert(.reloadingPhotos)
+		photoController.reloadPhotos(completion: { [weak self] result in
+			switch result {
+			case .success:
+				self?.alertController.showAlert(.reloadPhotosSuccess)
+			case .failure(let error as NetworkManager.NetworkError):
+				guard !error.isCancelled else { return }
+				self?.alertController.showAlert(.error(error))
+			case .failure(let error):
+				self?.alertController.showAlert(.error(error))
+			}
+		})
     }
 
-    private func handleResult<T>(_ result: Result<T>) {
-        switch result {
-        case .success:
-            break
-        case .failure(let error):
-            alertController.showAlert(error)
-        }
-    }
+	private func handleNoSuccessResult(_ result: Result<Void>) {
+		switch result {
+		case .success: break
+		case .failure(let error):
+			alertController.showAlert(.error(error))
+		}
+	}
 }
 
 // MARK: - PreferencesControllerDelegate
@@ -60,12 +70,12 @@ extension AppController: PreferencesControllerDelegate {
         case .success(let preferences):
             photoController.setPreferences(preferences)
         case .failure(let error):
-            alertController.showAlert(error)
+            alertController.showAlert(.error(error))
         }
     }
 
     func preferencesController(_ controller: PreferencesController, errorLoadingPreferences error: Error) {
-        alertController.showAlert(error)
+        alertController.showAlert(.error(error))
     }
 }
 
@@ -79,13 +89,18 @@ extension AppController: AppMenuControllerDelegate {
         case .refreshFolder(action: .cancel):
             photoController.cancelReload()
         case .openFolder:
-            handleResult(workspaceController.open(photoController.folderURL))
+			handleNoSuccessResult(workspaceController.open(photoController.folderURL))
         case .clearFolder:
-            handleResult(photoController.clearFolder())
+			switch photoController.clearFolder() {
+			case .success:
+				alertController.showAlert(.clearFolderSuccess)
+			case .failure(let error):
+				alertController.showAlert(.error(error))
+			}
         case .preferences:
             preferencesController.open()
         case .systemPreferences:
-            handleResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
+            handleNoSuccessResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
         case .about:
             app.orderFrontStandardAboutPanel(self)
         case .quit:

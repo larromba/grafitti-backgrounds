@@ -61,21 +61,32 @@ final class PhotoAlbumService: PhotoAlbumServicing {
                 switch result {
                 case .success(let resources):
                     albums[index].resources = resources
-                    results += [PhotoAlbumServiceFetchResult(
-                        album: albums[index],
-                        result: .success(())
-                        )]
+                    results += [PhotoAlbumServiceFetchResult(album: albums[index], result: .success(()))]
                 case .failure(let error):
-                    results += [PhotoAlbumServiceFetchResult(
-                        album: albums[index],
-                        result: .failure(error)
-                        )]
+                    results += [PhotoAlbumServiceFetchResult(album: albums[index], result: .failure(error))]
                 }
                 group.leave()
             })
         }
         group.notify(queue: .global()) {
+			let errors = self.findCancelledErrors(in: results)
+			guard errors.isEmpty else {
+				completion(.failure(errors[0]))
+				return
+			}
             completion(.success(results))
         }
     }
+
+	private func findCancelledErrors(in results: [PhotoAlbumServiceFetchResult]) -> [Error] {
+		return results.compactMap {
+			switch $0.result {
+			case .success: break
+			case .failure(let error as NetworkManager.NetworkError):
+				if error.isCancelled { return error }
+			case .failure: break
+			}
+			return nil
+		}
+	}
 }

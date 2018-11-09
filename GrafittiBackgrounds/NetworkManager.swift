@@ -13,6 +13,15 @@ final class NetworkManager: NetworkManaging {
         case systemError(Error)
         case httpErrorCode(Int)
         case badResponse(Error)
+
+		var isCancelled: Bool {
+			switch self {
+			case .systemError(let error):
+				return (error as NSError).code == NSURLErrorCancelled
+			default:
+				return false
+			}
+		}
     }
 
     private let urlSession = URLSession(configuration: .default)
@@ -47,7 +56,7 @@ final class NetworkManager: NetworkManaging {
                 return
             }
             do {
-                //log("fetched: \(request.url)\n\(String(data: data, encoding: .utf8) ?? "nil")")
+                log("fetched: \(request.httpVerb) \(request.url)")
                 let response = try T(data: data)
                 completion(.success(response))
             } catch {
@@ -82,7 +91,7 @@ final class NetworkManager: NetworkManaging {
                 return
             }
 
-            log("downloaded to: \(tempURL)")
+            log("downloaded: \(url) to: \(tempURL)")
             completion(.success(tempURL))
         }
         queue.addOperation(operation)
