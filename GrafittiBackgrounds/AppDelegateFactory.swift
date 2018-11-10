@@ -18,30 +18,37 @@ enum AppDelegateFactory {
         let reachability = Reachability()
         let menuController = AppMenuController(statusItem: statusItem, reachability: reachability)
 
-        let networkManager = NetworkManager()
+        let urlSession = URLSession(configuration: .default)
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 3
+        let networkManager = NetworkManager(urlSession: urlSession, queue: queue)
         let fileManager = FileManager.default
+
         let photoAlbumService = PhotoAlbumService(networkManager: networkManager)
         let photoService = PhotoService(
             networkManager: networkManager,
-            fileManager: fileManager,
-            saveURL: .defaultSaveLocation
+            fileManager: fileManager
         )
         let photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
         let photoController = PhotoController(
             photoAlbumService: photoAlbumService,
             photoService: photoService,
-            photoStorageService: photoStorageService
+            photoStorageService: photoStorageService,
+            photoFolderURL: .defaultSaveLocation
         )
 
 		let alertController = AlertController(notificationCenter: NSUserNotificationCenter.default)
+        let emailController = EmailController(sharingService: NSSharingService(named: .composeEmail))
         let appController = AppController(
             preferencesController: preferencesController,
             workspaceController: workspaceController,
             menuController: menuController,
             photoController: photoController,
             alertController: alertController,
+            emailController: emailController,
             app: app
         )
+
         let appDelegate = AppDelegate(appController: appController)
         return appDelegate
     }

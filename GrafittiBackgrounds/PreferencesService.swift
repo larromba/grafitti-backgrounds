@@ -2,7 +2,9 @@ import Foundation
 
 // sourcery: name = PreferencesService
 protocol PreferencesServicing: Mockable {
+    // sourcery: returnValue = Result.success(())
     func save(_ preferences: Preferences) -> Result<Void>
+    // sourcery: returnValue = Result.success(Preferences())
     func load() -> Result<Preferences>
 }
 

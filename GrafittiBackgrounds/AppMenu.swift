@@ -13,6 +13,7 @@ enum AppMenu {
         case preferences
         case systemPreferences
         case about
+        case help
         case contact
         case quit
 
@@ -33,6 +34,8 @@ enum AppMenu {
                 return "System Preferences".localized
             case .about:
                 return "About".localized
+            case .help:
+                return "Help".localized
             case .contact:
                 return "Report Bug".localized
             case .quit:
@@ -53,33 +56,37 @@ enum AppMenu {
         case systemPreferences
         case separator2
         case about
+        case help
         case contact
         case quit
     }
 
+    // swiftlint:disable cyclomatic_complexity
     static func defaultItems<T: MenuItemDelegate>(delegate: T) -> [NSMenuItem] where T.ActionType == Action {
         var items = [NSMenuItem]()
         while let order = Order(rawValue: items.count) {
             let item: NSMenuItem
             switch order {
             case .refreshFolder:
-                item = NSMenuItem.item(for: Action.refreshFolder(action: .refresh), delegate: delegate)
+                item = NSMenuItem.item(for: .refreshFolder(action: .refresh), delegate: delegate)
             case .openFolder:
-                item = NSMenuItem.item(for: Action.openFolder, delegate: delegate)
+                item = NSMenuItem.item(for: .openFolder, delegate: delegate)
             case .clearFolder:
-                item = NSMenuItem.item(for: Action.clearFolder, delegate: delegate)
+                item = NSMenuItem.item(for: .clearFolder, delegate: delegate)
             case .separator1, .separator2:
                 item = NSMenuItem.separator()
             case .preferences:
-                item = NSMenuItem.item(for: Action.preferences, delegate: delegate)
+                item = NSMenuItem.item(for: .preferences, delegate: delegate)
             case .systemPreferences:
-                item = NSMenuItem.item(for: Action.systemPreferences, delegate: delegate)
+                item = NSMenuItem.item(for: .systemPreferences, delegate: delegate)
             case .about:
-                item = NSMenuItem.item(for: Action.about, delegate: delegate)
+                item = NSMenuItem.item(for: .about, delegate: delegate)
+            case .help:
+                item = NSMenuItem.item(for: .help, delegate: delegate)
             case .contact:
-                item = NSMenuItem.item(for: Action.contact, delegate: delegate)
+                item = NSMenuItem.item(for: .contact, delegate: delegate)
             case .quit:
-                item = NSMenuItem.item(for: Action.quit, delegate: delegate)
+                item = NSMenuItem.item(for: .quit, delegate: delegate)
             }
             items += [item]
         }

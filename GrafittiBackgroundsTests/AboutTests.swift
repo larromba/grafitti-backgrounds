@@ -2,10 +2,10 @@
 import XCTest
 
 class AboutTests: XCTestCase {
-	func testAboutOpensOnMenuClick() {
+	func testAboutOnMenuClickOpensAbout() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
-		let menuController = AppMenuController(statusItem: statusItem)
+		let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
 		let app = MockApplication()
 
 		// sut

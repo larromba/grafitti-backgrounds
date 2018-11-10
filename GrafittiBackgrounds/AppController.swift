@@ -11,6 +11,7 @@ final class AppController: AppControllable {
     private let menuController: AppMenuControllable
     private let photoController: PhotoControllable
     private let alertController: AlertControlling
+    private let emailController: EmailControlling
     private let app: Applicationable
 
     init(preferencesController: PreferencesControllable,
@@ -18,12 +19,14 @@ final class AppController: AppControllable {
          menuController: AppMenuControllable,
          photoController: PhotoControllable,
          alertController: AlertControlling,
+         emailController: EmailControlling,
          app: Applicationable) {
         self.preferencesController = preferencesController
         self.workspaceController = workspaceController
         self.menuController = menuController
         self.photoController = photoController
         self.alertController = alertController
+        self.emailController = emailController
         self.app = app
 
         self.preferencesController.setDelegate(self)
@@ -37,6 +40,24 @@ final class AppController: AppControllable {
     }
 
     // MARK: - private
+
+    private func cancelReload() {
+        switch photoController.cancelReload() {
+        case .success:
+            alertController.showAlert(.cancelReloadSuccess)
+        case .failure(let error):
+            alertController.showAlert(.error(error))
+        }
+    }
+
+    private func clearFolder() {
+        switch photoController.clearFolder() {
+        case .success:
+            alertController.showAlert(.clearFolderSuccess)
+        case .failure(let error):
+            alertController.showAlert(.error(error))
+        }
+    }
 
     private func reloadPhotos() {
 		alertController.showAlert(.reloadingPhotos)
@@ -54,11 +75,8 @@ final class AppController: AppControllable {
     }
 
 	private func handleNoSuccessResult(_ result: Result<Void>) {
-		switch result {
-		case .success: break
-		case .failure(let error):
-			alertController.showAlert(.error(error))
-		}
+        guard let error = result.error else { return }
+        alertController.showAlert(.error(error))
 	}
 }
 
@@ -87,25 +105,21 @@ extension AppController: AppMenuControllerDelegate {
         case .refreshFolder(action: .refresh):
             reloadPhotos()
         case .refreshFolder(action: .cancel):
-            photoController.cancelReload()
+            cancelReload()
         case .openFolder:
-			handleNoSuccessResult(workspaceController.open(photoController.folderURL))
+			handleNoSuccessResult(workspaceController.open(photoController.photoFolderURL))
         case .clearFolder:
-			switch photoController.clearFolder() {
-			case .success:
-				alertController.showAlert(.clearFolderSuccess)
-			case .failure(let error):
-				alertController.showAlert(.error(error))
-			}
+			clearFolder()
         case .preferences:
             preferencesController.open()
         case .systemPreferences:
             handleNoSuccessResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
         case .about:
             app.orderFrontStandardAboutPanel(self)
+        case .help:
+            handleNoSuccessResult(workspaceController.open(.help))
         case .contact:
-            // TODO: add email contact
-            break
+            handleNoSuccessResult(emailController.openMail(receipient: "larromba@gmail.com", subject: "GrafittiBackgrounds Bug Report", body: "Please provide your steps to reproduce here"))
         case .quit:
             app.terminate(self)
         }

@@ -19,6 +19,7 @@ protocol MenuItemDelegate: AnyObject {
     func menuItemPressed<T: MenuItemable>(_ menuItem: T) where T.ActionType == ActionType
 }
 
+// the menu item has been designed to be generic around any action type (e.g. any enum)
 final class MenuItem<T, U: MenuItemDelegate>: NSMenuItem, MenuItemable where T == U.ActionType {
     typealias ActionType = T
     typealias DelegateType = U

@@ -2,20 +2,15 @@
 import XCTest
 
 class PreferencesTests: XCTestCase {
-	func testPreferencesOpensOnMenuClick() {
+	func testPreferencesOnMenuClickOpensPreferences() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
-		let menuController = AppMenuController(statusItem: statusItem)
+		let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
 		let windowController = MockWindowController()
 		windowController.contentViewController = MockPreferencesViewController()
-		let preferencesService = MockPreferencesService()
-		preferencesService.actions.set(
-			returnValue: Result<Preferences>.success(Preferences()),
-			for: MockPreferencesService.load2.name
-		)
 		let preferencesController = PreferencesController(
 			windowController: windowController,
-			preferencesService: preferencesService
+			preferencesService: MockPreferencesService()
 		)
 
 		// sut
@@ -29,20 +24,37 @@ class PreferencesTests: XCTestCase {
 		XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
 	}
 
-	func testPreferencesRender() {
-		XCTFail("TODO")
+	func testPreferencesRenderOnOpening() {
+        // mocks
+        guard
+            let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
+            let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
+                XCTFail("expected NSWindowController & PreferencesViewController")
+                return
+        }
+        let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 2)
+        let preferencesService = MockPreferencesService()
+        preferencesService.actions.set(returnValue: Result.success(preferences), for: MockPreferencesService.load2.name)
+        let preferencesController = PreferencesController(
+            windowController: windowController,
+            preferencesService: preferencesService
+        )
+
+        // sut
+        preferencesController.open()
+
+        // test
+        XCTAssertEqual(preferencesViewController.autoRefreshCheckBox.state, .on)
+        XCTAssertEqual(preferencesViewController.autoRefreshIntervalTextField.stringValue, "1")
+        XCTAssertEqual(preferencesViewController.numberOfPhotosTextField.stringValue, "2")
 	}
 
-	func testPreferencesChange() {
-		XCTFail("TODO")
-	}
-
-	func testPreferencesPersist() {
+	func testPreferencesPersistEachChangeAfterOpening() {
 		// mocks
 		guard
 			let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
 			let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
-				XCTFail("expected classes")
+				XCTFail("expected NSWindowController & PreferencesViewController")
 				return
 		}
 		let userDefaults = MockUserDefaults()
@@ -54,7 +66,7 @@ class PreferencesTests: XCTestCase {
 			windowController: windowController,
 			preferencesService: preferencesService
 		)
-		preferencesController.open()
+        preferencesController.open()
 
 		// test
 		preferencesViewController.autoRefreshCheckBox.performClick(nil)
@@ -71,27 +83,36 @@ class PreferencesTests: XCTestCase {
 	}
 
 	func testPreferencesRestartDownloadTimerIfChanged() {
-		XCTFail("TODO")
-//		// mocks
-//		guard
-//			let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
-//			let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
-//				XCTFail("expected classes")
-//				return
-//		}
-//		let preferencesController = PreferencesController(
-//			windowController: windowController,
-//			preferencesService: PreferencesService(dataManager: MockDataManger())
-//		)
-//		let photoCoordinator = PhotoController(photoAlbumService: <#T##PhotoAlbumServicing#>, photoService: <#T##PhotoServicing#>, photoStorageService: <#T##PhotoStorageServicing#>)
-//
-//		// sut
-//		_ = AppController.testable(preferencesController: preferencesController, menuController: menuController)
-//
-//		// test
-//		preferencesController.open()
-//		preferencesViewController.autoRefreshCheckBox.performClick(nil)
-//		XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
+        // mocks
+        guard
+            let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
+            let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
+                XCTFail("expected NSWindowController & PreferencesViewController")
+                return
+        }
+        let preferencesService = MockPreferencesService()
+        let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 0)
+        preferencesService.actions.set(returnValue: Result.success(preferences), for: MockPreferencesService.load2.name)
+        let preferencesController = PreferencesController(
+            windowController: windowController,
+            preferencesService: preferencesService
+        )
+        let photoController = PhotoController.testable()
+        let delegate = MockPhotoControllerDelegate()
+
+        // sut
+        _ = AppController.testable(preferencesController: preferencesController, photoController: photoController)
+        photoController.setDelegate(delegate)
+
+        // test
+        preferencesViewController.autoRefreshIntervalTextField.stringValue = "0"
+        preferencesViewController.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesViewController)
+
+        wait(for: 0.1) {
+            XCTAssertTrue(delegate.invocations.isInvoked(
+                MockPhotoControllerDelegate.photoControllerTimerTriggered1.name)
+            )
+        }
 	}
 }
 

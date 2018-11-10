@@ -8,12 +8,13 @@ protocol NetworkManaging: Mockable {
 }
 
 final class NetworkManager: NetworkManaging {
-    private let urlSession = URLSession(configuration: .default)
-    private let queue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 3
-        return queue
-    }()
+    private let urlSession: URLSessioning
+    private let queue: OperationQueable
+
+    init(urlSession: URLSessioning, queue: OperationQueable) {
+        self.urlSession = urlSession
+        self.queue = queue
+    }
 
     func fetch<T: Response>(request: Request, completion: @escaping (Result<T>) -> Void) {
         log("fetching: \(request.httpVerb) \(request.url)")

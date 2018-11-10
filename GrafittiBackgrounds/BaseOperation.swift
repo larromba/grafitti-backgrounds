@@ -21,7 +21,8 @@ class BaseOperation: Operation { // please subclass
             let kvoKey: String
             switch newValue {
             case .ready:
-                fatalError("operations are not reusable")
+                assertionFailure("operations are not reusable")
+                return
             case .executing:
                 kvoKey = KVOKey.isExecuting.rawValue
             case .finished:

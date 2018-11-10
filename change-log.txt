@@ -9,9 +9,11 @@ Apple ID: ?
 
 TODO:
 - unit tests
-- contact menu
-- help menu
 
 - generate strings
 - generate colors
 - generate images
+
+- fastlane?
+- readme
+- open source

@@ -1,6 +1,6 @@
 import Foundation
 
-protocol PhotoControllerDelegate: AnyObject {
+protocol PhotoControllerDelegate: AnyObject, Mockable {
     func photoControllerTimerTriggered(_ photoController: PhotoController)
     func photoController(_ photoController: PhotoController, updatedDownloadPercentage percentage: Double)
     func photoController(_ photoController: PhotoController, didChangeDownloadState inProgress: Bool)
@@ -9,21 +9,22 @@ protocol PhotoControllerDelegate: AnyObject {
 // sourcery: name = PhotoController
 protocol PhotoControllable: Mockable {
     var isDownloadInProgress: Bool { get }
-    var folderURL: URL { get }
+    var photoFolderURL: URL { get }
 
     func setPreferences(_ preferences: Preferences)
-    func reloadPhotos(completion: @escaping (Result<[PhotoControllerReloadResult]>) -> Void)
-    func cancelReload()
+    func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void)
+    // sourcery: returnValue = Result.success(())
+    func cancelReload() -> Result<Void>
     func clearFolder() -> Result<Void>
     func setDelegate(_ delegate: PhotoControllerDelegate)
 }
 
-struct PhotoControllerReloadResult {
-    let photo: PhotoResource
-    let result: Result<Void>
-}
-
 final class PhotoController: PhotoControllable {
+    private struct ReloadResult {
+        let photo: PhotoResource
+        let result: Result<Void>
+    }
+
     private let photoAlbumService: PhotoAlbumServicing
     private let photoService: PhotoServicing
     private let photoStorageService: PhotoStorageServicing
@@ -36,18 +37,18 @@ final class PhotoController: PhotoControllable {
             delegate?.photoController(self, didChangeDownloadState: isDownloadInProgress)
         }
     }
-    var folderURL: URL {
-        return photoService.saveURL
-    }
+    let photoFolderURL: URL
 
     init(photoAlbumService: PhotoAlbumServicing,
          photoService: PhotoServicing,
          photoStorageService: PhotoStorageServicing,
-         preferences: Preferences = Preferences()) {
+         preferences: Preferences = Preferences(),
+         photoFolderURL: URL) {
         self.photoAlbumService = photoAlbumService
         self.photoService = photoService
         self.photoStorageService = photoStorageService
         self.preferences = preferences
+        self.photoFolderURL = photoFolderURL
         setupTimer()
     }
 
@@ -57,35 +58,52 @@ final class PhotoController: PhotoControllable {
         photoAlbumService.cancelAll()
     }
 
-    func reloadPhotos(completion: @escaping (Result<[PhotoControllerReloadResult]>) -> Void) {
+    func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void) {
         guard !isDownloadInProgress else {
             completion(.failure(PhotoError.downloadInProgress))
             return
         }
         setupTimer()
-        switch clearFolder() {
-        case .success:
-            isDownloadInProgress = true
-            fetchAlbums(numberOfPhotos: preferences.numberOfPhotos, completion: { [weak self] result in
-                self?.isDownloadInProgress = false
-                completion(result)
-            })
-        case .failure(let error):
-            completion(.failure(error))
-        }
+        isDownloadInProgress = true
+        fetchAlbums(numberOfPhotos: preferences.numberOfPhotos, completion: { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+                self.isDownloadInProgress = false
+                completion(result
+                    .flatMap { resources -> Result<[PhotoResource]> in
+                        switch self.clearFolder() {
+                        case .success:
+                            return .success(resources)
+                        case .failure(let error):
+                            return .failure(error)
+                        }
+                    }.flatMap { resources -> Result<[PhotoResource]> in
+                        return self.movePhotos(resources)
+                    }.flatMap {  resources -> Result<[PhotoResource]> in
+                        switch self.photoStorageService.save(resources) {
+                        case .success:
+                            return .success(resources)
+                        case .failure(let error):
+                            return .failure(error)
+                        }
+                    }
+                )
+            }
+        })
     }
 
-    func cancelReload() {
+    func cancelReload() -> Result<Void> {
         photoService.cancelAll()
         photoAlbumService.cancelAll()
         isDownloadInProgress = false
+        return .success(())
     }
 
     func clearFolder() -> Result<Void> {
-        switch photoStorageService.load() {
-        case .success(let resources):
-            switch photoStorageService.remove(resources) {
-            case .success(let results):
+        return photoStorageService.load()
+            .flatMap { resources -> Result<[PhotoStorageServiceDeletionResult]> in
+                return self.photoStorageService.remove(resources)
+            }.flatMap { results -> Result<Void> in
                 let badResults = results.filter { $0.result.isFailure }
                 if badResults.isEmpty {
                     return .success(())
@@ -93,12 +111,7 @@ final class PhotoController: PhotoControllable {
                     let resources = badResults.map { $0.resource }
                     return .failure(PhotoError.fileDeleteError(resources))
                 }
-            case .failure(let error):
-                return .failure(error)
             }
-        case .failure(let error):
-            return .failure(error)
-        }
     }
 
     func setPreferences(_ preferences: Preferences) {
@@ -114,9 +127,8 @@ final class PhotoController: PhotoControllable {
 
     private func setupTimer() {
         stopTimer()
-        if preferences.isAutoRefreshEnabled {
-            startTimer(with: preferences.autoRefreshTimeIntervalSeconds)
-        }
+        guard preferences.isAutoRefreshEnabled else { return }
+        startTimer(with: preferences.autoRefreshTimeIntervalSeconds)
     }
 
     private func startTimer(with timeInterval: TimeInterval) {
@@ -136,45 +148,30 @@ final class PhotoController: PhotoControllable {
     }
 
     private func fetchAlbums(numberOfPhotos: Int,
-                             completion: @escaping (Result<[PhotoControllerReloadResult]>) -> Void) {
+                             completion: @escaping (Result<[PhotoResource]>) -> Void) {
         photoAlbumService.fetchPhotoAlbums(completion: { [weak self] result in
             switch result {
             case .success(let results):
                 let successfulResults = results.filter { $0.result.isSuccess }
                 let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.album.resources.count })
                 guard numOfPossibleDownloads >= numberOfPhotos else {
-                    DispatchQueue.main.async {
-                        completion(.failure(PhotoError.notEnoughImages))
-                    }
+                    completion(.failure(PhotoError.notEnoughImagesAvailable))
                     return
                 }
                 let albums = successfulResults.map { $0.album }
                 self?.downloadPhotos(from: albums, numberOfPhotos: numberOfPhotos, completion: completion)
             case .failure(let error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
+                completion(.failure(error))
             }
         })
     }
 
     private func downloadPhotos(from albums: [PhotoAlbum],
                                 numberOfPhotos: Int,
-                                completion: @escaping (Result<[PhotoControllerReloadResult]>) -> Void) {
-        var savedResources: [PhotoResource]
-        switch photoStorageService.load() {
-        case .success(let resources):
-            savedResources = resources
-        case .failure(let error):
-            DispatchQueue.main.async {
-                completion(.failure(error))
-            }
-            return
-        }
-
+                                completion: @escaping (Result<[PhotoResource]>) -> Void) {
         let allResources = albums.map { $0.resources }.reduce([], +)
         let group = DispatchGroup()
-        var results = [PhotoControllerReloadResult]()
+        var results = [ReloadResult]()
 
         (0..<numberOfPhotos).forEach { _ in
             group.enter()
@@ -182,32 +179,34 @@ final class PhotoController: PhotoControllable {
             photoService.downloadPhoto(resource, completion: { result in
                 switch result {
                 case .success(let resource):
-                    savedResources += [resource]
-                    switch self.photoStorageService.save(savedResources) {
-                    case .success:
-                        results += [PhotoControllerReloadResult(photo: resource, result: .success(()))]
-                    case .failure(let error):
-                        results += [PhotoControllerReloadResult(photo: resource, result: .failure(error))]
-                    }
+                    results += [ReloadResult(photo: resource, result: .success(()))]
                 case .failure(let error):
-                    results += [PhotoControllerReloadResult(photo: resource, result: .failure(error))]
+                    results += [ReloadResult(photo: resource, result: .failure(error))]
                 }
+                let percentage = Double(results.count) / Double(numberOfPhotos)
                 DispatchQueue.main.async {
-                    let percentage = Double(results.count) / Double(numberOfPhotos)
                     self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
                 }
                 group.leave()
             })
         }
 
-        group.notify(queue: .main) {
-            self.isDownloadInProgress = false
-			let successfulResults = results.filter { $0.result.isSuccess }
-            guard successfulResults.count >= numberOfPhotos else {
-                completion(.failure(PhotoError.notEnoughImages))
+        group.notify(queue: .global()) {
+            let photoResources = results.filter { $0.result.isSuccess }.map { return $0.photo }
+            guard photoResources.count >= numberOfPhotos else {
+                completion(.failure(PhotoError.notEnoughImagesDownloaded))
                 return
             }
-            completion(.success(successfulResults))
+            completion(.success(photoResources))
         }
+    }
+
+    private func movePhotos(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
+        let results = resources.map { photoService.movePhoto($0, to: photoFolderURL) }
+        let failed = results.filter { $0.isFailure }
+        guard failed.isEmpty else {
+            return .failure(failed[0].error!)
+        }
+        return .success(results.compactMap { $0.value })
     }
 }

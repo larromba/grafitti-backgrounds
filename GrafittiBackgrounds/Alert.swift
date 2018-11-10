@@ -22,4 +22,8 @@ extension Alert {
 	static var clearFolderSuccess: Alert {
 		return Alert(title: "Success!", text: "Your photos were cleared")
 	}
+
+    static var cancelReloadSuccess: Alert {
+        return Alert(title: "", text: "Your reload was cancelled")
+    }
 }

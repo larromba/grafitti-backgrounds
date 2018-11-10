@@ -137,10 +137,10 @@ class MockAlertController: NSObject, AlertControlling {
 
     // MARK: - showAlert
 
-    func showAlert(_ error: Error) {
+    func showAlert(_ alert: Alert) {
         let functionName = showAlert1.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: error, forKey: showAlert1.params.error)
+        invocation.set(parameter: alert, forKey: showAlert1.params.alert)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
     }
@@ -148,7 +148,7 @@ class MockAlertController: NSObject, AlertControlling {
     enum showAlert1: String, _StringRawRepresentable {
       case name = "showAlert1"
       enum params: String, _StringRawRepresentable {
-        case error = "showAlert(_error:Error).error"
+        case alert = "showAlert(_alert:Alert).alert"
       }
     }
 }
@@ -340,6 +340,7 @@ class MockDataManger: NSObject, DataManaging {
         invocation.set(parameter: key, forKey: load2.params.key)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success(Data()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Data>
     }
 
@@ -347,6 +348,33 @@ class MockDataManger: NSObject, DataManaging {
       case name = "load2"
       enum params: String, _StringRawRepresentable {
         case key = "load<T:Keyable>(key:T).key"
+      }
+    }
+}
+
+class MockEmailController: NSObject, EmailControlling {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - openMail
+
+    func openMail(receipient: String, subject: String, body: String) -> Result<Void> {
+        let functionName = openMail1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: receipient, forKey: openMail1.params.receipient)
+        invocation.set(parameter: subject, forKey: openMail1.params.subject)
+        invocation.set(parameter: body, forKey: openMail1.params.body)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! Result<Void>
+    }
+
+    enum openMail1: String, _StringRawRepresentable {
+      case name = "openMail1"
+      enum params: String, _StringRawRepresentable {
+        case receipient = "openMail(receipient:String,subject:String,body:String).receipient"
+        case subject = "openMail(receipient:String,subject:String,body:String).subject"
+        case body = "openMail(receipient:String,subject:String,body:String).body"
       }
     }
 }
@@ -600,6 +628,41 @@ class MockNetworkManager: NSObject, NetworkManaging {
     }
 }
 
+class MockOperationQueue: NSObject, OperationQueable {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - addOperation
+
+    func addOperation(_ op: Operation) {
+        let functionName = addOperation1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: op, forKey: addOperation1.params.op)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum addOperation1: String, _StringRawRepresentable {
+      case name = "addOperation1"
+      enum params: String, _StringRawRepresentable {
+        case op = "addOperation(_op:Operation).op"
+      }
+    }
+
+    // MARK: - cancelAllOperations
+
+    func cancelAllOperations() {
+        let functionName = cancelAllOperations2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum cancelAllOperations2: String, _StringRawRepresentable {
+      case name = "cancelAllOperations2"
+    }
+}
+
 class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     let invocations = _Invocations()
     let actions = _Actions()
@@ -704,11 +767,13 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - cancelReload
 
-    func cancelReload() {
+    func cancelReload() -> Result<Void> {
         let functionName = cancelReload3.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success(()), for: functionName)
+        return actions.returnValue(for: functionName) as! Result<Void>
     }
 
     enum cancelReload3: String, _StringRawRepresentable {
@@ -743,6 +808,66 @@ class MockPhotoController: NSObject, PhotoControllable {
       case name = "setDelegate5"
       enum params: String, _StringRawRepresentable {
         case delegate = "setDelegate(_delegate:PhotoControllerDelegate).delegate"
+      }
+    }
+}
+
+class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - photoControllerTimerTriggered
+
+    func photoControllerTimerTriggered(_ photoController: PhotoController) {
+        let functionName = photoControllerTimerTriggered1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: photoController, forKey: photoControllerTimerTriggered1.params.photoController)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum photoControllerTimerTriggered1: String, _StringRawRepresentable {
+      case name = "photoControllerTimerTriggered1"
+      enum params: String, _StringRawRepresentable {
+        case photoController = "photoControllerTimerTriggered(_photoController:PhotoController).photoController"
+      }
+    }
+
+    // MARK: - photoController
+
+    func photoController(_ photoController: PhotoController, updatedDownloadPercentage percentage: Double) {
+        let functionName = photoController2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: photoController, forKey: photoController2.params.photoController)
+        invocation.set(parameter: percentage, forKey: photoController2.params.percentage)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum photoController2: String, _StringRawRepresentable {
+      case name = "photoController2"
+      enum params: String, _StringRawRepresentable {
+        case photoController = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).photoController"
+        case percentage = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).percentage"
+      }
+    }
+
+    // MARK: - photoController
+
+    func photoController(_ photoController: PhotoController, didChangeDownloadState inProgress: Bool) {
+        let functionName = photoController3.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: photoController, forKey: photoController3.params.photoController)
+        invocation.set(parameter: inProgress, forKey: photoController3.params.inProgress)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum photoController3: String, _StringRawRepresentable {
+      case name = "photoController3"
+      enum params: String, _StringRawRepresentable {
+        case photoController = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).photoController"
+        case inProgress = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).inProgress"
       }
     }
 }
@@ -801,6 +926,7 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
         invocation.set(parameter: resources, forKey: save1.params.resources)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success(()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Void>
     }
 
@@ -818,6 +944,7 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success([PhotoResource]()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
     }
 
@@ -833,6 +960,7 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
         invocation.set(parameter: resources, forKey: remove3.params.resources)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success([PhotoStorageServiceDeletionResult]()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<[PhotoStorageServiceDeletionResult]>
     }
 
@@ -896,6 +1024,7 @@ class MockPreferencesService: NSObject, PreferencesServicing {
         invocation.set(parameter: preferences, forKey: save1.params.preferences)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success(()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Void>
     }
 
@@ -913,6 +1042,7 @@ class MockPreferencesService: NSObject, PreferencesServicing {
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
+        actions.set(defaultReturnValue: Result.success(Preferences()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Preferences>
     }
 
@@ -957,6 +1087,123 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
       case name = "setDelegate2"
       enum params: String, _StringRawRepresentable {
         case delegate = "setDelegate(_delegate:PreferencesViewControllerDelegate).delegate"
+      }
+    }
+}
+
+class MockReachability: NSObject, Reachable {
+    var isReachable: Bool {
+        get { return _isReachable }
+        set(value) { _isReachable = value }
+    }
+    var _isReachable: Bool!
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: ReachabilityDelegate) {
+        let functionName = setDelegate1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum setDelegate1: String, _StringRawRepresentable {
+      case name = "setDelegate1"
+      enum params: String, _StringRawRepresentable {
+        case delegate = "setDelegate(_delegate:ReachabilityDelegate).delegate"
+      }
+    }
+}
+
+class MockSharingService: NSObject, SharingServicing {
+    var subject: String?
+    var recipients: [String]?
+    var messageBody: String?
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - canPerform
+
+    func canPerform(withItems items: [Any]?) -> Bool {
+        let functionName = canPerform1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        if let items = items {
+            invocation.set(parameter: items, forKey: canPerform1.params.items)
+        }
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! Bool
+    }
+
+    enum canPerform1: String, _StringRawRepresentable {
+      case name = "canPerform1"
+      enum params: String, _StringRawRepresentable {
+        case items = "canPerform(withItemsitems:[Any]?).items"
+      }
+    }
+
+    // MARK: - perform
+
+    func perform(withItems items: [Any]) {
+        let functionName = perform2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: items, forKey: perform2.params.items)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum perform2: String, _StringRawRepresentable {
+      case name = "perform2"
+      enum params: String, _StringRawRepresentable {
+        case items = "perform(withItemsitems:[Any]).items"
+      }
+    }
+}
+
+class MockURLSession: NSObject, URLSessioning {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - dataTask
+
+    func dataTask(with url: URL,completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        let functionName = dataTask1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: url, forKey: dataTask1.params.url)
+        invocation.set(parameter: completionHandler, forKey: dataTask1.params.completionHandler)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! URLSessionDataTask
+    }
+
+    enum dataTask1: String, _StringRawRepresentable {
+      case name = "dataTask1"
+      enum params: String, _StringRawRepresentable {
+        case url = "dataTask(withurl:URL,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).url"
+        case completionHandler = "dataTask(withurl:URL,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).completionHandler"
+      }
+    }
+
+    // MARK: - downloadTask
+
+    func downloadTask(with url: URL,completionHandler: @escaping (URL?, URLResponse?, Error?) -> Void) -> URLSessionDownloadTask {
+        let functionName = downloadTask2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: url, forKey: downloadTask2.params.url)
+        invocation.set(parameter: completionHandler, forKey: downloadTask2.params.completionHandler)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! URLSessionDownloadTask
+    }
+
+    enum downloadTask2: String, _StringRawRepresentable {
+      case name = "downloadTask2"
+      enum params: String, _StringRawRepresentable {
+        case url = "downloadTask(withurl:URL,completionHandler:@escaping(URL?,URLResponse?,Error?)->Void).url"
+        case completionHandler = "downloadTask(withurl:URL,completionHandler:@escaping(URL?,URLResponse?,Error?)->Void).completionHandler"
       }
     }
 }

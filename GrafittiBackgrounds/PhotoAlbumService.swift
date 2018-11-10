@@ -35,12 +35,9 @@ final class PhotoAlbumService: PhotoAlbumServicing {
     func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void) {
         let request = PhotoResourceRequest(album: album)
         networkManager.fetch(request: request, completion: { (result: Result<PhotoResourceResponse>) in
-            switch result {
-            case .success(let response):
-                completion(.success(response.photoResources))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            completion(result.flatMap { response -> Result<[PhotoResource]> in
+                return .success(response.photoResources)
+            })
         })
     }
 
@@ -69,24 +66,13 @@ final class PhotoAlbumService: PhotoAlbumServicing {
             })
         }
         group.notify(queue: .global()) {
-			let errors = self.findCancelledErrors(in: results)
-			guard errors.isEmpty else {
-				completion(.failure(errors[0]))
+            // if user cancelled, return the error
+            let isCancelledResults = results.filter { ($0.result.error as? NetworkError)?.isCancelled ?? false }
+			guard isCancelledResults.isEmpty else {
+				completion(.failure(isCancelledResults[0].result.error!))
 				return
 			}
             completion(.success(results))
         }
     }
-
-	private func findCancelledErrors(in results: [PhotoAlbumServiceFetchResult]) -> [Error] {
-		return results.compactMap {
-			switch $0.result {
-			case .success: break
-			case .failure(let error as NetworkError):
-				if error.isCancelled { return error }
-			case .failure: break
-			}
-			return nil
-		}
-	}
 }

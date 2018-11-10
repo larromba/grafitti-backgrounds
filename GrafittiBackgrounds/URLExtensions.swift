@@ -9,4 +9,8 @@ extension URL {
         let url = URL(fileURLWithPath: path).appendingPathComponent("GrafittiBackgrounds")
         return url
     }
+
+    static var help: URL {
+        return URL(string: "http://github.com/larromba")!
+    }
 }

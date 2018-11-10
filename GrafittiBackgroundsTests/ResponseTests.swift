@@ -3,14 +3,14 @@ import XCTest
 
 class ResponseTests: XCTestCase {
 	func testPhotoResponse() {
-		XCTFail("todo")
+        XCTAssertNoThrow(try PhotoResponse(data: Resource.photo.load()))
 	}
 
 	func testPhotoAlbumsResponse() {
-		XCTFail("todo")
+        XCTAssertNoThrow(try PhotoAlbumsResponse(data: Resource.photoAlbum.load()))
 	}
 
 	func testPhotoResourceResponse() {
-		XCTFail("todo")
+        XCTAssertNoThrow(try PhotoResourceResponse(data: Resource.photoResource.load()))
 	}
 }

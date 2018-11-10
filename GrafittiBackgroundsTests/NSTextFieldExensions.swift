@@ -1,6 +1,5 @@
 import Cocoa
 @testable import Grafitti_Backgrounds
-import XCTest
 
 extension NSTextField {
 	func fireTextChagedEvent(in delegate: NSControlTextEditingDelegate) {

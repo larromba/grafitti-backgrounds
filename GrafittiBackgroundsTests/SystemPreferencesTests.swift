@@ -2,10 +2,10 @@
 import XCTest
 
 class SystemPreferencesTests: XCTestCase {
-	func testSystemPreferencesOpensOnMenuClick() {
+	func testSystemPreferencesOnMenuClickOpensSystemPreferences() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
-		let menuController = AppMenuController(statusItem: statusItem)
+        let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
 		let workspace = MockWorkspace()
 		let workspaceController = WorkspaceController(workspace: workspace)
 

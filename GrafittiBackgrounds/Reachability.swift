@@ -9,7 +9,8 @@
 import Foundation
 import SystemConfiguration
 
-protocol Reachable {
+// sourcery: name = Reachability
+protocol Reachable: Mockable {
     var isReachable: Bool { get }
 
     func setDelegate(_ delegate: ReachabilityDelegate)
@@ -42,7 +43,9 @@ final class Reachability: NSObject, Reachable {
             os_unfair_lock_lock(&lock)
             _flags = newValue
             os_unfair_lock_unlock(&lock)
-            delegate?.reachabilityDidChange(self, isReachable: isReachable)
+            DispatchQueue.main.async {
+                self.delegate?.reachabilityDidChange(self, isReachable: self.isReachable)
+            }
         }
     }
 
@@ -67,7 +70,7 @@ final class Reachability: NSObject, Reachable {
             version: 0, info: selfPtr, retain: nil, release: nil, copyDescription: nil
         )
         SCNetworkReachabilitySetCallback(reachability, callback, &context)
-        SCNetworkReachabilitySetDispatchQueue(reachability, .main)
+        SCNetworkReachabilitySetDispatchQueue(reachability, .global())
     }
 
     func setDelegate(_ delegate: ReachabilityDelegate) {

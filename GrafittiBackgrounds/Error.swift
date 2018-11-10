@@ -4,60 +4,63 @@ import Foundation
 
 private let none = "If you're reading this, something went really wrong 😊"
 
-enum PhotoResourceResponseError: Error {
+enum PhotoResourceResponseError: LocalizedError {
     case malformedHTML
     case missingBaseURL
     case malformedBaseURL
     case missingPhotoURLs
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         return "There was a problem reading from the network"
     }
 }
 
-enum PhotoAlbumsResponseError: Error {
+enum PhotoAlbumsResponseError: LocalizedError {
     case malformedHTML
     case noPhotoAlbumsFound
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         return "There was a problem reading from the network"
     }
 }
 
-enum PhotoResponseError: Error {
+enum PhotoResponseError: LocalizedError {
     case malformedHTML
     case missingImageURL
     case malformedImageURL
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         return "There was a problem reading from the network"
     }
 }
 
-enum PhotoError: Error {
+enum PhotoError: LocalizedError {
     case downloadInProgress
-    case notEnoughImages
+    case notEnoughImagesAvailable
+    case notEnoughImagesDownloaded
     case fileDeleteError([PhotoResource])
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .downloadInProgress:
             return none
-        case .notEnoughImages:
-            return "We couldn't download enough images. Please Try again. If the problem persists, reduce the number of photos in your preferences"
+        case .notEnoughImagesAvailable:
+            return "There aren't enough images to download. Try reducing the number of photos in your preferences, and try again"
+        case .notEnoughImagesDownloaded:
+            return "We couldn't download enough images. Please Try again. If the problem persists, try reducing the number of photos in your preferences"
         case .fileDeleteError:
             return "There was a problem deleting some of your photos. You might need to manually clear them"
         }
     }
 }
 
-enum PhotoStorageError: Error {
+enum PhotoStorageError: LocalizedError {
     case encodeError(Error)
     case decodeError(Error)
     case fileDeleteError(Error)
     case noRecord
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .encodeError, .decodeError:
             return "There was a problem saving a record of your photos. You might need to manually clear your download folder and try again"
@@ -69,18 +72,18 @@ enum PhotoStorageError: Error {
     }
 }
 
-enum PhotoServiceError: Error {
-    case badSaveLocation
+enum PhotoServiceError: LocalizedError {
+    case resourceMissingFileURL
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         return none
     }
 }
 
-enum WorkspaceError: Error {
+enum WorkspaceError: LocalizedError {
     case errorOpeningURL
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .errorOpeningURL:
             return "Ther was a problem opening your folder"
@@ -88,11 +91,11 @@ enum WorkspaceError: Error {
     }
 }
 
-enum PreferencesError: Error {
+enum PreferencesError: LocalizedError {
     case encodeError(Error)
     case decodeError(Error)
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .encodeError:
             return "There was a problem writing your preferences"
@@ -102,7 +105,7 @@ enum PreferencesError: Error {
     }
 }
 
-enum NetworkError: Error {
+enum NetworkError: LocalizedError {
     case noData
     case systemError(Error)
     case httpErrorCode(Int)
@@ -117,7 +120,7 @@ enum NetworkError: Error {
         }
     }
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         guard !isCancelled else {
             return none
         }
@@ -125,10 +128,18 @@ enum NetworkError: Error {
     }
 }
 
-enum DataError: Error {
+enum DataError: LocalizedError {
     case dataNotFound
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         return none
+    }
+}
+
+enum EmailError: LocalizedError {
+    case serviceNotAvailable
+
+    var errorDescription: String? {
+        return "Your default mail client cannot be openned. Please send an email to: larromba@gmail.com"
     }
 }

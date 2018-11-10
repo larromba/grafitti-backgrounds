@@ -2,7 +2,7 @@
 import XCTest
 
 class ClearFolderTests: XCTestCase {
-	func testClearFolderOnMenuClick() {
+	func testClearFolderOnMenuClickDeletesAllPhotos() {
 		XCTFail("todo")
 	}
 }

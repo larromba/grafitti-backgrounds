@@ -2,10 +2,10 @@
 import XCTest
 
 class QuitTests: XCTestCase {
-    func testAppQuitsOnMenuClick() {
+    func testQuitOnMenuClickQuitsApp() {
         // mocks
         let statusItem = MockLoadingStatusItem()
-        let menuController = AppMenuController(statusItem: statusItem)
+        let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
         let app = MockApplication()
 
 		// sut
