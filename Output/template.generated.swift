@@ -723,11 +723,11 @@ class MockPhotoController: NSObject, PhotoControllable {
         set(value) { _isDownloadInProgress = value }
     }
     var _isDownloadInProgress: Bool!
-    var folderURL: URL {
-        get { return _folderURL }
-        set(value) { _folderURL = value }
+    var photoFolderURL: URL {
+        get { return _photoFolderURL }
+        set(value) { _photoFolderURL = value }
     }
-    var _folderURL: URL!
+    var _photoFolderURL: URL!
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -750,7 +750,7 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - reloadPhotos
 
-    func reloadPhotos(completion: @escaping (Result<[PhotoControllerReloadResult]>) -> Void) {
+    func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void) {
         let functionName = reloadPhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: completion, forKey: reloadPhotos2.params.completion)
@@ -761,7 +761,7 @@ class MockPhotoController: NSObject, PhotoControllable {
     enum reloadPhotos2: String, _StringRawRepresentable {
       case name = "reloadPhotos2"
       enum params: String, _StringRawRepresentable {
-        case completion = "reloadPhotos(completion:@escaping(Result<[PhotoControllerReloadResult]>)->Void).completion"
+        case completion = "reloadPhotos(completion:@escaping(Result<[PhotoResource]>)->Void).completion"
       }
     }
 
@@ -873,11 +873,6 @@ class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
 }
 
 class MockPhotoService: NSObject, PhotoServicing {
-    var saveURL: URL {
-        get { return _saveURL }
-        set(value) { _saveURL = value }
-    }
-    var _saveURL: URL!
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -900,17 +895,37 @@ class MockPhotoService: NSObject, PhotoServicing {
       }
     }
 
+    // MARK: - movePhoto
+
+    func movePhoto(_ resource: PhotoResource, to url: URL) -> Result<PhotoResource> {
+        let functionName = movePhoto2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: resource, forKey: movePhoto2.params.resource)
+        invocation.set(parameter: url, forKey: movePhoto2.params.url)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! Result<PhotoResource>
+    }
+
+    enum movePhoto2: String, _StringRawRepresentable {
+      case name = "movePhoto2"
+      enum params: String, _StringRawRepresentable {
+        case resource = "movePhoto(_resource:PhotoResource,tourl:URL).resource"
+        case url = "movePhoto(_resource:PhotoResource,tourl:URL).url"
+      }
+    }
+
     // MARK: - cancelAll
 
     func cancelAll() {
-        let functionName = cancelAll2.name
+        let functionName = cancelAll3.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
     }
 
-    enum cancelAll2: String, _StringRawRepresentable {
-      case name = "cancelAll2"
+    enum cancelAll3: String, _StringRawRepresentable {
+      case name = "cancelAll3"
     }
 }
 

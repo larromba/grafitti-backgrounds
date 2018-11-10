@@ -24,17 +24,19 @@ extension AppController {
 
 extension PhotoController {
     static func testable(
-        photoAlbumService: MockPhotoAlbumService = MockPhotoAlbumService(),
-        photoService: MockPhotoService = MockPhotoService(),
-        photoStorageService: MockPhotoStorageService = MockPhotoStorageService()) -> PhotoController {
+        photoAlbumService: PhotoAlbumServicing = MockPhotoAlbumService(),
+        photoService: PhotoServicing = MockPhotoService(),
+        photoStorageService: PhotoStorageServicing = MockPhotoStorageService(),
+        photoFolderURL: URL = .mock) -> PhotoController {
         return PhotoController(
             photoAlbumService: photoAlbumService,
             photoService: photoService,
-            photoStorageService: photoStorageService
+            photoStorageService: photoStorageService,
+            photoFolderURL: photoFolderURL
         )
     }
 }
 
 extension URL {
-    static var mock: URL = URL(string: "http://www.google.com")!
+    static var mock = URL(string: "http://www.google.com")!
 }

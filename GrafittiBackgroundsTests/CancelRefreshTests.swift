@@ -29,14 +29,15 @@ class CancelRefreshTests: XCTestCase {
 
 	func testCancelRefreshOnMenuClickCancelsAllNetworkOperations() {
         // mocks
-        let statusItem = MockLoadingStatusItem()
+        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
+        let statusItem = LoadingStatusItem(viewState: viewState, statusBar: .system)
         let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
         menuController.setRefreshAction(.cancel)
         let operationQueue = MockOperationQueue()
         let networkManager = NetworkManager(urlSession: MockURLSession(), queue: operationQueue)
-        let photoController = PhotoController(
+        let photoController = PhotoController.testable(
             photoAlbumService: PhotoAlbumService(networkManager: networkManager),
-            photoService: PhotoService(networkManager: networkManager, fileManager: MockFileManager(), saveURL: .mock),
+            photoService: PhotoService(networkManager: networkManager, fileManager: MockFileManager()),
             photoStorageService: PhotoStorageService(dataManager: MockDataManger(), fileManager: MockFileManager())
         )
 
