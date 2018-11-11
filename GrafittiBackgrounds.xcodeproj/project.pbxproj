@@ -77,6 +77,8 @@
 		7FCF0EED1FD6C60300138D77 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */; };
 		7FCF0EF11FD6CAE300138D77 /* WorkspaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */; };
 		7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */; };
+		7FDE111A21989540001A424C /* AsyncFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE111921989540001A424C /* AsyncFlow.swift */; };
+		7FDE111C2198C008001A424C /* AnyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE111B2198C008001A424C /* AnyResult.swift */; };
 		7FED2CA52116145600AAE2A5 /* MenuViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA42116145600AAE2A5 /* MenuViewState.swift */; };
 		7FED2CA7211623E600AAE2A5 /* LoadingStatusItemViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */; };
 		7FED2CAF2118830200AAE2A5 /* MenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED2CAE2118830200AAE2A5 /* MenuAction.swift */; };
@@ -188,6 +190,8 @@
 		7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceController.swift; sourceTree = "<group>"; };
 		7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPreference.swift; sourceTree = "<group>"; };
+		7FDE111921989540001A424C /* AsyncFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFlow.swift; sourceTree = "<group>"; };
+		7FDE111B2198C008001A424C /* AnyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyResult.swift; sourceTree = "<group>"; };
 		7FED2CA42116145600AAE2A5 /* MenuViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewState.swift; sourceTree = "<group>"; };
 		7FED2CA6211623E600AAE2A5 /* LoadingStatusItemViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusItemViewState.swift; sourceTree = "<group>"; };
 		7FED2CAE2118830200AAE2A5 /* MenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAction.swift; sourceTree = "<group>"; };
@@ -321,6 +325,7 @@
 		7F509AA01FDD6C1100152B33 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				7FDE111921989540001A424C /* AsyncFlow.swift */,
 				7FCA8F1E2177BFC20088E621 /* Keyable.swift */,
 				7FED2CAE2118830200AAE2A5 /* MenuAction.swift */,
 				7F509A9E1FDD6C0800152B33 /* Workspacing.swift */,
@@ -443,6 +448,7 @@
 		7F51DACF1FD34A5400502804 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				7FDE111B2198C008001A424C /* AnyResult.swift */,
 				7F247E751FD393A50077D878 /* BaseOperation.swift */,
 				7F51DACD1FD34A4500502804 /* Log.swift */,
 				7F98DB8C2180EBCA00656466 /* Result.swift */,
@@ -690,6 +696,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FDE111A21989540001A424C /* AsyncFlow.swift in Sources */,
 				7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */,
 				7F247E761FD393A50077D878 /* BaseOperation.swift in Sources */,
 				7F247E971FD46E770077D878 /* PreferencesService.swift in Sources */,
@@ -726,6 +733,7 @@
 				7F51DAA21FD33DF100502804 /* AppDelegate.swift in Sources */,
 				7F24BE3E2194D210006BE4D0 /* main.swift in Sources */,
 				7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */,
+				7FDE111C2198C008001A424C /* AnyResult.swift in Sources */,
 				7F247E9D1FD4763F0077D878 /* PreferencesViewController.swift in Sources */,
 				7F247E7F1FD42E240077D878 /* MenuItem.swift in Sources */,
 				7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */,

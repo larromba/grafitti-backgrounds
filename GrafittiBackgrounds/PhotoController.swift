@@ -14,15 +14,20 @@ protocol PhotoControllable: Mockable {
     func setPreferences(_ preferences: Preferences)
     func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void)
     // sourcery: returnValue = Result.success(())
-    func cancelReload() -> Result<Void>
+    func cancelReload()
     func clearFolder() -> Result<Void>
     func setDelegate(_ delegate: PhotoControllerDelegate)
 }
 
 final class PhotoController: PhotoControllable {
-    private struct ReloadResult {
-        let photo: PhotoResource
-        let result: Result<Void>
+    private class ReloadFlow: AsyncFlowContext {
+        var callBacks = [() -> Void]()
+        var finally: (() -> Void)?
+        var numberOfPhotos: Int = 0
+        var photoAlbumResults = [AnyResult<PhotoAlbum>]()
+        var photoDownloadResults = [AnyResult<PhotoResource>]()
+        var photoAlbums = [PhotoAlbum]()
+        var resources = [PhotoResource]()
     }
 
     private let photoAlbumService: PhotoAlbumServicing
@@ -58,6 +63,7 @@ final class PhotoController: PhotoControllable {
         photoAlbumService.cancelAll()
     }
 
+    // swiftlint:disable function_body_length cyclomatic_complexity
     func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void) {
         guard !isDownloadInProgress else {
             completion(.failure(PhotoError.downloadInProgress))
@@ -65,50 +71,132 @@ final class PhotoController: PhotoControllable {
         }
         setupTimer()
         isDownloadInProgress = true
-        fetchAlbums(numberOfPhotos: preferences.numberOfPhotos, completion: { [weak self] result in
-            guard let `self` = self else { return }
+
+        let flow = ReloadFlow()
+        flow.numberOfPhotos = preferences.numberOfPhotos
+
+        // 1. fetch photo albums
+        flow.add {
+            self.photoAlbumService.fetchPhotoAlbums(progress: { percentage in
+                DispatchQueue.main.async {
+                    self.delegate?.photoController(self, updatedDownloadPercentage: 0.5 * percentage)
+                }
+            }, completion: { result in
+                switch result {
+                case .success(let results):
+                    flow.photoAlbumResults = results
+                    flow.next()
+                case .failure(let error):
+                    completion(.failure(error))
+                    flow.finished()
+                }
+            })
+        }
+
+        // 2. ensure there are enough photos in the available albums to download
+        flow.add {
+            let successfulResults = flow.photoAlbumResults.filter { $0.result.isSuccess }
+            let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.item.resources.count })
+            guard numOfPossibleDownloads >= self.preferences.numberOfPhotos else {
+                completion(.failure(PhotoError.notEnoughImagesAvailable))
+                flow.finished()
+                return
+            }
+            let albums = successfulResults.map { $0.item }
+            flow.photoAlbums = albums
+            flow.next()
+        }
+
+        // 3. choose some random photos
+        flow.add {
+            let allPhotoResources = flow.photoAlbums.map { $0.resources }.reduce([], +)
+            let resources = (0..<flow.numberOfPhotos).map { _ in
+                allPhotoResources[Int(arc4random_uniform(UInt32(allPhotoResources.count)))]
+            }
+            flow.resources = resources
+            flow.next()
+        }
+
+        // 4. download photos
+        flow.add {
+            self.photoService.downloadPhotos(flow.resources, progress: { percentage in
+                DispatchQueue.main.async {
+                    self.delegate?.photoController(self, updatedDownloadPercentage: 0.5 + (0.5 * percentage))
+                }
+            }, completion: { result in
+                switch result {
+                case .success(let results):
+                    flow.photoDownloadResults = results
+                    flow.next()
+                case .failure(let error):
+                    completion(.failure(error))
+                    flow.finished()
+                }
+            })
+        }
+
+        // 5. ensure enough photos were downloaded
+        flow.add {
+            flow.resources = flow.photoDownloadResults
+                .filter { $0.result.isSuccess }
+                .map { return $0.item }
+            guard flow.resources.count >= flow.numberOfPhotos else {
+                completion(.failure(PhotoError.notEnoughImagesDownloaded))
+                flow.finished()
+                return
+            }
+            flow.next()
+        }
+
+        // 6. clear previous photos, try moving new photos, save resource information
+        flow.add {
+            completion(self.clearFolder().flatMap { _ -> Result<[PhotoResource]> in
+                let result = self.photoService.movePhotos(flow.resources, to: self.photoFolderURL)
+                let failedResults = result.filter { $0.result.isFailure }
+                if failedResults.isEmpty {
+                    return .success(result.compactMap { $0.item })
+                } else if failedResults.count == result.count {
+                    return .failure(failedResults[0].result.error!)
+                } else {
+                    return .failure(PhotoError.imagesMissingAfterMove)
+                }
+            }.flatMap { resources -> Result<[PhotoResource]> in
+                switch self.photoStorageService.save(resources) {
+                case .success:
+                    return .success(resources)
+                case .failure(let error):
+                    return .failure(error)
+                }
+            })
+            flow.finished()
+        }
+
+        // 7. finish up
+        flow.setFinally {
             DispatchQueue.main.async {
                 self.isDownloadInProgress = false
-                completion(result
-                    .flatMap { resources -> Result<[PhotoResource]> in
-                        switch self.clearFolder() {
-                        case .success:
-                            return .success(resources)
-                        case .failure(let error):
-                            return .failure(error)
-                        }
-                    }.flatMap { resources -> Result<[PhotoResource]> in
-                        return self.movePhotos(resources)
-                    }.flatMap {  resources -> Result<[PhotoResource]> in
-                        switch self.photoStorageService.save(resources) {
-                        case .success:
-                            return .success(resources)
-                        case .failure(let error):
-                            return .failure(error)
-                        }
-                    }
-                )
             }
-        })
+        }
+
+        flow.start()
     }
 
-    func cancelReload() -> Result<Void> {
+    func cancelReload() {
         photoService.cancelAll()
         photoAlbumService.cancelAll()
         isDownloadInProgress = false
-        return .success(())
     }
 
     func clearFolder() -> Result<Void> {
         return photoStorageService.load()
-            .flatMap { resources -> Result<[PhotoStorageServiceDeletionResult]> in
+            .flatMap { resources -> Result<[AnyResult<PhotoResource>]> in
                 return self.photoStorageService.remove(resources)
             }.flatMap { results -> Result<Void> in
                 let badResults = results.filter { $0.result.isFailure }
                 if badResults.isEmpty {
                     return .success(())
                 } else {
-                    let resources = badResults.map { $0.resource }
+                    let resources = badResults.map { $0.item }
                     return .failure(PhotoError.fileDeleteError(resources))
                 }
             }
@@ -145,68 +233,5 @@ final class PhotoController: PhotoControllable {
     private func stopTimer() {
         reloadTimer?.invalidate()
         reloadTimer = nil
-    }
-
-    private func fetchAlbums(numberOfPhotos: Int,
-                             completion: @escaping (Result<[PhotoResource]>) -> Void) {
-        photoAlbumService.fetchPhotoAlbums(completion: { [weak self] result in
-            switch result {
-            case .success(let results):
-                let successfulResults = results.filter { $0.result.isSuccess }
-                let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.album.resources.count })
-                guard numOfPossibleDownloads >= numberOfPhotos else {
-                    completion(.failure(PhotoError.notEnoughImagesAvailable))
-                    return
-                }
-                let albums = successfulResults.map { $0.album }
-                self?.downloadPhotos(from: albums, numberOfPhotos: numberOfPhotos, completion: completion)
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        })
-    }
-
-    private func downloadPhotos(from albums: [PhotoAlbum],
-                                numberOfPhotos: Int,
-                                completion: @escaping (Result<[PhotoResource]>) -> Void) {
-        let allResources = albums.map { $0.resources }.reduce([], +)
-        let group = DispatchGroup()
-        var results = [ReloadResult]()
-
-        (0..<numberOfPhotos).forEach { _ in
-            group.enter()
-            let resource = allResources[Int(arc4random_uniform(UInt32(allResources.count)))]
-            photoService.downloadPhoto(resource, completion: { result in
-                switch result {
-                case .success(let resource):
-                    results += [ReloadResult(photo: resource, result: .success(()))]
-                case .failure(let error):
-                    results += [ReloadResult(photo: resource, result: .failure(error))]
-                }
-                let percentage = Double(results.count) / Double(numberOfPhotos)
-                DispatchQueue.main.async {
-                    self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
-                }
-                group.leave()
-            })
-        }
-
-        group.notify(queue: .global()) {
-            let photoResources = results.filter { $0.result.isSuccess }.map { return $0.photo }
-            guard photoResources.count >= numberOfPhotos else {
-                completion(.failure(PhotoError.notEnoughImagesDownloaded))
-                return
-            }
-            completion(.success(photoResources))
-        }
-    }
-
-    private func movePhotos(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
-        let results = resources.map { photoService.movePhoto($0, to: photoFolderURL) }
-        let failed = results.filter { $0.isFailure }
-        guard failed.isEmpty else {
-            return .failure(failed[0].error!)
-        }
-        return .success(results.compactMap { $0.value })
     }
 }

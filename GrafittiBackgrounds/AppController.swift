@@ -41,15 +41,6 @@ final class AppController: AppControllable {
 
     // MARK: - private
 
-    private func cancelReload() {
-        switch photoController.cancelReload() {
-        case .success:
-            alertController.showAlert(.cancelReloadSuccess)
-        case .failure(let error):
-            alertController.showAlert(.error(error))
-        }
-    }
-
     private func clearFolder() {
         switch photoController.clearFolder() {
         case .success:
@@ -105,7 +96,8 @@ extension AppController: AppMenuControllerDelegate {
         case .refreshFolder(action: .refresh):
             reloadPhotos()
         case .refreshFolder(action: .cancel):
-            cancelReload()
+            photoController.cancelReload()
+            alertController.showAlert(.cancelReloadSuccess)
         case .openFolder:
 			handleNoSuccessResult(workspaceController.open(photoController.photoFolderURL))
         case .clearFolder:

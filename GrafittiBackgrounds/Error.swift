@@ -38,6 +38,7 @@ enum PhotoError: LocalizedError {
     case downloadInProgress
     case notEnoughImagesAvailable
     case notEnoughImagesDownloaded
+    case imagesMissingAfterMove
     case fileDeleteError([PhotoResource])
 
     var errorDescription: String? {
@@ -48,6 +49,8 @@ enum PhotoError: LocalizedError {
             return "There aren't enough images to download. Try reducing the number of photos in your preferences, and try again"
         case .notEnoughImagesDownloaded:
             return "We couldn't download enough images. Please Try again. If the problem persists, try reducing the number of photos in your preferences"
+        case .imagesMissingAfterMove:
+            return "Some images may be missing in your photos folder. Please check and try again"
         case .fileDeleteError:
             return "There was a problem deleting some of your photos. You might need to manually clear them"
         }

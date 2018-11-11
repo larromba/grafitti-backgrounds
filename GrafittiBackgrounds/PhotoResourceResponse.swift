@@ -4,7 +4,7 @@ struct PhotoResourceResponse: Response {
     typealias ErrorType = PhotoResourceResponseError
 
     let data: Data
-    let photoResources: [PhotoResource]
+    let resources: [PhotoResource]
 
     // swiftlint:disable function_body_length
     init(data: Data) throws {
@@ -47,7 +47,7 @@ struct PhotoResourceResponse: Response {
             options: .init(rawValue: 0),
             range: NSRange(location: 0, length: photoURLBlock.count)
         )
-        photoResources = try matches.compactMap { result -> PhotoResource? in
+        resources = try matches.compactMap { result -> PhotoResource? in
             // get dirty url component: "\"AF1QipNny8uQfuLxogrp1MpXAIS3sn8m0HSyfszcXsLz\",[\"https:"
             guard let range = Range(result.range, in: photoURLBlock) else {
                 log_error("couldn't get dirty urlComponent")
@@ -77,7 +77,7 @@ struct PhotoResourceResponse: Response {
                 log_error("components missing url")
                 return nil
             }
-            return PhotoResource(url: url, fileURL: nil)
+            return PhotoResource(url: url, downloadURL: nil, fileURL: nil)
         }
     }
 }

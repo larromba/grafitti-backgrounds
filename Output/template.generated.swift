@@ -767,13 +767,11 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - cancelReload
 
-    func cancelReload() -> Result<Void> {
+    func cancelReload() {
         let functionName = cancelReload3.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        actions.set(defaultReturnValue: Result.success(()), for: functionName)
-        return actions.returnValue(for: functionName) as! Result<Void>
     }
 
     enum cancelReload3: String, _StringRawRepresentable {
@@ -876,42 +874,44 @@ class MockPhotoService: NSObject, PhotoServicing {
     let invocations = _Invocations()
     let actions = _Actions()
 
-    // MARK: - downloadPhoto
+    // MARK: - downloadPhotos
 
-    func downloadPhoto(_ resource: PhotoResource, completion: @escaping (Result<PhotoResource>) -> Void) {
-        let functionName = downloadPhoto1.name
+    func downloadPhotos(_ resource: [PhotoResource],progress: @escaping (Double) -> Void,completion: @escaping (Result<[PhotoServiceDownloadResult]>) -> Void) {
+        let functionName = downloadPhotos1.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: resource, forKey: downloadPhoto1.params.resource)
-        invocation.set(parameter: completion, forKey: downloadPhoto1.params.completion)
+        invocation.set(parameter: resource, forKey: downloadPhotos1.params.resource)
+        invocation.set(parameter: progress, forKey: downloadPhotos1.params.progress)
+        invocation.set(parameter: completion, forKey: downloadPhotos1.params.completion)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
     }
 
-    enum downloadPhoto1: String, _StringRawRepresentable {
-      case name = "downloadPhoto1"
+    enum downloadPhotos1: String, _StringRawRepresentable {
+      case name = "downloadPhotos1"
       enum params: String, _StringRawRepresentable {
-        case resource = "downloadPhoto(_resource:PhotoResource,completion:@escaping(Result<PhotoResource>)->Void).resource"
-        case completion = "downloadPhoto(_resource:PhotoResource,completion:@escaping(Result<PhotoResource>)->Void).completion"
+        case resource = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[PhotoServiceDownloadResult]>)->Void).resource"
+        case progress = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[PhotoServiceDownloadResult]>)->Void).progress"
+        case completion = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[PhotoServiceDownloadResult]>)->Void).completion"
       }
     }
 
-    // MARK: - movePhoto
+    // MARK: - movePhotos
 
-    func movePhoto(_ resource: PhotoResource, to url: URL) -> Result<PhotoResource> {
-        let functionName = movePhoto2.name
+    func movePhotos(_ resources: [PhotoResource], to url: URL) -> Result<[PhotoResource]> {
+        let functionName = movePhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: resource, forKey: movePhoto2.params.resource)
-        invocation.set(parameter: url, forKey: movePhoto2.params.url)
+        invocation.set(parameter: resources, forKey: movePhotos2.params.resources)
+        invocation.set(parameter: url, forKey: movePhotos2.params.url)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        return actions.returnValue(for: functionName) as! Result<PhotoResource>
+        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
     }
 
-    enum movePhoto2: String, _StringRawRepresentable {
-      case name = "movePhoto2"
+    enum movePhotos2: String, _StringRawRepresentable {
+      case name = "movePhotos2"
       enum params: String, _StringRawRepresentable {
-        case resource = "movePhoto(_resource:PhotoResource,tourl:URL).resource"
-        case url = "movePhoto(_resource:PhotoResource,tourl:URL).url"
+        case resources = "movePhotos(_resources:[PhotoResource],tourl:URL).resources"
+        case url = "movePhotos(_resources:[PhotoResource],tourl:URL).url"
       }
     }
 

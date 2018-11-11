@@ -6,18 +6,13 @@ protocol PhotoStorageServicing: Mockable {
     func save(_ resources: [PhotoResource]) -> Result<Void>
     // sourcery: returnValue = Result.success([PhotoResource]())
     func load() -> Result<[PhotoResource]>
-    // sourcery: returnValue = Result.success([PhotoStorageServiceDeletionResult]())
-    func remove(_ resources: [PhotoResource]) -> Result<[PhotoStorageServiceDeletionResult]>
-}
-
-struct PhotoStorageServiceDeletionResult {
-    let resource: PhotoResource
-    let result: Result<Void>
+    // sourcery: returnValue = Result.success([AnyResult<PhotoResource>]())
+    func remove(_ resources: [PhotoResource]) -> Result<[AnyResult<PhotoResource>]>
 }
 
 final class PhotoStorageService: PhotoStorageServicing {
     private enum Key: String, Keyable {
-        case photoResource
+        case resource
     }
 
     private let encoder = PropertyListEncoder()
@@ -33,7 +28,7 @@ final class PhotoStorageService: PhotoStorageServicing {
     func save(_ resources: [PhotoResource]) -> Result<Void> {
         do {
             let data = try encoder.encode(resources)
-            dataManager.save(data, key: Key.photoResource)
+            dataManager.save(data, key: Key.resource)
             return .success(())
         } catch {
             return .failure(PhotoStorageError.encodeError(error))
@@ -41,7 +36,7 @@ final class PhotoStorageService: PhotoStorageServicing {
     }
 
     func load() -> Result<[PhotoResource]> {
-        let result = dataManager.load(key: Key.photoResource)
+        let result = dataManager.load(key: Key.resource)
         switch result {
         case .success(let data):
             do {
@@ -60,7 +55,7 @@ final class PhotoStorageService: PhotoStorageServicing {
         }
     }
 
-    func remove(_ resources: [PhotoResource]) -> Result<[PhotoStorageServiceDeletionResult]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[AnyResult<PhotoResource>]> {
         var savedResources: [PhotoResource]
         switch load() {
         case .success(let resources):
@@ -69,28 +64,19 @@ final class PhotoStorageService: PhotoStorageServicing {
             return .failure(error)
         }
 
-        var results = [PhotoStorageServiceDeletionResult]()
+        var results = [AnyResult<PhotoResource>]()
         resources.forEach { resource in
             do {
                 if let fileURL = resource.fileURL, self.fileManager.fileExists(atPath: fileURL.path) {
                     try self.fileManager.removeItem(at: fileURL)
                 }
                 if savedResources.remove(resource) {
-                    results += [PhotoStorageServiceDeletionResult(
-                        resource: resource,
-                        result: .success(())
-                        )]
+                    results += [AnyResult(item: resource, result: .success(()))]
                 } else {
-                    results += [PhotoStorageServiceDeletionResult(
-                        resource: resource,
-                        result: .failure(PhotoStorageError.noRecord)
-                        )]
+                    results += [AnyResult(item: resource, result: .failure(PhotoStorageError.noRecord))]
                 }
             } catch {
-                results += [PhotoStorageServiceDeletionResult(
-                    resource: resource,
-                    result: .failure(PhotoStorageError.fileDeleteError(error))
-                    )]
+                results += [AnyResult(item: resource, result: .failure(PhotoStorageError.fileDeleteError(error)))]
             }
         }
 
