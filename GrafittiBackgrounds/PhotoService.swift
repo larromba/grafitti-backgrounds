@@ -5,7 +5,7 @@ protocol PhotoServicing: Mockable {
     func downloadPhotos(_ resource: [PhotoResource],
                         progress: @escaping (Double) -> Void,
                         completion: @escaping (Result<[AnyResult<PhotoResource>]>) -> Void)
-    func movePhotos(_ resources: [PhotoResource], to url: URL) -> [AnyResult<PhotoResource>]
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> [AnyResult<PhotoResource>]
     func cancelAll()
 }
 
@@ -68,16 +68,22 @@ final class PhotoService: PhotoServicing {
                 flow.downloadURLGroup.enter()
                 self.networkManager.download(downloadURL, completion: { result in
                     switch result {
-                    case .success(let imageURL):
+                    case .success(let fileURL):
                         // must rename file else it's removed
                         // see https://developer.apple.com/documentation/foundation/urlsession/1411511-downloadtask
-                        let newImagePath = imageURL.path.replacingOccurrences(
+                        let newFilePath = fileURL.path.replacingOccurrences(
                             of: FileExtension.tmp.rawValue,
                             with: FileExtension.png.rawValue
                         )
-                        let newImageURL = URL(fileURLWithPath: newImagePath)
-                        let result = self.movePhotos([resource], to: newImageURL)[0]
-                        flow.downloadResults += [.init(item: result.item, result: result.result)]
+                        let newfileURL = URL(fileURLWithPath: newFilePath)
+                        var resource = resource
+                        resource.fileURL = newfileURL
+                        do {
+                            try self.fileManager.moveItem(at: fileURL, to: newfileURL)
+                            flow.downloadResults += [.init(item: resource, result: .success(()))]
+                        } catch {
+                            flow.downloadResults += [.init(item: resource, result: .failure(error))]
+                        }
                     case .failure(let error):
                         flow.downloadResults += [.init(item: resource, result: .failure(error))]
                     }
@@ -98,7 +104,7 @@ final class PhotoService: PhotoServicing {
         flow.start()
     }
 
-    func movePhotos(_ resources: [PhotoResource], to url: URL) -> [AnyResult<PhotoResource>] {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> [AnyResult<PhotoResource>] {
         var results = [AnyResult<PhotoResource>]()
         for resource in resources {
             guard let fileURL = resource.fileURL else {

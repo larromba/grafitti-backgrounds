@@ -19,7 +19,7 @@ class AlertController: AlertControlling {
 		notification.identifier = UUID().uuidString
 		notification.title = alert.title
 		notification.informativeText = alert.text
-		notification.soundName = NSUserNotificationDefaultSoundName
+		//notification.soundName = NSUserNotificationDefaultSoundName
 		notificationCenter.deliver(notification)
     }
 }

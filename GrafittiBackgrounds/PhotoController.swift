@@ -151,7 +151,7 @@ final class PhotoController: PhotoControllable {
         // 6. clear previous photos, try moving new photos, save resource information
         flow.add {
             completion(self.clearFolder().flatMap { _ -> Result<[PhotoResource]> in
-                let result = self.photoService.movePhotos(flow.resources, to: self.photoFolderURL)
+                let result = self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
                 let failedResults = result.filter { $0.result.isFailure }
                 if failedResults.isEmpty {
                     return .success(result.compactMap { $0.item })
@@ -175,6 +175,7 @@ final class PhotoController: PhotoControllable {
         flow.setFinally {
             DispatchQueue.main.async {
                 self.isDownloadInProgress = false
+                self.delegate?.photoController(self, updatedDownloadPercentage: 0.0)
             }
         }
 
