@@ -9,6 +9,7 @@ protocol PhotoServicing: Mockable {
     func cancelAll()
 }
 
+// TODO: progress class
 final class PhotoService: PhotoServicing {
     private class DownloadFlow: AsyncFlowContext {
         var callBacks = [() -> Void]()
@@ -52,7 +53,8 @@ final class PhotoService: PhotoServicing {
                         completion(.failure(error))
                         flow.finished()
                     }
-                    progress(0.5 * (Double(flow.resources.count) / Double(resources.count)))
+					let percentage = Double(flow.resources.count) / Double(resources.count)
+                    progress(Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2))
                     flow.fetchURLGroup.leave()
                 })
             }
@@ -87,7 +89,8 @@ final class PhotoService: PhotoServicing {
                     case .failure(let error):
                         flow.downloadResults += [.init(item: resource, result: .failure(error))]
                     }
-                    progress(0.5 + (0.5 * (Double(flow.downloadResults.count) / Double(flow.resources.count))))
+					let percentage = Double(flow.downloadResults.count) / Double(flow.resources.count)
+                    progress(Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2))
                     flow.downloadURLGroup.leave()
                 })
             })

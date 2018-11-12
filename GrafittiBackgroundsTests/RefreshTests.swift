@@ -28,21 +28,34 @@ class RefreshTests: XCTestCase {
 	}
 
 	func testRefreshFolderOnMenuClickClearsAndDownloadsNewPhotos() {
-//        // mocks
-//        let menuController = AppMenuController(statusItem: MockLoadingStatusItem(), reachability: MockReachability())
-//        let photoController = PhotoController.testable()
-//
-//        // sut
-//        _ = AppController.testable(menuController: menuController, photoController: photoController)
-//
-//        // test
-//        guard let menu = statusItem.menu, menu.click(at: AppMenu.Order.refreshFolder.rawValue) else {
-//            XCTFail("expected menu to click")
-//            return
-//        }
+        // mocks
+        let menuController = AppMenuController(statusItem: MockLoadingStatusItem(), reachability: MockReachability())
+        let photoAlbumService = MockPhotoAlbumService()
+        photoAlbumService.actions.set(closure: {
+            let completion = photoService.invocations.find(
+                parameter: MockPhotoService.downloadPhotos1.params.completion,
+                inFunction: MockPhotoService.downloadPhotos1.name) as! (Result<[AnyResult<PhotoResource>]>) -> Void
+            
+        }, for: MockPhotoAlbumService.fetchPhotoAlbums1.name)
+//        let photoService = MockPhotoService()
+//        photoService.actions.set(closure: {
+//            let completion = photoService.invocations.find(
+//                parameter: MockPhotoService.downloadPhotos1.params.completion,
+//                inFunction: MockPhotoService.downloadPhotos1.name) as! (Result<[AnyResult<PhotoResource>]>) -> Void
+//            completion(.success(AnyResult(PhotoResource(), result: .success(()) )))
+        }, for: MockPhotoService.downloadPhotos1.name)
+        let photoController = PhotoController.testable()
+
+        // sut
+        _ = AppController.testable(menuController: menuController, photoController: photoController)
+
+        // test
+        guard let menu = statusItem.menu, menu.click(at: AppMenu.Order.refreshFolder.rawValue) else {
+            XCTFail("expected menu to click")
+            return
+        }
 
 	}
-
     func testLoadingIndicatorIncrementsUponDownload() {
         // mocks
         let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)

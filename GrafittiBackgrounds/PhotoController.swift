@@ -23,6 +23,7 @@ final class PhotoController: PhotoControllable {
     private class ReloadFlow: AsyncFlowContext {
         var callBacks = [() -> Void]()
         var finally: (() -> Void)?
+
         var numberOfPhotos: Int = 0
         var photoAlbumResults = [AnyResult<PhotoAlbum>]()
         var photoDownloadResults = [AnyResult<PhotoResource>]()
@@ -79,7 +80,8 @@ final class PhotoController: PhotoControllable {
         flow.add {
             self.photoAlbumService.fetchPhotoAlbums(progress: { percentage in
                 DispatchQueue.main.async {
-                    self.delegate?.photoController(self, updatedDownloadPercentage: 0.5 * percentage)
+					let percentage = Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2)
+                    self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
                 }
             }, completion: { result in
                 switch result {
@@ -102,18 +104,16 @@ final class PhotoController: PhotoControllable {
                 flow.finished()
                 return
             }
-            let albums = successfulResults.map { $0.item }
-            flow.photoAlbums = albums
+            flow.photoAlbums = successfulResults.map { $0.item }
             flow.next()
         }
 
         // 3. choose some random photos
         flow.add {
             let allPhotoResources = flow.photoAlbums.map { $0.resources }.reduce([], +)
-            let resources = (0..<flow.numberOfPhotos).map { _ in
+            flow.resources = (0..<flow.numberOfPhotos).map { _ in
                 allPhotoResources[Int(arc4random_uniform(UInt32(allPhotoResources.count)))]
             }
-            flow.resources = resources
             flow.next()
         }
 
@@ -121,7 +121,8 @@ final class PhotoController: PhotoControllable {
         flow.add {
             self.photoService.downloadPhotos(flow.resources, progress: { percentage in
                 DispatchQueue.main.async {
-                    self.delegate?.photoController(self, updatedDownloadPercentage: 0.5 + (0.5 * percentage))
+					let percentage = Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2)
+                    self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
                 }
             }, completion: { result in
                 switch result {
@@ -150,7 +151,7 @@ final class PhotoController: PhotoControllable {
 
         // 6. clear previous photos, try moving new photos, save resource information
         flow.add {
-            completion(self.clearFolder().flatMap { _ -> Result<[PhotoResource]> in
+            let result = self.clearFolder().flatMap { _ -> Result<[PhotoResource]> in
                 let result = self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
                 let failedResults = result.filter { $0.result.isFailure }
                 if failedResults.isEmpty {
@@ -158,7 +159,8 @@ final class PhotoController: PhotoControllable {
                 } else if failedResults.count == result.count {
                     return .failure(failedResults[0].result.error!)
                 } else {
-                    return .failure(PhotoError.imagesMissingAfterMove)
+					// edge case
+                    return .failure(PhotoError.someImagesMissingAfterMove)
                 }
             }.flatMap { resources -> Result<[PhotoResource]> in
                 switch self.photoStorageService.save(resources) {
@@ -167,7 +169,8 @@ final class PhotoController: PhotoControllable {
                 case .failure(let error):
                     return .failure(error)
                 }
-            })
+            }
+            completion(result)
             flow.finished()
         }
 

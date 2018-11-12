@@ -669,9 +669,10 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
 
     // MARK: - fetchPhotoAlbums
 
-    func fetchPhotoAlbums(completion: @escaping (Result<[PhotoAlbumServiceFetchResult]>) -> Void) {
+    func fetchPhotoAlbums(progress: @escaping (Double) -> Void,completion: @escaping (Result<[AnyResult<PhotoAlbum>]>) -> Void) {
         let functionName = fetchPhotoAlbums1.name
         let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: progress, forKey: fetchPhotoAlbums1.params.progress)
         invocation.set(parameter: completion, forKey: fetchPhotoAlbums1.params.completion)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
@@ -680,7 +681,8 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     enum fetchPhotoAlbums1: String, _StringRawRepresentable {
       case name = "fetchPhotoAlbums1"
       enum params: String, _StringRawRepresentable {
-        case completion = "fetchPhotoAlbums(completion:@escaping(Result<[PhotoAlbumServiceFetchResult]>)->Void).completion"
+        case progress = "fetchPhotoAlbums(progress:@escaping(Double)->Void,completion:@escaping(Result<[AnyResult<PhotoAlbum>]>)->Void).progress"
+        case completion = "fetchPhotoAlbums(progress:@escaping(Double)->Void,completion:@escaping(Result<[AnyResult<PhotoAlbum>]>)->Void).completion"
       }
     }
 
@@ -876,7 +878,7 @@ class MockPhotoService: NSObject, PhotoServicing {
 
     // MARK: - downloadPhotos
 
-    func downloadPhotos(_ resource: [PhotoResource],progress: @escaping (Double) -> Void,completion: @escaping (Result<[PhotoServiceDownloadResult]>) -> Void) {
+    func downloadPhotos(_ resource: [PhotoResource],progress: @escaping (Double) -> Void,completion: @escaping (Result<[AnyResult<PhotoResource>]>) -> Void) {
         let functionName = downloadPhotos1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resource, forKey: downloadPhotos1.params.resource)
@@ -889,29 +891,29 @@ class MockPhotoService: NSObject, PhotoServicing {
     enum downloadPhotos1: String, _StringRawRepresentable {
       case name = "downloadPhotos1"
       enum params: String, _StringRawRepresentable {
-        case resource = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[PhotoServiceDownloadResult]>)->Void).resource"
-        case progress = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[PhotoServiceDownloadResult]>)->Void).progress"
-        case completion = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[PhotoServiceDownloadResult]>)->Void).completion"
+        case resource = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[AnyResult<PhotoResource>]>)->Void).resource"
+        case progress = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[AnyResult<PhotoResource>]>)->Void).progress"
+        case completion = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[AnyResult<PhotoResource>]>)->Void).completion"
       }
     }
 
     // MARK: - movePhotos
 
-    func movePhotos(_ resources: [PhotoResource], to url: URL) -> Result<[PhotoResource]> {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> [AnyResult<PhotoResource>] {
         let functionName = movePhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: movePhotos2.params.resources)
         invocation.set(parameter: url, forKey: movePhotos2.params.url)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
+        return actions.returnValue(for: functionName) as! [AnyResult<PhotoResource>]
     }
 
     enum movePhotos2: String, _StringRawRepresentable {
       case name = "movePhotos2"
       enum params: String, _StringRawRepresentable {
-        case resources = "movePhotos(_resources:[PhotoResource],tourl:URL).resources"
-        case url = "movePhotos(_resources:[PhotoResource],tourl:URL).url"
+        case resources = "movePhotos(_resources:[PhotoResource],toFolderurl:URL).resources"
+        case url = "movePhotos(_resources:[PhotoResource],toFolderurl:URL).url"
       }
     }
 
@@ -969,14 +971,14 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
 
     // MARK: - remove
 
-    func remove(_ resources: [PhotoResource]) -> Result<[PhotoStorageServiceDeletionResult]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[AnyResult<PhotoResource>]> {
         let functionName = remove3.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: remove3.params.resources)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        actions.set(defaultReturnValue: Result.success([PhotoStorageServiceDeletionResult]()), for: functionName)
-        return actions.returnValue(for: functionName) as! Result<[PhotoStorageServiceDeletionResult]>
+        actions.set(defaultReturnValue: Result.success([AnyResult<PhotoResource>]()), for: functionName)
+        return actions.returnValue(for: functionName) as! Result<[AnyResult<PhotoResource>]>
     }
 
     enum remove3: String, _StringRawRepresentable {

@@ -22,4 +22,7 @@ class AlertTests: XCTestCase {
 	func testCancelledNetworkErrorDoesNotDisplay() {
 		XCTFail("todo")
 	}
+
+	//notEnoughImagesAvailable
+	//notEnoughImagesDownloaded
 }
