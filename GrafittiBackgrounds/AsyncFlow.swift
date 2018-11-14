@@ -35,7 +35,7 @@ extension AsyncFlowContext {
 
     func start() {
         callBacks.first?()
-        log("\(self) starting callback [0] of \(callBacks.count)")
+        log("\(String(describing: self)) starting callback [0] of \(callBacks.count)")
     }
 
     func next() {

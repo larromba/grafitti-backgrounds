@@ -1,26 +1,24 @@
 @testable import Grafitti_Backgrounds
 import XCTest
 
-class PreferencesTests: XCTestCase {
+// TODO: make env?
+final class PreferencesTests: XCTestCase {
 	func testPreferencesOnMenuClickOpensPreferences() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
 		let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
 		let windowController = MockWindowController()
-		windowController.contentViewController = MockPreferencesViewController()
+        windowController.contentViewController = MockPreferencesViewController()
 		let preferencesController = PreferencesController(
 			windowController: windowController,
 			preferencesService: MockPreferencesService()
 		)
+        _ = AppController.testable(preferencesController: preferencesController, menuController: menuController)
 
-		// sut
-		_ = AppController.testable(preferencesController: preferencesController, menuController: menuController)
+        // sut
+		statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
 
-		// test
-		guard let menu = statusItem.menu, menu.click(at: AppMenu.Order.preferences.rawValue) else {
-			XCTFail("expected menu to click")
-			return
-		}
+        // test
 		XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
 	}
 
@@ -49,7 +47,7 @@ class PreferencesTests: XCTestCase {
         XCTAssertEqual(preferencesViewController.numberOfPhotosTextField.stringValue, "2")
 	}
 
-	func testPreferencesPersistEachChangeAfterOpening() {
+	func testPreferencesPersistOnEveryChange() {
 		// mocks
 		guard
 			let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
@@ -60,15 +58,13 @@ class PreferencesTests: XCTestCase {
 		let userDefaults = MockUserDefaults()
 		let dataManager = DataManger(database: userDefaults)
 		let preferencesService = PreferencesService(dataManager: dataManager)
+        let preferencesController = PreferencesController(
+            windowController: windowController,
+            preferencesService: preferencesService
+        )
 
 		// sut
-		let preferencesController = PreferencesController(
-			windowController: windowController,
-			preferencesService: preferencesService
-		)
         preferencesController.open()
-
-		// test
 		preferencesViewController.autoRefreshCheckBox.performClick(nil)
         preferencesViewController.autoRefreshCheckBox.performClick(nil)
         preferencesViewController.autoRefreshIntervalTextField.stringValue = "10"
@@ -76,6 +72,7 @@ class PreferencesTests: XCTestCase {
         preferencesViewController.numberOfPhotosTextField.stringValue = "5"
         preferencesViewController.numberOfPhotosTextField.fireTextChagedEvent(in: preferencesViewController)
 
+        // test
         XCTAssertEqual(userDefaults.preferences(at: 0)?.isAutoRefreshEnabled, false)
         XCTAssertEqual(userDefaults.preferences(at: 1)?.isAutoRefreshEnabled, true)
         XCTAssertEqual(userDefaults.preferences(at: 2)?.autoRefreshTimeIntervalHours, 10)
@@ -90,26 +87,25 @@ class PreferencesTests: XCTestCase {
                 XCTFail("expected NSWindowController & PreferencesViewController")
                 return
         }
-        let preferencesService = MockPreferencesService()
         let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 0)
-        preferencesService.actions.set(returnValue: Result.success(preferences), for: MockPreferencesService.load2.name)
         let preferencesController = PreferencesController(
             windowController: windowController,
-            preferencesService: preferencesService
+            preferencesService: MockPreferencesService()
         )
+        let photoDelegate = MockPhotoControllerDelegate()
         let photoController = PhotoController.testable()
-        let delegate = MockPhotoControllerDelegate()
+        _ = AppController.testable(preferencesController: preferencesController, photoController: photoController)
+        photoController.setDelegate(photoDelegate)
+        photoController.setPreferences(preferences)
 
         // sut
-        _ = AppController.testable(preferencesController: preferencesController, photoController: photoController)
-        photoController.setDelegate(delegate)
-
-        // test
+        preferencesController.open()
         preferencesViewController.autoRefreshIntervalTextField.stringValue = "0"
         preferencesViewController.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesViewController)
 
-        wait(for: 0.1) {
-            XCTAssertTrue(delegate.invocations.isInvoked(
+        // test
+        wait {
+            XCTAssertTrue(photoDelegate.invocations.isInvoked(
                 MockPhotoControllerDelegate.photoControllerTimerTriggered1.name)
             )
         }

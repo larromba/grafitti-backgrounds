@@ -1,79 +1,145 @@
 @testable import Grafitti_Backgrounds
 import XCTest
 
-class RefreshTests: XCTestCase {
-	func testRefreshFolderOnMenuClickChangesMenuAndIconState() {
-        // mocks
-        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
-        let statusItem = LoadingStatusItem(viewState: viewState, statusBar: .system)
-        let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-        menuController.setRefreshAction(.refresh)
-        let photoController = PhotoController.testable()
+final class RefreshTests: XCTestCase {
+    private class RefreshFolderDownloadEnvironment {
+        let statusItem: MockLoadingStatusItem = {
+            let statusItem = MockLoadingStatusItem()
+            statusItem.viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan,
+                                                              alpha: 1.0)
+            return statusItem
+        }()
+        lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
+        let photoFolderURL = URL.mockSaveURL
+        let userDefaults = UserDefaults.mock
+        let fileManager = FileManager.default
+        lazy var networkManager = TestNetworkManager.make1PhotoDownloadSuccess(inFolder: photoFolderURL)
+        lazy var photoAlbumService = PhotoAlbumService(networkManager: networkManager)
+        lazy var dataManager = DataManger(database: userDefaults)
+        lazy var photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
+        lazy var photoService = PhotoService(networkManager: networkManager, fileManager: fileManager)
+        lazy var photoController: PhotoController = {
+            let photoController = PhotoController(photoAlbumService: photoAlbumService, photoService: photoService,
+                                                  photoStorageService: photoStorageService,
+                                                  photoFolderURL: photoFolderURL)
+            let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1,
+                                          numberOfPhotos: 1)
+            photoController.setPreferences(preferences)
+            return photoController
+        }()
+        let alertController = MockAlertController()
 
-        // sut
-        _ = AppController.testable(menuController: menuController, photoController: photoController)
-
-        // test
-        guard let menu = statusItem.menu, menu.click(at: AppMenu.Order.refreshFolder.rawValue) else {
-            XCTFail("expected menu to click")
-            return
+        init() {
+            _ = AppController.testable(menuController: menuController, photoController: photoController,
+                                       alertController: alertController)
         }
-        XCTAssertEqual(menu.viewState.items[safe: AppMenu.Order.refreshFolder.rawValue]?.title, "Cancel Refresh")
-        XCTAssertEqual(menu.viewState.items[safe: AppMenu.Order.clearFolder.rawValue]?.isEnabled, false)
-        XCTAssertEqual(statusItem.isLoading, true)
-        XCTAssertEqual(statusItem.item.button?.alphaValue, 1.0)
-        XCTAssertEqual(statusItem.item.button?.subviews
-            .contains(where: { $0.classForCoder == NSProgressIndicator.self }), true)
-        XCTAssertEqual(statusItem.item.image, statusItem.viewState.style.loadingImage)
-	}
-
-	func testRefreshFolderOnMenuClickClearsAndDownloadsNewPhotos() {
-        // mocks
-        let menuController = AppMenuController(statusItem: MockLoadingStatusItem(), reachability: MockReachability())
-        let photoAlbumService = MockPhotoAlbumService()
-        photoAlbumService.actions.set(closure: {
-            let completion = photoService.invocations.find(
-                parameter: MockPhotoService.downloadPhotos1.params.completion,
-                inFunction: MockPhotoService.downloadPhotos1.name) as! (Result<[AnyResult<PhotoResource>]>) -> Void
-            
-        }, for: MockPhotoAlbumService.fetchPhotoAlbums1.name)
-//        let photoService = MockPhotoService()
-//        photoService.actions.set(closure: {
-//            let completion = photoService.invocations.find(
-//                parameter: MockPhotoService.downloadPhotos1.params.completion,
-//                inFunction: MockPhotoService.downloadPhotos1.name) as! (Result<[AnyResult<PhotoResource>]>) -> Void
-//            completion(.success(AnyResult(PhotoResource(), result: .success(()) )))
-        }, for: MockPhotoService.downloadPhotos1.name)
-        let photoController = PhotoController.testable()
-
-        // sut
-        _ = AppController.testable(menuController: menuController, photoController: photoController)
-
-        // test
-        guard let menu = statusItem.menu, menu.click(at: AppMenu.Order.refreshFolder.rawValue) else {
-            XCTFail("expected menu to click")
-            return
-        }
-
-	}
-    func testLoadingIndicatorIncrementsUponDownload() {
-        // mocks
-        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
-        let statusItem = LoadingStatusItem(viewState: viewState, statusBar: .system)
-        let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-
-        // sut
-        _ = AppController.testable(menuController: menuController)
-
-        // test
-        menuController.setIsLoading(true)
-        menuController.setLoadingPercentage(0.3)
-
-        let views = statusItem.item.button?.subviews.filter { $0.classForCoder == NSProgressIndicator.self }
-        guard let progressIndicator = views?.first as? NSProgressIndicator else {
-            XCTFail("expected NSProgressIndicator")
-            return
-        }
-        XCTAssertEqual(progressIndicator.doubleValue, 0.3)
     }
+
+	func testRefreshFolderOnMenuClickTriggersLoadingIndicator() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            // loading indicator shows progress
+            let loadingProgress = env.statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
+            XCTAssertEqual(loadingProgress, [0.0, 0.0, 0.5, 0.5, 0.0])
+        }
+	}
+
+    func testRefreshFolderOnMenuClickWhenFinishedShowsNormalStatusItem() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let viewState = env.statusItem._viewStateHistory.last?.variable
+            XCTAssertEqual(viewState?.isLoading, false)
+            XCTAssertEqual(viewState?.loadingPercentage, 0.0)
+            XCTAssertEqual(viewState?.alpha, 1.0)
+        }
+    }
+
+    func testRefreshFolderOnMenuClickWhenStartedShowsAlert() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
+            let beginAlert = invocations.first?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
+            XCTAssertEqual(beginAlert?.title, "Refreshing...")
+            XCTAssertEqual(beginAlert?.text, "Your photos are now refreshing")
+        }
+    }
+
+    func testRefreshFolderOnMenuClickWhenFinishedShowsAlert() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
+            let endAlert = invocations.last?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
+            XCTAssertEqual(endAlert?.title, "Success!")
+            XCTAssertEqual(endAlert?.text, "Your photos were reloaded")
+        }
+    }
+
+    func testRefreshFolderOnMenuClickClearsPreviousFiles() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            XCTFail("todo")
+        }
+    }
+
+    func testRefreshFolderOnMenuClickSavesToUserDefaults() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let folderContents = try? env.fileManager.contentsOfDirectory(atPath: env.photoFolderURL.path)
+            XCTAssertEqual(folderContents?.count, 1)
+        }
+    }
+
+    func testRefreshFolderOnMenuClickDownloadsNewFiles() {
+        // mocks
+        let env = RefreshFolderDownloadEnvironment()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let folderContents = try? env.fileManager.contentsOfDirectory(atPath: env.photoFolderURL.path)
+            XCTAssertEqual(folderContents?.count, 1)
+        }
+    }
+
+    //TODO: this
+    //notEnoughImagesAvailable
+    //notEnoughImagesDownloaded
 }

@@ -1,21 +1,18 @@
 @testable import Grafitti_Backgrounds
 import XCTest
 
-class AboutTests: XCTestCase {
+final class AboutTests: XCTestCase {
 	func testAboutOnMenuClickOpensAbout() {
 		// mocks
 		let statusItem = MockLoadingStatusItem()
 		let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
 		let app = MockApplication()
-
-		// sut
 		_ = AppController.testable(menuController: menuController, app: app)
 
-		// test
-		guard let menu = statusItem.menu, menu.click(at: AppMenu.Order.about.rawValue) else {
-			XCTFail("expected menu to click")
-			return
-		}
+        // sut
+		statusItem.menu?.click(at: AppMenu.Order.about.rawValue)
+
+        // test
 		XCTAssertTrue(app.invocations.isInvoked(MockApplication.orderFrontStandardAboutPanel1.name))
 	}
 }

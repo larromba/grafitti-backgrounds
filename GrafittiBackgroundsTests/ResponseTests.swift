@@ -1,16 +1,16 @@
 @testable import Grafitti_Backgrounds
 import XCTest
 
-class ResponseTests: XCTestCase {
+final class ResponseTests: XCTestCase {
 	func testPhotoResponse() {
-        XCTAssertNoThrow(try PhotoResponse(data: Resource.photo.load()))
+        XCTAssertNoThrow(try PhotoResponse(data: TestResource.photoResponseReal.load()))
 	}
 
 	func testPhotoAlbumsResponse() {
-        XCTAssertNoThrow(try PhotoAlbumsResponse(data: Resource.photoAlbum.load()))
+        XCTAssertNoThrow(try PhotoAlbumsResponse(data: TestResource.photoAlbumResponseReal.load()))
 	}
 
 	func testPhotoResourceResponse() {
-        XCTAssertNoThrow(try PhotoResourceResponse(data: Resource.photoResource.load()))
+        XCTAssertNoThrow(try PhotoResourceResponse(data: TestResource.photoResourceResponseReal.load()))
 	}
 }

@@ -59,41 +59,42 @@ import AppKit
       {% endif %}
     }
 {% endmacro %}
-{% macro mockOptionalVariable variable %}
-    {% if variable.annotations.value %}
-    var {{ variable.name }}: {{ variable.typeName }} = {{ variable.annotations.value }}
-    {% else %}
-    var {{ variable.name }}: {{ variable.typeName }}
-    {% endif %}
-{% endmacro %}
-{% macro mockNonOptionalArrayOrDictionaryVariable variable %}
-    {% if variable.annotations.value %}
-    var {{ variable.name }}: {{ variable.typeName }} = {{ variable.annotations.value }}
-    {% else %}
-    var {{ variable.name }}: {{ variable.typeName }} = {% if variable.isArray %}[]{% elif variable.isDictionary %}[:]{% endif %}
-    {% endif %}
-{% endmacro %}
-{% macro mockNonOptionalVariable variable %}
+{% macro mockVariableTypeName variable %}{% if variable.isOptional %}{{ variable.typeName }}{% else %}{{ variable.typeName }}!{% endif %}{% endmacro %}
+{% macro mockVariable variable %}
     var {{ variable.name }}: {{ variable.typeName }} {
         get { return {% call underlyingVariableName variable %} }
-        set(value) { {% call underlyingVariableName variable %} = value }
+        set(value) { {% call underlyingVariableName variable %} = value; {% call underlyingVariableName variable %}History.append({% call helperClassPrefix %}Variable(value)) }
     }
     {% if variable.annotations.value %}
-    var {% call underlyingVariableName variable %}: {{ variable.typeName }}! = {{ variable.annotations.value }}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.annotations.value }}
     {% elif variable.type.based.Mockable and variable.type.annotations.name %}
-    var {% call underlyingVariableName variable %}: {{ variable.typeName }}! = Mock{{ variable.type.annotations.name }}()
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.type.annotations.name }}()
     {% elif variable.type.based.Mockable %}
-    var {% call underlyingVariableName variable %}: {{ variable.typeName }}! = Mock{{ variable.typeName }}()
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.typeName | replace:"?","" }}()
     {% elif variable.typeName|hasPrefix:"NS" or variable.typeName|hasPrefix:"UI" %}
-    var {% call underlyingVariableName variable %}: {{ variable.typeName }}! = {{ variable.typeName }}()
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.typeName | replace:"?","" }}()
+    {% elif variable.isArray %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = []
+    {% elif variable.isDictionary %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = [:]
     {% else %}
-    var {% call underlyingVariableName variable %}: {{ variable.typeName }}!
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %}
     {% endif %}
+    var {% call underlyingVariableName variable %}History: [{% call helperClassPrefix %}Variable<{{ variable.typeName }}>] = []
 {% endmacro %}
 // MARK: - Sourcery Helper
 
 protocol {% call helperClassPrefix %}StringRawRepresentable: RawRepresentable {
   var rawValue: String { get }
+}
+
+struct {% call helperClassPrefix %}Variable<T> {
+  let date = Date()
+  var variable: T
+
+  init(_ variable: T) {
+    self.variable = variable
+  }
 }
 
 final class {% call helperClassPrefix %}Invocation {
@@ -215,13 +216,7 @@ class {% if type.annotations.name %}{% call mockedClassName type.annotations.nam
     typealias {{ value }} = Any
 {% endfor %}
 {% for variable in type.allVariables|!definedInExtension %}
-    {% if variable.isOptional %}
-    {% call mockOptionalVariable variable %}
-    {% elif variable.isArray or variable.isDictionary %}
-    {% call mockNonOptionalArrayOrDictionaryVariable variable %}
-    {% else %}
-    {% call mockNonOptionalVariable variable %}
-    {% endif %}
+    {% call mockVariable variable %}
 {% endfor %}
     {% if not type.allMethods.count == 0 %}
     let {% call invocationsVariableName %} = {% call helperClassPrefix %}Invocations()

@@ -2,6 +2,7 @@ import Cocoa
 @testable import Grafitti_Backgrounds
 
 extension Menuable {
+    @discardableResult
 	func click(at index: Int) -> Bool {
 		guard let menu = self as? NSMenu, let menuItem = menu.item(at: index) else {
 			return false
@@ -11,6 +12,7 @@ extension Menuable {
 }
 
 extension NSMenuItem {
+    @discardableResult
 	func click() -> Bool {
 		guard let action = action else {
 			return false

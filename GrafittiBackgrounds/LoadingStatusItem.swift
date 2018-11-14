@@ -2,8 +2,6 @@ import Cocoa
 
 // sourcery: name = LoadingStatusItem
 protocol LoadingStatusItemable: AnyObject, Mockable {
-    var isLoading: Bool { get }
-    var loadingPercentage: Double { get }
     var viewState: LoadingStatusItemViewState { get set }
     var menu: Menuable? { get set }
 
@@ -24,9 +22,9 @@ final class LoadingStatusItem: LoadingStatusItemable {
             item.menu = newValue as? NSMenu
         }
     }
-    let statusBar: NSStatusBar
+    let statusBar: StatusBarable
     let item: NSStatusItem
-    private(set) var isLoading: Bool = false {
+    private var isLoading: Bool = false {
         didSet {
             if isLoading {
                 item.image = viewState.style.loadingImage
@@ -40,7 +38,7 @@ final class LoadingStatusItem: LoadingStatusItemable {
             }
         }
     }
-    private(set) var loadingPercentage: Double {
+    private var loadingPercentage: Double {
         get {
             return spinner.doubleValue
         }
@@ -63,7 +61,7 @@ final class LoadingStatusItem: LoadingStatusItemable {
         return spinner
     }()
 
-    init(viewState: LoadingStatusItemViewState, statusBar: NSStatusBar) {
+    init(viewState: LoadingStatusItemViewState, statusBar: StatusBarable) {
         self.viewState = viewState
         self.statusBar = statusBar
         self.item = statusBar.statusItem(withLength: NSStatusItem.variableLength)

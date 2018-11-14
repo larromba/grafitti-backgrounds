@@ -1,12 +1,17 @@
 import Foundation
 @testable import Grafitti_Backgrounds
 
-enum Resource: String {
+enum TestResource: String {
     private class Dummy {}
 
-    case photoAlbum = "photoAlbum.js"
-    case photo = "photo.html"
-    case photoResource = "photoResource.html"
+    case photoAlbumResponseReal = "photoAlbumResponse_real.js"
+    case photoAlbumResponse1Album = "photoAlbumResponse_1album.js"
+
+    case photoResponseReal = "photoResponse_real.html"
+    case photoResponse1Photo = "photoResponse_1photo.html"
+
+    case photoResourceResponseReal = "photoResourceResponse_real.html"
+    case photoResourceResponse1Photo = "photoResourceResponse_1photo.html"
 
     func load() -> Data {
         let components = rawValue.components(separatedBy: ".")

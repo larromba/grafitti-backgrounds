@@ -19,6 +19,15 @@ protocol _StringRawRepresentable: RawRepresentable {
   var rawValue: String { get }
 }
 
+struct _Variable<T> {
+  let date = Date()
+  var variable: T
+
+  init(_ variable: T) {
+    self.variable = variable
+  }
+}
+
 final class _Invocation {
   let name: String
   let date = Date()
@@ -472,22 +481,18 @@ class MockFileManager: NSObject, FileManaging {
 }
 
 class MockLoadingStatusItem: NSObject, LoadingStatusItemable {
-    var isLoading: Bool {
-        get { return _isLoading }
-        set(value) { _isLoading = value }
-    }
-    var _isLoading: Bool!
-    var loadingPercentage: Double {
-        get { return _loadingPercentage }
-        set(value) { _loadingPercentage = value }
-    }
-    var _loadingPercentage: Double!
     var viewState: LoadingStatusItemViewState {
         get { return _viewState }
-        set(value) { _viewState = value }
+        set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
     var _viewState: LoadingStatusItemViewState!
-    var menu: Menuable?
+    var _viewStateHistory: [_Variable<LoadingStatusItemViewState>] = []
+    var menu: Menuable? {
+        get { return _menu }
+        set(value) { _menu = value; _menuHistory.append(_Variable(value)) }
+    }
+    var _menu: Menuable? = MockMenu()
+    var _menuHistory: [_Variable<Menuable?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -515,14 +520,16 @@ class MockMenuItem: NSObject, MenuItemable {
     typealias ActionType = Any
     var actionType: ActionType {
         get { return _actionType }
-        set(value) { _actionType = value }
+        set(value) { _actionType = value; _actionTypeHistory.append(_Variable(value)) }
     }
     var _actionType: ActionType!
+    var _actionTypeHistory: [_Variable<ActionType>] = []
     var viewState: MenuItemViewState {
         get { return _viewState }
-        set(value) { _viewState = value }
+        set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
     var _viewState: MenuItemViewState!
+    var _viewStateHistory: [_Variable<MenuItemViewState>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -547,9 +554,10 @@ class MockMenuItem: NSObject, MenuItemable {
 class MockMenu: NSObject, Menuable {
     var viewState: MenuViewState {
         get { return _viewState }
-        set(value) { _viewState = value }
+        set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
     var _viewState: MenuViewState!
+    var _viewStateHistory: [_Variable<MenuViewState>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -722,14 +730,16 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
 class MockPhotoController: NSObject, PhotoControllable {
     var isDownloadInProgress: Bool {
         get { return _isDownloadInProgress }
-        set(value) { _isDownloadInProgress = value }
+        set(value) { _isDownloadInProgress = value; _isDownloadInProgressHistory.append(_Variable(value)) }
     }
     var _isDownloadInProgress: Bool!
+    var _isDownloadInProgressHistory: [_Variable<Bool>] = []
     var photoFolderURL: URL {
         get { return _photoFolderURL }
-        set(value) { _photoFolderURL = value }
+        set(value) { _photoFolderURL = value; _photoFolderURLHistory.append(_Variable(value)) }
     }
     var _photoFolderURL: URL!
+    var _photoFolderURLHistory: [_Variable<URL>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -989,12 +999,13 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
     }
 }
 
-class MockPreferencesController: NSObject, PreferencesControllable {
+class MockPreferencesController: NSViewController, PreferencesControllable {
     var preferences: Preferences {
         get { return _preferences }
-        set(value) { _preferences = value }
+        set(value) { _preferences = value; _preferencesHistory.append(_Variable(value)) }
     }
     var _preferences: Preferences! = Preferences()
+    var _preferencesHistory: [_Variable<Preferences>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -1069,7 +1080,12 @@ class MockPreferencesService: NSObject, PreferencesServicing {
 }
 
 class MockPreferencesViewController: NSViewController, PreferencesViewControllable {
-    var viewState: PreferencesViewState?
+    var viewState: PreferencesViewState? {
+        get { return _viewState }
+        set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
+    }
+    var _viewState: PreferencesViewState?
+    var _viewStateHistory: [_Variable<PreferencesViewState?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -1111,9 +1127,10 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
 class MockReachability: NSObject, Reachable {
     var isReachable: Bool {
         get { return _isReachable }
-        set(value) { _isReachable = value }
+        set(value) { _isReachable = value; _isReachableHistory.append(_Variable(value)) }
     }
     var _isReachable: Bool!
+    var _isReachableHistory: [_Variable<Bool>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -1136,9 +1153,24 @@ class MockReachability: NSObject, Reachable {
 }
 
 class MockSharingService: NSObject, SharingServicing {
-    var subject: String?
-    var recipients: [String]?
-    var messageBody: String?
+    var subject: String? {
+        get { return _subject }
+        set(value) { _subject = value; _subjectHistory.append(_Variable(value)) }
+    }
+    var _subject: String?
+    var _subjectHistory: [_Variable<String?>] = []
+    var recipients: [String]? {
+        get { return _recipients }
+        set(value) { _recipients = value; _recipientsHistory.append(_Variable(value)) }
+    }
+    var _recipients: [String]? = []
+    var _recipientsHistory: [_Variable<[String]?>] = []
+    var messageBody: String? {
+        get { return _messageBody }
+        set(value) { _messageBody = value; _messageBodyHistory.append(_Variable(value)) }
+    }
+    var _messageBody: String?
+    var _messageBodyHistory: [_Variable<String?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -1176,6 +1208,86 @@ class MockSharingService: NSObject, SharingServicing {
       case name = "perform2"
       enum params: String, _StringRawRepresentable {
         case items = "perform(withItemsitems:[Any]).items"
+      }
+    }
+}
+
+class MockStatusBar: NSObject, StatusBarable {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - statusItem
+
+    func statusItem(withLength length: CGFloat) -> NSStatusItem {
+        let functionName = statusItem1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: length, forKey: statusItem1.params.length)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! NSStatusItem
+    }
+
+    enum statusItem1: String, _StringRawRepresentable {
+      case name = "statusItem1"
+      enum params: String, _StringRawRepresentable {
+        case length = "statusItem(withLengthlength:CGFloat).length"
+      }
+    }
+
+    // MARK: - removeStatusItem
+
+    func removeStatusItem(_ item: NSStatusItem) {
+        let functionName = removeStatusItem2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: item, forKey: removeStatusItem2.params.item)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum removeStatusItem2: String, _StringRawRepresentable {
+      case name = "removeStatusItem2"
+      enum params: String, _StringRawRepresentable {
+        case item = "removeStatusItem(_item:NSStatusItem).item"
+      }
+    }
+}
+
+class MockStatusItemable: NSObject, StatusItemable {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - statusItem
+
+    func statusItem(withLength length: CGFloat) -> NSStatusItem {
+        let functionName = statusItem1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: length, forKey: statusItem1.params.length)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+        return actions.returnValue(for: functionName) as! NSStatusItem
+    }
+
+    enum statusItem1: String, _StringRawRepresentable {
+      case name = "statusItem1"
+      enum params: String, _StringRawRepresentable {
+        case length = "statusItem(withLengthlength:CGFloat).length"
+      }
+    }
+
+    // MARK: - removeStatusItem
+
+    func removeStatusItem(_ item: NSStatusItem) {
+        let functionName = removeStatusItem2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: item, forKey: removeStatusItem2.params.item)
+        invocations.record(invocation)
+        actions.closure(for: functionName)?()
+    }
+
+    enum removeStatusItem2: String, _StringRawRepresentable {
+      case name = "removeStatusItem2"
+      enum params: String, _StringRawRepresentable {
+        case item = "removeStatusItem(_item:NSStatusItem).item"
       }
     }
 }
@@ -1270,7 +1382,12 @@ class MockUserDefaults: NSObject, UserDefaultable {
 }
 
 class MockWindowController: NSObject, WindowControlling {
-    var contentViewController: NSViewController?
+    var contentViewController: NSViewController? {
+        get { return _contentViewController }
+        set(value) { _contentViewController = value; _contentViewControllerHistory.append(_Variable(value)) }
+    }
+    var _contentViewController: NSViewController? = NSViewController()
+    var _contentViewControllerHistory: [_Variable<NSViewController?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 

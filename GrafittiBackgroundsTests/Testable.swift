@@ -22,6 +22,23 @@ extension AppController {
     }
 }
 
+extension TestNetworkManager {
+    static func make1PhotoDownloadSuccess(inFolder url: URL) -> TestNetworkManager {
+        let fetchStubs = [
+            FetchStub(url: API.photoAlbums.url, resource: .photoAlbumResponse1Album),
+            FetchStub(url: URL(string: "https://photos.app.goo.gl/test")!, resource: .photoResourceResponse1Photo),
+            FetchStub(url: URL(string: "https://photos.google.com/share/test/photo/test")!,
+                      resource: .photoResponse1Photo)
+        ]
+        let downloadStubs = [
+            DownloadStub(url: URL(string: "https://lh3.googleusercontent.com/test=w2148-h1610-no")!,
+                         writeURL: url.appendingPathComponent("test.png"),
+                         data: Data())
+        ]
+        return TestNetworkManager(fetchStubs: fetchStubs, downloadStubs: downloadStubs)
+    }
+}
+
 extension PhotoController {
     static func testable(
         photoAlbumService: PhotoAlbumServicing = MockPhotoAlbumService(),
@@ -39,4 +56,13 @@ extension PhotoController {
 
 extension URL {
     static var mock = URL(string: "http://www.google.com")!
+    static var mockSaveURL = URL(fileURLWithPath: "\(NSTemporaryDirectory())\(UUID().uuidString)")
+}
+
+extension UserDefaults {
+    static var mock: UserDefaults {
+        let userDefaults = UserDefaults(suiteName: "test")!
+        userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject(forKey:))
+        return userDefaults
+    }
 }

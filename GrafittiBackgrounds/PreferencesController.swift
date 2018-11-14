@@ -5,7 +5,7 @@ protocol PreferencesControllerDelegate: AnyObject {
     func preferencesController(_ controller: PreferencesController, didUpdatePreferences result: Result<Preferences>)
 }
 
-// sourcery: name = PreferencesController
+// sourcery: name = PreferencesController, inherits = NSViewController
 protocol PreferencesControllable: Mockable {
     // sourcery: value = Preferences()
     var preferences: Preferences { get }
