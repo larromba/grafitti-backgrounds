@@ -2,7 +2,7 @@
 import XCTest
 
 final class RefreshTests: XCTestCase {
-    private class RefreshFolderDownloadEnvironment {
+    private class Environment: TestEnvironment {
         let statusItem: MockLoadingStatusItem = {
             let statusItem = MockLoadingStatusItem()
             statusItem.viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan,
@@ -28,23 +28,24 @@ final class RefreshTests: XCTestCase {
             return photoController
         }()
         let alertController = MockAlertController()
+        var appController: AppController?
 
-        init() {
-            _ = AppController.testable(menuController: menuController, photoController: photoController,
-                                       alertController: alertController)
+        func inject() {
+            appController = AppController.testable(menuController: menuController, photoController: photoController,
+                                                   alertController: alertController)
         }
     }
 
 	func testRefreshFolderOnMenuClickTriggersLoadingIndicator() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            // loading indicator shows progress
             let loadingProgress = env.statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
             XCTAssertEqual(loadingProgress, [0.0, 0.0, 0.5, 0.5, 0.0])
         }
@@ -52,7 +53,8 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsNormalStatusItem() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
@@ -68,7 +70,8 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickWhenStartedShowsAlert() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
@@ -84,7 +87,8 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsAlert() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
@@ -100,7 +104,8 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickClearsPreviousFiles() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
@@ -113,7 +118,8 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickSavesToUserDefaults() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
@@ -127,7 +133,8 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickDownloadsNewFiles() {
         // mocks
-        let env = RefreshFolderDownloadEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)

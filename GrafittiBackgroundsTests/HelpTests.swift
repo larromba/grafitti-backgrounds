@@ -2,19 +2,29 @@
 import XCTest
 
 final class HelpTests: XCTestCase {
+    private class Environment: TestEnvironment {
+        let statusItem = MockLoadingStatusItem()
+        lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
+        let workspace = MockWorkspace()
+        lazy var workspaceController = WorkspaceController(workspace: workspace)
+        var appController: AppController?
+
+        func inject() {
+            appController = AppController.testable(workspaceController: workspaceController,
+                                                   menuController: menuController)
+        }
+    }
+
     func testHelpOnMenuClickOpensURL() {
         // mocks
-        let statusItem = MockLoadingStatusItem()
-        let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-        let workspace = MockWorkspace()
-        let workspaceController = WorkspaceController(workspace: workspace)
-        _ = AppController.testable(workspaceController: workspaceController, menuController: menuController)
+        let env = Environment()
+        env.inject()
 
         // sut
-        statusItem.menu?.click(at: AppMenu.Order.help.rawValue)
+        env.statusItem.menu?.click(at: AppMenu.Order.help.rawValue)
 
         // test
-        let parameter = workspace.invocations.find(
+        let parameter = env.workspace.invocations.find(
             parameter: MockWorkspace.open1.params.url,
             inFunction: MockWorkspace.open1.name
         ) as? URL

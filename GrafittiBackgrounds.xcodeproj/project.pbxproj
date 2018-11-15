@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2956219CAA3D0062C85D /* StatusBarable.swift */; };
 		7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2958219CABF30062C85D /* StatusItemable.swift */; };
+		7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B295A219DF34B0062C85D /* TestEnvironment.swift */; };
 		7F247E651FD366D70077D878 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E641FD366D70077D878 /* PhotoService.swift */; };
 		7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E681FD375E90077D878 /* PhotoRequest.swift */; };
 		7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E6A1FD375F10077D878 /* PhotoResponse.swift */; };
@@ -120,6 +121,7 @@
 /* Begin PBXFileReference section */
 		7F1B2956219CAA3D0062C85D /* StatusBarable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarable.swift; sourceTree = "<group>"; };
 		7F1B2958219CABF30062C85D /* StatusItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemable.swift; sourceTree = "<group>"; };
+		7F1B295A219DF34B0062C85D /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
 		7F247E641FD366D70077D878 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		7F247E681FD375E90077D878 /* PhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRequest.swift; sourceTree = "<group>"; };
 		7F247E6A1FD375F10077D878 /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 				7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */,
 				7F65C8A82189E6D700634454 /* Testable.swift */,
 				7F635A41218A6D7A0013E970 /* NSTextFieldExensions.swift */,
+				7F1B295A219DF34B0062C85D /* TestEnvironment.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -803,6 +806,7 @@
 				7FF290742196F5D50018C003 /* HelpTests.swift in Sources */,
 				7F24BE422194D679006BE4D0 /* template.generated.swift in Sources */,
 				7F65C8B3218A014600634454 /* RefreshTests.swift in Sources */,
+				7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */,
 				7FF290762196FBA30018C003 /* Wait.swift in Sources */,
 				7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */,
 				7FF2908D21973E100018C003 /* TestResource.swift in Sources */,

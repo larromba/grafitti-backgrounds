@@ -2,7 +2,7 @@
 import XCTest
 
 final class ReachabilityTests: XCTestCase {
-    private class IconStateNetworkConnectionEnvironment {
+    private class Environment: TestEnvironment {
         let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
         lazy var statusItem = LoadingStatusItem(viewState: viewState, statusBar: NSStatusBar.system)
         let reachability = MockReachability()
@@ -13,15 +13,17 @@ final class ReachabilityTests: XCTestCase {
                 inFunction: MockReachability.setDelegate1.name
             ) as? ReachabilityDelegate
         }
+        var appController: AppController?
 
-        init() {
-            _ = AppController.testable(menuController: menuController)
+        func inject() {
+            appController = AppController.testable(menuController: menuController)
         }
     }
 
     func testNetworkLossChangesIconState() {
         // mocks
-        let env = IconStateNetworkConnectionEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.delegate?.reachabilityDidChange(env.reachability, isReachable: false)
@@ -32,7 +34,8 @@ final class ReachabilityTests: XCTestCase {
 
     func testNetworkConnectionChangesIconState() {
         // mocks
-        let env = IconStateNetworkConnectionEnvironment()
+        let env = Environment()
+        env.inject()
 
         // sut
         env.delegate?.reachabilityDidChange(env.reachability, isReachable: true)

@@ -1,22 +1,41 @@
 @testable import Grafitti_Backgrounds
 import XCTest
 
-// TODO: make env?
 final class PreferencesTests: XCTestCase {
+    private class Environment: TestEnvironment {
+        let statusItem = MockLoadingStatusItem()
+        lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
+        let windowController: WindowControlling
+        let preferencesService: PreferencesServicing
+        lazy var preferencesController = PreferencesController(
+            windowController: windowController,
+            preferencesService: preferencesService
+        )
+        let photoController = PhotoController.testable()
+        var appController: AppController?
+
+        func inject() {
+            appController = AppController.testable(preferencesController: preferencesController,
+                                                   menuController: menuController,
+                                                   photoController: photoController)
+        }
+
+        init(windowController: WindowControlling = MockWindowController(),
+             preferencesService: PreferencesServicing = MockPreferencesService()) {
+            self.windowController = windowController
+            self.preferencesService = preferencesService
+        }
+    }
+
 	func testPreferencesOnMenuClickOpensPreferences() {
 		// mocks
-		let statusItem = MockLoadingStatusItem()
-		let menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-		let windowController = MockWindowController()
+        let windowController = MockWindowController()
         windowController.contentViewController = MockPreferencesViewController()
-		let preferencesController = PreferencesController(
-			windowController: windowController,
-			preferencesService: MockPreferencesService()
-		)
-        _ = AppController.testable(preferencesController: preferencesController, menuController: menuController)
+        let env = Environment(windowController: windowController)
+        env.inject()
 
         // sut
-		statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
+		env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
 
         // test
 		XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
@@ -24,53 +43,42 @@ final class PreferencesTests: XCTestCase {
 
 	func testPreferencesRenderOnOpening() {
         // mocks
-        guard
-            let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
-            let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
-                XCTFail("expected NSWindowController & PreferencesViewController")
-                return
-        }
         let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 2)
         let preferencesService = MockPreferencesService()
-        preferencesService.actions.set(returnValue: Result.success(preferences), for: MockPreferencesService.load2.name)
-        let preferencesController = PreferencesController(
-            windowController: windowController,
-            preferencesService: preferencesService
+        preferencesService.actions.set(
+            returnValue: Result.success(preferences),
+            for: MockPreferencesService.load2.name
         )
+        let preferencesUI = makePreferencesUI()
+        let env = Environment(windowController: preferencesUI.0, preferencesService: preferencesService)
+        env.inject()
 
         // sut
-        preferencesController.open()
+        env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
 
         // test
-        XCTAssertEqual(preferencesViewController.autoRefreshCheckBox.state, .on)
-        XCTAssertEqual(preferencesViewController.autoRefreshIntervalTextField.stringValue, "1")
-        XCTAssertEqual(preferencesViewController.numberOfPhotosTextField.stringValue, "2")
+        XCTAssertEqual(preferencesUI.1.autoRefreshCheckBox.state, .on)
+        XCTAssertEqual(preferencesUI.1.autoRefreshIntervalTextField.stringValue, "1")
+        XCTAssertEqual(preferencesUI.1.numberOfPhotosTextField.stringValue, "2")
 	}
 
 	func testPreferencesPersistOnEveryChange() {
 		// mocks
-		guard
-			let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
-			let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
-				XCTFail("expected NSWindowController & PreferencesViewController")
-				return
-		}
 		let userDefaults = MockUserDefaults()
 		let dataManager = DataManger(database: userDefaults)
 		let preferencesService = PreferencesService(dataManager: dataManager)
-        let preferencesController = PreferencesController(
-            windowController: windowController,
-            preferencesService: preferencesService
-        )
+        let preferencesUI = makePreferencesUI()
+        let env = Environment(windowController: preferencesUI.0, preferencesService: preferencesService)
+        env.inject()
 
 		// sut
-        preferencesController.open()
-		preferencesViewController.autoRefreshCheckBox.performClick(nil)
-        preferencesViewController.autoRefreshCheckBox.performClick(nil)
-        preferencesViewController.autoRefreshIntervalTextField.stringValue = "10"
-        preferencesViewController.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesViewController)
-        preferencesViewController.numberOfPhotosTextField.stringValue = "5"
-        preferencesViewController.numberOfPhotosTextField.fireTextChagedEvent(in: preferencesViewController)
+        env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
+		preferencesUI.1.autoRefreshCheckBox.performClick(nil)
+        preferencesUI.1.autoRefreshCheckBox.performClick(nil)
+        preferencesUI.1.autoRefreshIntervalTextField.stringValue = "10"
+        preferencesUI.1.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesUI.1)
+        preferencesUI.1.numberOfPhotosTextField.stringValue = "5"
+        preferencesUI.1.numberOfPhotosTextField.fireTextChagedEvent(in: preferencesUI.1)
 
         // test
         XCTAssertEqual(userDefaults.preferences(at: 0)?.isAutoRefreshEnabled, false)
@@ -81,27 +89,18 @@ final class PreferencesTests: XCTestCase {
 
 	func testPreferencesRestartDownloadTimerIfChanged() {
         // mocks
-        guard
-            let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
-            let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
-                XCTFail("expected NSWindowController & PreferencesViewController")
-                return
-        }
-        let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 0)
-        let preferencesController = PreferencesController(
-            windowController: windowController,
-            preferencesService: MockPreferencesService()
-        )
+        let preferencesUI = makePreferencesUI()
+        let env = Environment(windowController: preferencesUI.0)
+        env.inject()
         let photoDelegate = MockPhotoControllerDelegate()
-        let photoController = PhotoController.testable()
-        _ = AppController.testable(preferencesController: preferencesController, photoController: photoController)
-        photoController.setDelegate(photoDelegate)
-        photoController.setPreferences(preferences)
+        env.photoController.setDelegate(photoDelegate)
+        let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 0)
+        env.photoController.setPreferences(preferences)
 
         // sut
-        preferencesController.open()
-        preferencesViewController.autoRefreshIntervalTextField.stringValue = "0"
-        preferencesViewController.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesViewController)
+        env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
+        preferencesUI.1.autoRefreshIntervalTextField.stringValue = "0"
+        preferencesUI.1.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesUI.1)
 
         // test
         wait {
@@ -110,6 +109,17 @@ final class PreferencesTests: XCTestCase {
             )
         }
 	}
+
+    // MARK: - private
+
+    private func makePreferencesUI() -> (NSWindowController, PreferencesViewController) {
+        guard
+            let windowController = NSStoryboard.preferences.instantiateInitialController() as? NSWindowController,
+            let preferencesViewController = windowController.contentViewController as? PreferencesViewController else {
+                fatalError("expected NSWindowController & PreferencesViewController")
+        }
+        return (windowController, preferencesViewController)
+    }
 }
 
 // MARK: - MockUserDefaults
