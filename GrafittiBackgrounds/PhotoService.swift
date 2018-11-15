@@ -5,11 +5,10 @@ protocol PhotoServicing: Mockable {
     func downloadPhotos(_ resource: [PhotoResource],
                         progress: @escaping (Double) -> Void,
                         completion: @escaping (Result<[AnyResult<PhotoResource>]>) -> Void)
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> [AnyResult<PhotoResource>]
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[AnyResult<PhotoResource>]>
     func cancelAll()
 }
 
-// TODO: progress class
 final class PhotoService: PhotoServicing {
     private class DownloadFlow: AsyncFlowContext {
         var callBacks = [() -> Void]()
@@ -107,7 +106,15 @@ final class PhotoService: PhotoServicing {
         flow.start()
     }
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> [AnyResult<PhotoResource>] {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[AnyResult<PhotoResource>]> {
+        if !fileManager.fileExists(atPath: url.path) {
+            do {
+                try fileManager.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+            } catch {
+                return .failure(PhotoServiceError.cantCreateDownloadFolder(error))
+            }
+        }
+
         var results = [AnyResult<PhotoResource>]()
         for resource in resources {
             guard let fileURL = resource.fileURL else {
@@ -125,7 +132,7 @@ final class PhotoService: PhotoServicing {
                 results += [AnyResult(item: resource, result: .failure(error))]
             }
         }
-        return results
+        return .success(results)
     }
 
     func cancelAll() {

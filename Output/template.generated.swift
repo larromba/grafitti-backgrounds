@@ -909,14 +909,14 @@ class MockPhotoService: NSObject, PhotoServicing {
 
     // MARK: - movePhotos
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> [AnyResult<PhotoResource>] {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[AnyResult<PhotoResource>]> {
         let functionName = movePhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: movePhotos2.params.resources)
         invocation.set(parameter: url, forKey: movePhotos2.params.url)
         invocations.record(invocation)
         actions.closure(for: functionName)?()
-        return actions.returnValue(for: functionName) as! [AnyResult<PhotoResource>]
+        return actions.returnValue(for: functionName) as! Result<[AnyResult<PhotoResource>]>
     }
 
     enum movePhotos2: String, _StringRawRepresentable {

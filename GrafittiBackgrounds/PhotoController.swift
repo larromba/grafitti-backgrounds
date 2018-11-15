@@ -70,6 +70,7 @@ final class PhotoController: PhotoControllable {
             completion(.failure(PhotoError.downloadInProgress))
             return
         }
+
         setupTimer()
         isDownloadInProgress = true
 
@@ -100,6 +101,7 @@ final class PhotoController: PhotoControllable {
             let successfulResults = flow.photoAlbumResults.filter { $0.result.isSuccess }
             let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.item.resources.count })
             guard numOfPossibleDownloads >= self.preferences.numberOfPhotos else {
+                // edge case
                 completion(.failure(PhotoError.notEnoughImagesAvailable))
                 flow.finished()
                 return
@@ -142,6 +144,7 @@ final class PhotoController: PhotoControllable {
                 .filter { $0.result.isSuccess }
                 .map { return $0.item }
             guard flow.resources.count >= flow.numberOfPhotos else {
+                // edge case
                 completion(.failure(PhotoError.notEnoughImagesDownloaded))
                 flow.finished()
                 return
@@ -151,17 +154,19 @@ final class PhotoController: PhotoControllable {
 
         // 6. clear previous photos, try moving new photos, save resource information
         flow.add {
-            let result = self.clearFolder().flatMap { _ -> Result<[PhotoResource]> in
-                let result = self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
-                let failedResults = result.filter { $0.result.isFailure }
-                if failedResults.isEmpty {
-                    return .success(result.compactMap { $0.item })
-                } else if failedResults.count == result.count {
-                    return .failure(failedResults[0].result.error!)
-                } else {
-					// edge case
-                    return .failure(PhotoError.someImagesMissingAfterMove)
-                }
+            let result = self.clearFolder().flatMap {
+                return self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
+                    .flatMap({ result -> Result<[PhotoResource]> in
+                        let failedResults = result.filter { $0.result.isFailure }
+                        if failedResults.isEmpty {
+                            return .success(result.compactMap { $0.item })
+                        } else if failedResults.count == result.count {
+                            return .failure(failedResults[0].result.error!)
+                        } else {
+                            // edge case
+                            return .failure(PhotoError.someImagesMissingAfterMove)
+                        }
+                    })
             }.flatMap { resources -> Result<[PhotoResource]> in
                 switch self.photoStorageService.save(resources) {
                 case .success:

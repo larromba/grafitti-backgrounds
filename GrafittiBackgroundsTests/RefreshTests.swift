@@ -10,29 +10,37 @@ final class RefreshTests: XCTestCase {
             return statusItem
         }()
         lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-        let photoFolderURL = URL.mockSaveURL
+        let photoFolderURL = URL.makePhotoFolderURL()
         let userDefaults = UserDefaults.mock
         let fileManager = FileManager.default
-        lazy var networkManager = TestNetworkManager.make1PhotoDownloadSuccess(inFolder: photoFolderURL)
+        lazy var networkManager = TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL())
         lazy var photoAlbumService = PhotoAlbumService(networkManager: networkManager)
         lazy var dataManager = DataManger(database: userDefaults)
         lazy var photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
         lazy var photoService = PhotoService(networkManager: networkManager, fileManager: fileManager)
-        lazy var photoController: PhotoController = {
-            let photoController = PhotoController(photoAlbumService: photoAlbumService, photoService: photoService,
-                                                  photoStorageService: photoStorageService,
-                                                  photoFolderURL: photoFolderURL)
-            let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1,
-                                          numberOfPhotos: 1)
-            photoController.setPreferences(preferences)
-            return photoController
-        }()
+        lazy var photoController = PhotoController(photoAlbumService: photoAlbumService, photoService: photoService,
+                                                   photoStorageService: photoStorageService,
+                                                   photoFolderURL: photoFolderURL)
         let alertController = MockAlertController()
         var appController: AppController?
 
         func inject() {
             appController = AppController.testable(menuController: menuController, photoController: photoController,
                                                    alertController: alertController)
+            let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1,
+                                          numberOfPhotos: 1)
+            photoController.setPreferences(preferences)
+        }
+
+        func writePhoto(at fileURL: URL) -> Error? {
+            do {
+                try fileManager.createDirectory(at: photoFolderURL, withIntermediateDirectories: false, attributes: nil)
+                try Data().write(to: fileURL)
+                let photoResource = PhotoResource(url: .mock, downloadURL: .mock, fileURL: fileURL)
+                return photoStorageService.save([photoResource]).error
+            } catch {
+                return error
+            }
         }
     }
 
@@ -47,7 +55,7 @@ final class RefreshTests: XCTestCase {
         // test
         wait {
             let loadingProgress = env.statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
-            XCTAssertEqual(loadingProgress, [0.0, 0.0, 0.5, 0.5, 0.0])
+            XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
         }
 	}
 
@@ -82,6 +90,7 @@ final class RefreshTests: XCTestCase {
             let beginAlert = invocations.first?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
             XCTAssertEqual(beginAlert?.title, "Refreshing...")
             XCTAssertEqual(beginAlert?.text, "Your photos are now refreshing")
+            XCTAssertEqual(invocations.count, 2)
         }
     }
 
@@ -99,6 +108,7 @@ final class RefreshTests: XCTestCase {
             let endAlert = invocations.last?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
             XCTAssertEqual(endAlert?.title, "Success!")
             XCTAssertEqual(endAlert?.text, "Your photos were reloaded")
+            XCTAssertEqual(invocations.count, 2)
         }
     }
 
@@ -107,12 +117,15 @@ final class RefreshTests: XCTestCase {
         let env = Environment()
         env.inject()
 
+        let fileURL = URL(fileURLWithPath: env.photoFolderURL.path.appending("/testphoto.png"))
+        XCTAssertNil(env.writePhoto(at: fileURL))
+
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            XCTFail("todo")
+            XCTAssertFalse(env.fileManager.fileExists(atPath: fileURL.path))
         }
     }
 
@@ -126,8 +139,8 @@ final class RefreshTests: XCTestCase {
 
         // test
         wait {
-            let folderContents = try? env.fileManager.contentsOfDirectory(atPath: env.photoFolderURL.path)
-            XCTAssertEqual(folderContents?.count, 1)
+            XCTAssertEqual(env.photoStorageService.load().value?.first?.url.absoluteString,
+                           "https://photos.google.com/share/test/photo/test")
         }
     }
 

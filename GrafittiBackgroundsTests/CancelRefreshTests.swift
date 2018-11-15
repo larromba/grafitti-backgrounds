@@ -11,6 +11,7 @@ final class CancelRefreshTests: XCTestCase {
             return controller
         }()
         let photoController: PhotoControllable
+        let alertController = MockAlertController()
         var appController: AppController?
 
         init(photoController: PhotoControllable = PhotoController.testable()) {
@@ -18,7 +19,8 @@ final class CancelRefreshTests: XCTestCase {
         }
 
         func inject() {
-            appController = AppController.testable(menuController: menuController, photoController: photoController)
+            appController = AppController.testable(menuController: menuController, photoController: photoController,
+                                                   alertController: alertController)
         }
     }
 
@@ -60,11 +62,19 @@ final class CancelRefreshTests: XCTestCase {
         XCTAssertTrue(operationQueue.invocations.isInvoked(MockOperationQueue.cancelAllOperations2.name))
 	}
 
-    func testCancelRefreshDoesNotDisplayErrorAlert() {
-        XCTFail("todo")
-    }
-
     func testCancelRefreshDisplaysAlert() {
-        XCTFail("todo")
+        // mocks
+        let env = Environment()
+        env.inject()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
+        let alert = invocations.first?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
+        XCTAssertEqual(alert?.title, "")
+        XCTAssertEqual(alert?.text, "Your reload was cancelled")
+        XCTAssertEqual(invocations.count, 1)
     }
 }

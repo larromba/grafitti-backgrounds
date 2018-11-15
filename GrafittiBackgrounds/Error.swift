@@ -77,9 +77,15 @@ enum PhotoStorageError: LocalizedError {
 
 enum PhotoServiceError: LocalizedError {
     case resourceMissingFileURL
+    case cantCreateDownloadFolder(Error)
 
     var errorDescription: String? {
-        return none
+        switch self {
+        case .cantCreateDownloadFolder:
+            return "There was a problem creating your download folder. Please try again"
+        case .resourceMissingFileURL:
+            return none
+        }
     }
 }
 
