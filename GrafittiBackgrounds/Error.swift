@@ -1,8 +1,6 @@
 import Foundation
 
-// TODO: localize
-
-private let none = "If you're reading this, something went really wrong 😊"
+private let fallbackMessage = L10n.Alert.Foobar.message
 
 enum PhotoResourceResponseError: LocalizedError {
     case malformedHTML
@@ -11,7 +9,7 @@ enum PhotoResourceResponseError: LocalizedError {
     case missingPhotoURLs
 
     var errorDescription: String? {
-        return "There was a problem reading from the network"
+        return L10n.Alert.NetworkError.message
     }
 }
 
@@ -20,7 +18,7 @@ enum PhotoAlbumsResponseError: LocalizedError {
     case noPhotoAlbumsFound
 
     var errorDescription: String? {
-        return "There was a problem reading from the network"
+        return L10n.Alert.NetworkError.message
     }
 }
 
@@ -30,7 +28,7 @@ enum PhotoResponseError: LocalizedError {
     case malformedImageURL
 
     var errorDescription: String? {
-        return "There was a problem reading from the network"
+        return L10n.Alert.NetworkError.message
     }
 }
 
@@ -44,15 +42,15 @@ enum PhotoError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .downloadInProgress:
-            return none
+            return fallbackMessage
         case .notEnoughImagesAvailable:
-            return "There aren't enough images to download. Try reducing the number of photos in your preferences, and try again"
+            return L10n.Alert.NotEnoughImagesToDownload.message
         case .notEnoughImagesDownloaded:
-            return "We couldn't download enough images. Please Try again. If the problem persists, try reducing the number of photos in your preferences"
+            return L10n.Alert.NotEnoughImagesDownloaded.message
         case .someImagesMissingAfterMove:
-            return "Some images may be missing in your photos folder. Please check and try again"
+            return L10n.Alert.SomeImagesMissingAfterDownload.message
         case .fileDeleteError:
-            return "There was a problem deleting some of your photos. You might need to manually clear them"
+            return L10n.Alert.DeletePhotosError.message
         }
     }
 }
@@ -66,11 +64,11 @@ enum PhotoStorageError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .encodeError, .decodeError:
-            return "There was a problem saving a record of your photos. You might need to manually clear your download folder and try again"
+            return L10n.Alert.SavePhotoRecordError.message
         case .fileDeleteError:
-            return "There was a problem deleting some of your photos. You might need to manually clear them"
+            return L10n.Alert.DeletePhotosError.message
         case .noRecord:
-            return none
+            return fallbackMessage
         }
     }
 }
@@ -82,9 +80,9 @@ enum PhotoServiceError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .cantCreateDownloadFolder:
-            return "There was a problem creating your download folder. Please try again"
+            return L10n.Alert.CreatingDownloadFolderError.message
         case .resourceMissingFileURL:
-            return none
+            return fallbackMessage
         }
     }
 }
@@ -95,7 +93,7 @@ enum WorkspaceError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .errorOpeningURL:
-            return "Ther was a problem opening your folder"
+            return L10n.Alert.OpeningFolderError.message
         }
     }
 }
@@ -107,9 +105,9 @@ enum PreferencesError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .encodeError:
-            return "There was a problem writing your preferences"
+            return L10n.Alert.WritingPreferencesError.message
         case .decodeError:
-            return "There was a problem reading your preferences"
+            return L10n.Alert.ReadingPreferencesError.message
         }
     }
 }
@@ -131,9 +129,9 @@ enum NetworkError: LocalizedError {
 
     var errorDescription: String? {
         guard !isCancelled else {
-            return none
+            return fallbackMessage
         }
-        return "There was a problem with your network. Please try again"
+        return L10n.Alert.NetworkError.message
     }
 }
 
@@ -141,7 +139,7 @@ enum DataError: LocalizedError {
     case dataNotFound
 
     var errorDescription: String? {
-        return none
+        return fallbackMessage
     }
 }
 
@@ -149,6 +147,6 @@ enum EmailError: LocalizedError {
     case serviceNotAvailable
 
     var errorDescription: String? {
-        return "Your default mail client cannot be openned. Please send an email to: larromba@gmail.com"
+        return L10n.Alert.MailClientError.message(L10n.Email.recipient)
     }
 }

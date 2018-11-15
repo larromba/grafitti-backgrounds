@@ -11,6 +11,6 @@ extension URL {
     }
 
     static var help: URL {
-        return URL(string: "http://github.com/larromba")!
+        return URL(string: "http://github.com/larromba/grafitti-backgrounds")!
     }
 }

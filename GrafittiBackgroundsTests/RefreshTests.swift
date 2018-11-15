@@ -159,7 +159,5 @@ final class RefreshTests: XCTestCase {
         }
     }
 
-    //TODO: this
-    //notEnoughImagesAvailable
-    //notEnoughImagesDownloaded
+    // TODO: maybe test these errors: notEnoughImagesAvailable, notEnoughImagesDownloaded ?
 }

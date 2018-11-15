@@ -17,29 +17,28 @@ enum AppMenu {
         case contact
         case quit
 
-        //TODO: localize
         var localizedTitle: String {
             switch self {
             case .refreshFolder(action: .cancel):
-                return "Cancel Refresh".localized
+                return L10n.Menu.cancelRefresh
             case .refreshFolder(action: .refresh):
-                return "Refresh Folder".localized
+                return L10n.Menu.refreshFolder
             case .openFolder:
-                return "Open Folder".localized
+                return L10n.Menu.openFolder
             case .clearFolder:
-                return "Clear Folder".localized
+                return L10n.Menu.clearFolder
             case .preferences:
-                return "Preferences".localized
+                return L10n.Menu.preferences
             case .systemPreferences:
-                return "System Preferences".localized
+                return L10n.Menu.systemPreferences
             case .about:
-                return "About".localized
+                return L10n.Menu.about
             case .help:
-                return "Help".localized
+                return L10n.Menu.help
             case .contact:
-                return "Report Bug".localized
+                return L10n.Menu.reportBug
             case .quit:
-                return "Quit".localized
+                return L10n.Menu.quit
             }
         }
 

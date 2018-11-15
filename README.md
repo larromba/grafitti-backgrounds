@@ -8,12 +8,5 @@ Apple ID: ?
 ----
 
 TODO:
-- unit tests
-
-- generate strings
-- generate colors
-- generate images
-
-- fastlane?
-- readme
+- fastlane / ci?
 - open source

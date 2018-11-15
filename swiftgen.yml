@@ -1,0 +1,13 @@
+strings:
+  inputs: 
+    - GrafittiBackgrounds/Base.lproj/Localized.strings
+  outputs:
+    - templateName: structured-swift4
+      output: Generated/strings.swift
+xcassets:
+  inputs:
+    - GrafittiBackgrounds/Assets.xcassets
+    - GrafittiBackgrounds/Colors.xcassets
+  outputs:
+    - templateName: swift4
+      output: Generated/assets-images.swift

@@ -111,7 +111,9 @@ extension AppController: AppMenuControllerDelegate {
         case .help:
             handleNoSuccessResult(workspaceController.open(.help))
         case .contact:
-            handleNoSuccessResult(emailController.openMail(receipient: "larromba@gmail.com", subject: "GrafittiBackgrounds Bug Report", body: "Please provide your steps to reproduce here"))
+            handleNoSuccessResult(emailController.openMail(receipient: L10n.Email.recipient,
+                                                           subject: L10n.Email.subject(Bundle.appName),
+                                                           body: L10n.Email.message))
         case .quit:
             app.terminate(self)
         }

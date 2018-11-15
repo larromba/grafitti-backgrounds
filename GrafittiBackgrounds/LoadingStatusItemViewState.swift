@@ -18,7 +18,7 @@ struct LoadingStatusItemViewState {
         static var sprayCan = Style(
             image: #imageLiteral(resourceName: "spray-can"),
             loadingImage: #imageLiteral(resourceName: "download"),
-            spinnerColor: .named(.spinner)
+            spinnerColor: Asset.Colors.spinner.color
         )
     }
 
