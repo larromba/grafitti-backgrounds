@@ -1,6 +1,6 @@
 included:
-  - GrafittiBackgrounds
-  - GrafittiBackgroundsTests
+  - GraffitiBackgrounds
+  - GraffitiBackgroundsTests
 excluded:
   - Pods
   - Carthage

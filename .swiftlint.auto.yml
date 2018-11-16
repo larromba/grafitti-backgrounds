@@ -1,6 +1,6 @@
 included:
-- GrafittiBackgrounds
-- GrafittiBackgroundsTests
+- GraffitiBackgrounds
+- GraffitiBackgroundsTests
 
 opt_in_rules:
 - trailing_whitespace
