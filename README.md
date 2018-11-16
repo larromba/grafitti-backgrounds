@@ -1,4 +1,7 @@
-# Graffiti Backgrounds [![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![Open Source Love png1](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+# Graffiti Backgrounds 
+
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) 
+[![Open Source Love png1](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 | master  | dev |
 | ------------- | ------------- |
@@ -45,6 +48,9 @@ Enjoy!
 
 ## How it works
 This app has access to a number of Google Photos albums containing street-art from around the world. It scrapes the albums from Google Photos, and regexes the information into a usable format. It then downloads a random number of photos to `~/Pictures/GraffitiBackgrounds`. It's a bit hacky but it works.
+
+## Licence
+[![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0) 
 
 ## Contact
 larromba@gmail.com
