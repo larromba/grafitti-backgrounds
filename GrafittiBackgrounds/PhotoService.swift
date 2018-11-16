@@ -4,8 +4,8 @@ import Cocoa
 protocol PhotoServicing: Mockable {
     func downloadPhotos(_ resource: [PhotoResource],
                         progress: @escaping (Double) -> Void,
-                        completion: @escaping (Result<[AnyResult<PhotoResource>]>) -> Void)
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[AnyResult<PhotoResource>]>
+                        completion: @escaping (Result<[ResultItem<PhotoResource>]>) -> Void)
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[ResultItem<PhotoResource>]>
     func cancelAll()
 }
 
@@ -16,7 +16,7 @@ final class PhotoService: PhotoServicing {
         var fetchURLGroup = DispatchGroup()
         var downloadURLGroup = DispatchGroup()
         var resources = [PhotoResource]()
-        var downloadResults = [AnyResult<PhotoResource>]()
+        var downloadResults = [ResultItem<PhotoResource>]()
     }
     private enum FileExtension: String {
         case tmp = ".tmp"
@@ -34,7 +34,7 @@ final class PhotoService: PhotoServicing {
     // swiftlint:disable function_body_length
     func downloadPhotos(_ resources: [PhotoResource],
                         progress: @escaping (Double) -> Void,
-                        completion: @escaping (Result<[AnyResult<PhotoResource>]>) -> Void) {
+                        completion: @escaping (Result<[ResultItem<PhotoResource>]>) -> Void) {
         let flow = DownloadFlow()
 
         // 1. get photo download urls
@@ -106,7 +106,7 @@ final class PhotoService: PhotoServicing {
         flow.start()
     }
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[AnyResult<PhotoResource>]> {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[ResultItem<PhotoResource>]> {
         if !fileManager.fileExists(atPath: url.path) {
             do {
                 try fileManager.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
@@ -115,10 +115,10 @@ final class PhotoService: PhotoServicing {
             }
         }
 
-        var results = [AnyResult<PhotoResource>]()
+        var results = [ResultItem<PhotoResource>]()
         for resource in resources {
             guard let fileURL = resource.fileURL else {
-                results += [AnyResult(item: resource, result: .failure(PhotoServiceError.resourceMissingFileURL))]
+                results += [ResultItem(item: resource, result: .failure(PhotoServiceError.resourceMissingFileURL))]
                 continue
             }
             let newFilePath = url.appendingPathComponent(fileURL.lastPathComponent).path
@@ -127,9 +127,9 @@ final class PhotoService: PhotoServicing {
                 try self.fileManager.moveItem(at: fileURL, to: newFileURL)
                 var resource = resource
                 resource.fileURL = newFileURL
-                results += [AnyResult(item: resource, result: .success(()))]
+                results += [ResultItem(item: resource, result: .success(()))]
             } catch {
-                results += [AnyResult(item: resource, result: .failure(error))]
+                results += [ResultItem(item: resource, result: .failure(error))]
             }
         }
         return .success(results)

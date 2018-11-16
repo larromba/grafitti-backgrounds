@@ -24,10 +24,8 @@ final class SystemPreferencesTests: XCTestCase {
 		env.statusItem.menu?.click(at: AppMenu.Order.systemPreferences.rawValue)
 
         // test
-		let url = env.workspace.invocations.find(
-			parameter: MockWorkspace.open1.params.url,
-			inFunction: MockWorkspace.open1.name
-		) as? URL
+		let url = env.workspace.invocations.find(MockWorkspace.open1.name).first?
+			.parameter(for: MockWorkspace.open1.params.url) as? URL
 		XCTAssertEqual(url, SystemPreference.desktopScreenEffects.url)
 	}
 }

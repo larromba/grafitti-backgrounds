@@ -6,8 +6,8 @@ protocol PhotoStorageServicing: Mockable {
     func save(_ resources: [PhotoResource]) -> Result<Void>
     // sourcery: returnValue = Result.success([PhotoResource]())
     func load() -> Result<[PhotoResource]>
-    // sourcery: returnValue = Result.success([AnyResult<PhotoResource>]())
-    func remove(_ resources: [PhotoResource]) -> Result<[AnyResult<PhotoResource>]>
+    // sourcery: returnValue = Result.success([ResultItem<PhotoResource>]())
+    func remove(_ resources: [PhotoResource]) -> Result<[ResultItem<PhotoResource>]>
 }
 
 final class PhotoStorageService: PhotoStorageServicing {
@@ -55,7 +55,7 @@ final class PhotoStorageService: PhotoStorageServicing {
         }
     }
 
-    func remove(_ resources: [PhotoResource]) -> Result<[AnyResult<PhotoResource>]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[ResultItem<PhotoResource>]> {
         var savedResources: [PhotoResource]
         switch load() {
         case .success(let resources):
@@ -64,19 +64,19 @@ final class PhotoStorageService: PhotoStorageServicing {
             return .failure(error)
         }
 
-        var results = [AnyResult<PhotoResource>]()
+        var results = [ResultItem<PhotoResource>]()
         resources.forEach { resource in
             do {
                 if let fileURL = resource.fileURL, self.fileManager.fileExists(atPath: fileURL.path) {
                     try self.fileManager.removeItem(at: fileURL)
                 }
                 if savedResources.remove(resource) {
-                    results += [AnyResult(item: resource, result: .success(()))]
+                    results += [ResultItem(item: resource, result: .success(()))]
                 } else {
-                    results += [AnyResult(item: resource, result: .failure(PhotoStorageError.noRecord))]
+                    results += [ResultItem(item: resource, result: .failure(PhotoStorageError.noRecord))]
                 }
             } catch {
-                results += [AnyResult(item: resource, result: .failure(PhotoStorageError.fileDeleteError(error)))]
+                results += [ResultItem(item: resource, result: .failure(PhotoStorageError.fileDeleteError(error)))]
             }
         }
 

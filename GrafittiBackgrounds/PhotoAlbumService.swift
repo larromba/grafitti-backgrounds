@@ -3,7 +3,7 @@ import Cocoa
 // sourcery: name = PhotoAlbumService
 protocol PhotoAlbumServicing: Mockable {
     func fetchPhotoAlbums(progress: @escaping (Double) -> Void,
-                          completion: @escaping (Result<[AnyResult<PhotoAlbum>]>) -> Void)
+                          completion: @escaping (Result<[ResultItem<PhotoAlbum>]>) -> Void)
     func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void)
     func cancelAll()
 }
@@ -14,7 +14,7 @@ final class PhotoAlbumService: PhotoAlbumServicing {
         var finally: (() -> Void)?
         var albums = [PhotoAlbum]()
         let resourcesGroup = DispatchGroup()
-        var results = [AnyResult<PhotoAlbum>]()
+        var results = [ResultItem<PhotoAlbum>]()
     }
 
     private let networkManager: NetworkManaging
@@ -24,7 +24,7 @@ final class PhotoAlbumService: PhotoAlbumServicing {
     }
 
     func fetchPhotoAlbums(progress: @escaping (Double) -> Void,
-                          completion: @escaping (Result<[AnyResult<PhotoAlbum>]>) -> Void) {
+                          completion: @escaping (Result<[ResultItem<PhotoAlbum>]>) -> Void) {
         let flow = FetchAlbumFlow()
 
         // 1. get photo albums
@@ -51,9 +51,9 @@ final class PhotoAlbumService: PhotoAlbumServicing {
                     case .success(let resources):
                         var album = album
                         album.resources = resources
-                        flow.results += [AnyResult(item: album, result: .success(()))]
+                        flow.results += [ResultItem(item: album, result: .success(()))]
                     case .failure(let error):
-                        flow.results += [AnyResult(item: album, result: .failure(error))]
+                        flow.results += [ResultItem(item: album, result: .failure(error))]
                     }
                     progress(Double(flow.results.count) / Double(flow.albums.count))
                     flow.resourcesGroup.leave()

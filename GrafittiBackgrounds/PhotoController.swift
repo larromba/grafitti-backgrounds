@@ -25,8 +25,8 @@ final class PhotoController: PhotoControllable {
         var finally: (() -> Void)?
 
         var numberOfPhotos: Int = 0
-        var photoAlbumResults = [AnyResult<PhotoAlbum>]()
-        var photoDownloadResults = [AnyResult<PhotoResource>]()
+        var photoAlbumResults = [ResultItem<PhotoAlbum>]()
+        var photoDownloadResults = [ResultItem<PhotoResource>]()
         var photoAlbums = [PhotoAlbum]()
         var resources = [PhotoResource]()
     }
@@ -198,7 +198,7 @@ final class PhotoController: PhotoControllable {
 
     func clearFolder() -> Result<Void> {
         return photoStorageService.load()
-            .flatMap { resources -> Result<[AnyResult<PhotoResource>]> in
+            .flatMap { resources -> Result<[ResultItem<PhotoResource>]> in
                 return self.photoStorageService.remove(resources)
             }.flatMap { results -> Result<Void> in
                 let badResults = results.filter { $0.result.isFailure }

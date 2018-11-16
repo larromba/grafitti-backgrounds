@@ -38,7 +38,6 @@ import AppKit
         {% endif %}
         {% endfor %}
         {% call invocationsVariableName %}.record(invocation)
-        {% call actionsVariableName %}.closure(for: functionName)?()
         {% if not method.returnTypeName.isVoid and not method.isInitializer %}
         {% if method.annotations.returnValue %}
         {% call actionsVariableName %}.set(defaultReturnValue: {{ method.annotations.returnValue }}, for: functionName)
@@ -116,23 +115,11 @@ final class {% call helperClassPrefix %}Invocation {
 
 final class {% call helperClassPrefix %}Actions {
   enum Keys: String, {% call helperClassPrefix %}StringRawRepresentable {
-    case closure
     case returnValue
     case defaultReturnValue
     case error
   }
   private var invocations: [{% call helperClassPrefix %}Invocation] = []
-
-  // MARK: - closure
-
-  func set<T: {% call helperClassPrefix %}StringRawRepresentable>(closure: @escaping () -> Void, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: closure, forKey: Keys.closure)
-  }
-  func closure<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> (() -> Void)? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.closure) as? (() -> Void)
-  }
 
   // MARK: - returnValue
 
@@ -200,10 +187,6 @@ final class {% call helperClassPrefix %}Invocations {
 
   func find<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> [{% call helperClassPrefix %}Invocation] {
     return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
-  }
-
-  func find<T: {% call helperClassPrefix %}StringRawRepresentable, U: {% call helperClassPrefix %}StringRawRepresentable>(parameter: T, inFunction name: U) -> Any? {
-    return history.filter { $0.name == name.rawValue }.first?.parameter(for: parameter)
   }
 }
 

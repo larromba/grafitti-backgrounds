@@ -15,7 +15,7 @@ This is a macOS app developed on and off since 02/12/2017 that downloads (and re
 **Sourcery** *(testing only)*
 `brew install sourcery`
 
-### Instructions
+### Build Instructions
 This assumes you're farmiliar with Xcode and building macOS apps.
 
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
@@ -28,13 +28,16 @@ This assumes you're farmiliar with Xcode and building macOS apps.
 6. Select `Automatically manage signing`
 7. Select `Export` and choose a file location
 8. Once exported, copy `GrafittiBackgrounds.app` to your `Applications` folder
-9. Run the app
-10. When it finishes downloading photos, open `System Preferences`, and set your background to the folder `~/Pictures/GrafittiBackgrounds`. Set it to change every 5 minutes for maximum effect.
 
-I'd also recommend adding the app to your startup items. Enjoy!
+### Setting Up
+1. Run the app
+2. When it finishes downloading photos, open `System Preferences`, and set your desktop background to the folder `~/Pictures/GrafittiBackgrounds`. Set your background to change every 5 minutes for maximum effect
+3. Add the app to your startup items
+
+Enjoy!
 
 ## How it works
-The app has access to a number of Google Photos albums that's I've been collecting over the years, containing street-art from a number of places arund the world. The app scrapes the albums from Google Photos, and regexes the information into a usable format. It then downloads a random number of photos to `~/Pictures/GrafittiBackgrounds`. It's a bit hacky but it works.
+This app has access to a number of Google Photos albums containing street-art from around the world. It scrapes the albums from Google Photos, and regexes the information into a usable format. It then downloads a random number of photos to `~/Pictures/GrafittiBackgrounds`. It's a bit hacky but it works.
 
 ## Contact
 larromba@gmail.com
