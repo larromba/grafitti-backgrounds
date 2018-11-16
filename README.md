@@ -7,12 +7,15 @@ This is a macOS app developed on and off since 02/12/2017 that downloads (and re
 
 ### Dependencies
 **SwiftGen**
+
 `brew install swiftgen`
 
 **SwiftLint**
+
 `brew install swiftlint`
 
 **Sourcery** *(testing only)*
+
 `brew install sourcery`
 
 ### Build Instructions
