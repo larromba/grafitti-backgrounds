@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.com/larromba/graffiti-backgrounds.svg?branch=dev)](https://travis-ci.com/larromba/graffiti-backgrounds)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-[![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 [![Open Source Love png1](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
 ## About
 This is a macOS app developed on and off since 02/12/2017 that downloads (and re-downloads every so many hours) a random number of graffiti / street-art backgrounds to your computer. You then use this folder as your desktop backgrounds, and specify in the Settings to change every 5 minutes. This creates a continuously changing computer background of graffiti images from all around the world.
