@@ -9,6 +9,6 @@ extension XCTestCase {
             waitExpectation.fulfill()
             completion?()
         }
-        waitForExpectations(timeout: duration)
+        waitForExpectations(timeout: duration + 0.5)
     }
 }
