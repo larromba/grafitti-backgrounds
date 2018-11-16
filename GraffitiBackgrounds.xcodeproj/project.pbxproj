@@ -710,7 +710,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh base_lang.sh\n";
+			shellScript = "#sh base_lang.sh\n";
 		};
 		7F4291F3217B2002003E64C2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
