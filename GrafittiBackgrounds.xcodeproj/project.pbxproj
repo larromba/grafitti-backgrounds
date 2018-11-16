@@ -578,6 +578,7 @@
 			buildConfigurationList = 7F51DAAC1FD33DF100502804 /* Build configuration list for PBXNativeTarget "GrafittiBackgrounds" */;
 			buildPhases = (
 				7F247EA91FD476ED0077D878 /* ShellScript */,
+				7F13D517219F4FBF00891DF7 /* ShellScript */,
 				7F4291F3217B2002003E64C2 /* ShellScript */,
 				7F51DA9A1FD33DF100502804 /* Sources */,
 				7F51DA9B1FD33DF100502804 /* Frameworks */,
@@ -681,6 +682,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		7F13D517219F4FBF00891DF7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "swiftgen config run --config .swiftgen.yml\n";
+		};
 		7F247EA91FD476ED0077D878 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -692,7 +710,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh localizations.sh\n";
+			shellScript = "sh base_lang.sh\n";
 		};
 		7F4291F3217B2002003E64C2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -709,7 +727,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect --config \".swiftlint.auto.yml\" && swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		7F876CB5216EAEA000483E8F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
