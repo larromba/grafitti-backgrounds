@@ -24,7 +24,7 @@ final class CancelRefreshTests: XCTestCase {
         }
     }
 
-	func testCancelRefreshOnMenuClickChangesMenuAndIconState() {
+    func testCancelRefreshOnMenuClickChangesMenuAndIconState() {
         // mocks
         let env = Environment()
         env.inject()
@@ -41,9 +41,9 @@ final class CancelRefreshTests: XCTestCase {
         XCTAssertEqual(env.statusItem.item.button?.subviews
             .contains(where: { $0.classForCoder == NSProgressIndicator.self }), false)
         XCTAssertEqual(env.statusItem.item.image, env.statusItem.viewState.style.image)
-	}
+    }
 
-	func testCancelRefreshOnMenuClickCancelsAllNetworkOperations() {
+    func testCancelRefreshOnMenuClickCancelsAllNetworkOperations() {
         // mocks
         let operationQueue = MockOperationQueue()
         let networkManager = NetworkManager(urlSession: MockURLSession(), queue: operationQueue)
@@ -60,7 +60,7 @@ final class CancelRefreshTests: XCTestCase {
 
         // test
         XCTAssertTrue(operationQueue.invocations.isInvoked(MockOperationQueue.cancelAllOperations2.name))
-	}
+    }
 
     func testCancelRefreshDisplaysAlert() {
         // mocks

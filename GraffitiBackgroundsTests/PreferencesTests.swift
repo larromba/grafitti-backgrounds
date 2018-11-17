@@ -12,36 +12,51 @@ final class PreferencesTests: XCTestCase {
             preferencesService: preferencesService
         )
         let photoController = PhotoController.testable()
+        let app = MockApplication()
         var appController: AppController?
 
         func inject() {
             appController = AppController.testable(preferencesController: preferencesController,
                                                    menuController: menuController,
-                                                   photoController: photoController)
+                                                   photoController: photoController,
+                                                   app: app)
         }
 
-        init(windowController: WindowControlling = MockWindowController(),
-             preferencesService: PreferencesServicing = MockPreferencesService()) {
+        init(windowController: WindowControlling, preferencesService: PreferencesServicing = MockPreferencesService()) {
             self.windowController = windowController
             self.preferencesService = preferencesService
         }
     }
 
-	func testPreferencesOnMenuClickOpensPreferences() {
-		// mocks
+    func testPreferencesOnMenuClickOpensPreferences() {
+        // mocks
         let windowController = MockWindowController()
         windowController.contentViewController = MockPreferencesViewController()
         let env = Environment(windowController: windowController)
         env.inject()
 
         // sut
-		env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
+        env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
 
         // test
-		XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
-	}
+        XCTAssertTrue(windowController.invocations.isInvoked(MockWindowController.showWindow1.name))
+    }
 
-	func testPreferencesRenderOnOpening() {
+    func testPreferencesOnMenuClickIsBoughtToFront() {
+        // mocks
+        let windowController = MockWindowController()
+        windowController.contentViewController = MockPreferencesViewController()
+        let env = Environment(windowController: windowController)
+        env.inject()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
+
+        // test
+        XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.activate1.name))
+    }
+
+    func testPreferencesRenderOnOpening() {
         // mocks
         let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 2)
         let preferencesService = MockPreferencesService()
@@ -60,20 +75,20 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(preferencesUI.1.autoRefreshCheckBox.state, .on)
         XCTAssertEqual(preferencesUI.1.autoRefreshIntervalTextField.stringValue, "1")
         XCTAssertEqual(preferencesUI.1.numberOfPhotosTextField.stringValue, "2")
-	}
+    }
 
-	func testPreferencesPersistOnEveryChange() {
-		// mocks
-		let userDefaults = MockUserDefaults()
-		let dataManager = DataManger(database: userDefaults)
-		let preferencesService = PreferencesService(dataManager: dataManager)
+    func testPreferencesPersistOnEveryChange() {
+        // mocks
+        let userDefaults = MockUserDefaults()
+        let dataManager = DataManger(database: userDefaults)
+        let preferencesService = PreferencesService(dataManager: dataManager)
         let preferencesUI = makePreferencesUI()
         let env = Environment(windowController: preferencesUI.0, preferencesService: preferencesService)
         env.inject()
 
-		// sut
+        // sut
         env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
-		preferencesUI.1.autoRefreshCheckBox.performClick(nil)
+        preferencesUI.1.autoRefreshCheckBox.performClick(nil)
         preferencesUI.1.autoRefreshCheckBox.performClick(nil)
         preferencesUI.1.autoRefreshIntervalTextField.stringValue = "10"
         preferencesUI.1.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesUI.1)
@@ -85,9 +100,9 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(userDefaults.preferences(at: 1)?.isAutoRefreshEnabled, true)
         XCTAssertEqual(userDefaults.preferences(at: 2)?.autoRefreshTimeIntervalHours, 10)
         XCTAssertEqual(userDefaults.preferences(at: 3)?.numberOfPhotos, 5)
-	}
+    }
 
-	func testPreferencesRestartDownloadTimerIfChanged() {
+    func testPreferencesRestartDownloadTimerIfChanged() {
         // mocks
         let preferencesUI = makePreferencesUI()
         let env = Environment(windowController: preferencesUI.0)
@@ -108,7 +123,7 @@ final class PreferencesTests: XCTestCase {
                 MockPhotoControllerDelegate.photoControllerTimerTriggered1.name)
             )
         }
-	}
+    }
 
     // MARK: - private
 

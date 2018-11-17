@@ -22,9 +22,9 @@ protocol AsyncFlowContext: AnyObject {
 }
 
 extension AsyncFlowContext {
-	var step: Int {
-		return callBacks.count
-	}
+    var step: Int {
+        return callBacks.count
+    }
 
     func add(callback: @escaping () -> Void) {
         callBacks.append(callback)

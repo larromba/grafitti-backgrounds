@@ -51,24 +51,24 @@ final class AppController: AppControllable {
     }
 
     private func reloadPhotos() {
-		alertController.showAlert(.reloadingPhotos)
-		photoController.reloadPhotos(completion: { [weak self] result in
-			switch result {
-			case .success:
-				self?.alertController.showAlert(.reloadPhotosSuccess)
-			case .failure(let error as NetworkError):
-				guard !error.isCancelled else { return }
-				self?.alertController.showAlert(.error(error))
-			case .failure(let error):
-				self?.alertController.showAlert(.error(error))
-			}
-		})
+        alertController.showAlert(.reloadingPhotos)
+        photoController.reloadPhotos(completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.alertController.showAlert(.reloadPhotosSuccess)
+            case .failure(let error as NetworkError):
+                guard !error.isCancelled else { return }
+                self?.alertController.showAlert(.error(error))
+            case .failure(let error):
+                self?.alertController.showAlert(.error(error))
+            }
+        })
     }
 
-	private func handleNoSuccessResult(_ result: Result<Void>) {
+    private func handleNoSuccessResult(_ result: Result<Void>) {
         guard let error = result.error else { return }
         alertController.showAlert(.error(error))
-	}
+    }
 }
 
 // MARK: - PreferencesControllerDelegate
@@ -99,15 +99,17 @@ extension AppController: AppMenuControllerDelegate {
             photoController.cancelReload()
             alertController.showAlert(.cancelReloadSuccess)
         case .openFolder:
-			handleNoSuccessResult(workspaceController.open(photoController.photoFolderURL))
+            handleNoSuccessResult(workspaceController.open(photoController.photoFolderURL))
         case .clearFolder:
-			clearFolder()
+            clearFolder()
         case .preferences:
             preferencesController.open()
+            app.activate(ignoringOtherApps: true)
         case .systemPreferences:
             handleNoSuccessResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
         case .about:
             app.orderFrontStandardAboutPanel(self)
+            app.activate(ignoringOtherApps: true)
         case .help:
             handleNoSuccessResult(workspaceController.open(.help))
         case .contact:

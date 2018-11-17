@@ -37,7 +37,7 @@ enum AppDelegateFactory {
             photoFolderURL: .defaultSaveLocation
         )
 
-		let alertController = AlertController(notificationCenter: NSUserNotificationCenter.default)
+        let alertController = AlertController(notificationCenter: NSUserNotificationCenter.default)
         let emailController = EmailController(sharingService: NSSharingService(named: .composeEmail))
         let appController = AppController(
             preferencesController: preferencesController,

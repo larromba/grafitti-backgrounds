@@ -22,6 +22,6 @@ final class QuitTests: XCTestCase {
         env.statusItem.menu?.click(at: AppMenu.Order.quit.rawValue)
 
         // test
-        XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.terminate3.name))
+        XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.terminate4.name))
     }
 }

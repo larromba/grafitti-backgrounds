@@ -81,7 +81,7 @@ final class PhotoController: PhotoControllable {
         flow.add {
             self.photoAlbumService.fetchPhotoAlbums(progress: { percentage in
                 DispatchQueue.main.async {
-					let percentage = Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2)
+                    let percentage = Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2)
                     self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
                 }
             }, completion: { result in
@@ -123,7 +123,7 @@ final class PhotoController: PhotoControllable {
         flow.add {
             self.photoService.downloadPhotos(flow.resources, progress: { percentage in
                 DispatchQueue.main.async {
-					let percentage = Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2)
+                    let percentage = Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2)
                     self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
                 }
             }, completion: { result in
