@@ -15,17 +15,17 @@ final class SystemPreferencesTests: XCTestCase {
         }
     }
 
-	func testSystemPreferencesOnMenuClickOpensSystemPreferences() {
-		// mocks
+    func testSystemPreferencesOnMenuClickOpensSystemPreferences() {
+        // mocks
         let env = Environment()
         env.inject()
 
-		// sut
-		env.statusItem.menu?.click(at: AppMenu.Order.systemPreferences.rawValue)
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.systemPreferences.rawValue)
 
         // test
-		let url = env.workspace.invocations.find(MockWorkspace.open1.name).first?
-			.parameter(for: MockWorkspace.open1.params.url) as? URL
-		XCTAssertEqual(url, SystemPreference.desktopScreenEffects.url)
-	}
+        let url = env.workspace.invocations.find(MockWorkspace.open1.name).first?
+            .parameter(for: MockWorkspace.open1.params.url) as? URL
+        XCTAssertEqual(url, SystemPreference.desktopScreenEffects.url)
+    }
 }

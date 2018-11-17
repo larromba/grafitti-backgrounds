@@ -24,8 +24,8 @@ final class HelpTests: XCTestCase {
         env.statusItem.menu?.click(at: AppMenu.Order.help.rawValue)
 
         // test
-		let url = env.workspace.invocations.find(MockWorkspace.open1.name).first?
-			.parameter(for: MockWorkspace.open1.params.url) as? URL
+        let url = env.workspace.invocations.find(MockWorkspace.open1.name).first?
+            .parameter(for: MockWorkspace.open1.params.url) as? URL
         XCTAssertEqual(url?.absoluteString, "http://github.com/larromba/graffiti-backgrounds")
     }
 }

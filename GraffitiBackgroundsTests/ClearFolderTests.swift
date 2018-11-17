@@ -32,9 +32,9 @@ final class ClearFolderTests: XCTestCase {
         }
     }
 
-	func testClearFolderOnMenuClickDeletesAllPhotos() {
+    func testClearFolderOnMenuClickDeletesAllPhotos() {
         // mocks
-		let env = Environment()
+        let env = Environment()
         env.inject()
 
         let fileURL = URL(fileURLWithPath: env.photoFolderURL.path.appending("/testphoto.png"))
@@ -45,7 +45,7 @@ final class ClearFolderTests: XCTestCase {
 
         // test
         XCTAssertFalse(env.fileManager.fileExists(atPath: fileURL.path))
-	}
+    }
 
     func testClearFolderDisplaysAlert() {
         // mocks

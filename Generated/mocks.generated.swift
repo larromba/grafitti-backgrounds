@@ -238,19 +238,35 @@ class MockApplication: NSObject, Applicationable {
     let invocations = _Invocations()
     let actions = _Actions()
 
+    // MARK: - activate
+
+    func activate(ignoringOtherApps flag: Bool) {
+        let functionName = activate1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: flag, forKey: activate1.params.flag)
+        invocations.record(invocation)
+    }
+
+    enum activate1: String, _StringRawRepresentable {
+      case name = "activate1"
+      enum params: String, _StringRawRepresentable {
+        case flag = "activate(ignoringOtherAppsflag:Bool).flag"
+      }
+    }
+
     // MARK: - orderFrontStandardAboutPanel
 
     func orderFrontStandardAboutPanel(_ sender: Any?) {
-        let functionName = orderFrontStandardAboutPanel1.name
+        let functionName = orderFrontStandardAboutPanel2.name
         let invocation = _Invocation(name: functionName.rawValue)
         if let sender = sender {
-            invocation.set(parameter: sender, forKey: orderFrontStandardAboutPanel1.params.sender)
+            invocation.set(parameter: sender, forKey: orderFrontStandardAboutPanel2.params.sender)
         }
         invocations.record(invocation)
     }
 
-    enum orderFrontStandardAboutPanel1: String, _StringRawRepresentable {
-      case name = "orderFrontStandardAboutPanel1"
+    enum orderFrontStandardAboutPanel2: String, _StringRawRepresentable {
+      case name = "orderFrontStandardAboutPanel2"
       enum params: String, _StringRawRepresentable {
         case sender = "orderFrontStandardAboutPanel(_sender:Any?).sender"
       }
@@ -259,14 +275,14 @@ class MockApplication: NSObject, Applicationable {
     // MARK: - orderFrontStandardAboutPanel
 
     func orderFrontStandardAboutPanel(options optionsDictionary: [NSApplication.AboutPanelOptionKey: Any]) {
-        let functionName = orderFrontStandardAboutPanel2.name
+        let functionName = orderFrontStandardAboutPanel3.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: optionsDictionary, forKey: orderFrontStandardAboutPanel2.params.optionsDictionary)
+        invocation.set(parameter: optionsDictionary, forKey: orderFrontStandardAboutPanel3.params.optionsDictionary)
         invocations.record(invocation)
     }
 
-    enum orderFrontStandardAboutPanel2: String, _StringRawRepresentable {
-      case name = "orderFrontStandardAboutPanel2"
+    enum orderFrontStandardAboutPanel3: String, _StringRawRepresentable {
+      case name = "orderFrontStandardAboutPanel3"
       enum params: String, _StringRawRepresentable {
         case optionsDictionary = "orderFrontStandardAboutPanel(optionsoptionsDictionary:[NSApplication.AboutPanelOptionKey:Any]).optionsDictionary"
       }
@@ -275,16 +291,16 @@ class MockApplication: NSObject, Applicationable {
     // MARK: - terminate
 
     func terminate(_ sender: Any?) {
-        let functionName = terminate3.name
+        let functionName = terminate4.name
         let invocation = _Invocation(name: functionName.rawValue)
         if let sender = sender {
-            invocation.set(parameter: sender, forKey: terminate3.params.sender)
+            invocation.set(parameter: sender, forKey: terminate4.params.sender)
         }
         invocations.record(invocation)
     }
 
-    enum terminate3: String, _StringRawRepresentable {
-      case name = "terminate3"
+    enum terminate4: String, _StringRawRepresentable {
+      case name = "terminate4"
       enum params: String, _StringRawRepresentable {
         case sender = "terminate(_sender:Any?).sender"
       }

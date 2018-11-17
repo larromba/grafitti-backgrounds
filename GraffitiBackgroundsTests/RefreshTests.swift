@@ -44,7 +44,7 @@ final class RefreshTests: XCTestCase {
         }
     }
 
-	func testRefreshFolderOnMenuClickTriggersLoadingIndicator() {
+    func testRefreshFolderOnMenuClickTriggersLoadingIndicator() {
         // mocks
         let env = Environment()
         env.inject()
@@ -57,7 +57,7 @@ final class RefreshTests: XCTestCase {
             let loadingProgress = env.statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
             XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
         }
-	}
+    }
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsNormalStatusItem() {
         // mocks

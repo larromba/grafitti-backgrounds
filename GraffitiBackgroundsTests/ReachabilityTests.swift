@@ -9,7 +9,7 @@ final class ReachabilityTests: XCTestCase {
         lazy var menuController = AppMenuController(statusItem: statusItem, reachability: reachability)
         var delegate: ReachabilityDelegate? {
             return reachability.invocations.find(MockReachability.setDelegate1.name).first?
-				.parameter(for: MockReachability.setDelegate1.params.delegate) as? ReachabilityDelegate
+                .parameter(for: MockReachability.setDelegate1.params.delegate) as? ReachabilityDelegate
         }
         var appController: AppController?
 

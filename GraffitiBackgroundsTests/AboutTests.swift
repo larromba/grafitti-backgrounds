@@ -13,15 +13,27 @@ final class AboutTests: XCTestCase {
         }
     }
 
-	func testAboutOnMenuClickOpensAbout() {
-		// mocks
+    func testAboutOnMenuClickOpensAbout() {
+        // mocks
         let env = Environment()
         env.inject()
 
         // sut
-		env.statusItem.menu?.click(at: AppMenu.Order.about.rawValue)
+        env.statusItem.menu?.click(at: AppMenu.Order.about.rawValue)
 
         // test
-		XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.orderFrontStandardAboutPanel1.name))
-	}
+        XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.orderFrontStandardAboutPanel2.name))
+    }
+
+    func testAboutOnMenuClickIsBoughtToFront() {
+        // mocks
+        let env = Environment()
+        env.inject()
+
+        // sut
+        env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
+
+        // test
+        XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.activate1.name))
+    }
 }
