@@ -1,2 +1,2 @@
-GraffitiBackgroundsTests/*.html linguist-vendored
-GraffitiBackgroundsTests/*.js linguist-vendored
+GraffitiBackgroundsTests/*.html linguist-detectable=false
+GraffitiBackgroundsTests/*.js linguist-detectable=false
