@@ -59,7 +59,6 @@ enum PhotoStorageError: LocalizedError {
     case encodeError(Error)
     case decodeError(Error)
     case fileDeleteError(Error)
-    case noRecord
 
     var errorDescription: String? {
         switch self {
@@ -67,8 +66,6 @@ enum PhotoStorageError: LocalizedError {
             return L10n.Alert.SavePhotoRecordError.message
         case .fileDeleteError:
             return L10n.Alert.DeletePhotosError.message
-        case .noRecord:
-            return fallbackMessage
         }
     }
 }
@@ -132,14 +129,6 @@ enum NetworkError: LocalizedError {
             return fallbackMessage
         }
         return L10n.Alert.NetworkError.message
-    }
-}
-
-enum DataError: LocalizedError {
-    case dataNotFound
-
-    var errorDescription: String? {
-        return fallbackMessage
     }
 }
 

@@ -13,7 +13,6 @@ protocol PhotoControllable: Mockable {
 
     func setPreferences(_ preferences: Preferences)
     func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void)
-    // sourcery: returnValue = Result.success(())
     func cancelReload()
     func clearFolder() -> Result<Void>
     func setDelegate(_ delegate: PhotoControllerDelegate)
@@ -155,8 +154,8 @@ final class PhotoController: PhotoControllable {
         // 6. clear previous photos, try moving new photos, save resource information
         flow.add {
             let result = self.clearFolder().flatMap {
-                return self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
-                    .flatMap({ result -> Result<[PhotoResource]> in
+                self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
+                    .flatMap { result -> Result<[PhotoResource]> in
                         let failedResults = result.filter { $0.result.isFailure }
                         if failedResults.isEmpty {
                             return .success(result.compactMap { $0.item })
@@ -166,7 +165,7 @@ final class PhotoController: PhotoControllable {
                             // edge case
                             return .failure(PhotoError.someImagesMissingAfterMove)
                         }
-                    })
+                    }
             }.flatMap { resources -> Result<[PhotoResource]> in
                 switch self.photoStorageService.save(resources) {
                 case .success:

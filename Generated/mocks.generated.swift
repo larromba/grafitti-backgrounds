@@ -333,13 +333,13 @@ class MockDataManger: NSObject, DataManaging {
 
     // MARK: - load<T: Keyable>
 
-    func load<T: Keyable>(key: T) -> Result<Data> {
+    func load<T: Keyable>(key: T) -> Data? {
         let functionName = load2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: key, forKey: load2.params.key)
         invocations.record(invocation)
         actions.set(defaultReturnValue: Result.success(Data()), for: functionName)
-        return actions.returnValue(for: functionName) as! Result<Data>
+        return actions.returnValue(for: functionName) as? Data
     }
 
     enum load2: String, _StringRawRepresentable {

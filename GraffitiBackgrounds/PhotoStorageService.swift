@@ -36,22 +36,14 @@ final class PhotoStorageService: PhotoStorageServicing {
     }
 
     func load() -> Result<[PhotoResource]> {
-        let result = dataManager.load(key: Key.resource)
-        switch result {
-        case .success(let data):
-            do {
-                let resources = try decoder.decode([PhotoResource].self, from: data)
-                return .success(resources)
-            } catch {
-                return .failure(PhotoStorageError.decodeError(error))
-            }
-        case .failure(let error):
-            switch error {
-            case DataError.dataNotFound:
-                return .success([])
-            default:
-                return .failure(error)
-            }
+        guard let data = dataManager.load(key: Key.resource) else {
+            return .success([])
+        }
+        do {
+            let resources = try decoder.decode([PhotoResource].self, from: data)
+            return .success(resources)
+        } catch {
+            return .failure(PhotoStorageError.decodeError(error))
         }
     }
 
@@ -70,11 +62,8 @@ final class PhotoStorageService: PhotoStorageServicing {
                 if let fileURL = resource.fileURL, self.fileManager.fileExists(atPath: fileURL.path) {
                     try self.fileManager.removeItem(at: fileURL)
                 }
-                if savedResources.remove(resource) {
-                    results += [ResultItem(item: resource, result: .success(()))]
-                } else {
-                    results += [ResultItem(item: resource, result: .failure(PhotoStorageError.noRecord))]
-                }
+                savedResources.remove(resource)
+                results += [ResultItem(item: resource, result: .success(()))]
             } catch {
                 results += [ResultItem(item: resource, result: .failure(PhotoStorageError.fileDeleteError(error)))]
             }
