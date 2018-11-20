@@ -27,16 +27,15 @@ final class MenuItem<T, U: MenuItemDelegate>: NSMenuItem, MenuItemable where T =
     private weak var delegate: DelegateType?
     var actionType: ActionType
     var viewState: MenuItemViewState {
-        didSet {
-            refresh(viewState: viewState)
-        }
+        didSet { bind(viewState) }
     }
 
     init(viewState: MenuItemViewState, actionType: ActionType, delegate: U) {
+        self.viewState = viewState
         self.delegate = delegate
         self.actionType = actionType
-        self.viewState = viewState
         super.init(title: viewState.title, action: #selector(action(_:)), keyEquivalent: viewState.keyEquivalent)
+        bind(viewState)
         self.target = self
     }
 
@@ -56,9 +55,9 @@ final class MenuItem<T, U: MenuItemDelegate>: NSMenuItem, MenuItemable where T =
         delegate?.menuItemPressed(self)
     }
 
-    private func refresh(viewState: MenuItemViewState) {
-        self.title = viewState.title
-        self.keyEquivalent = viewState.keyEquivalent
-        self.isEnabled = viewState.isEnabled
+    private func bind(_ viewState: MenuItemViewState) {
+        title = viewState.title
+        keyEquivalent = viewState.keyEquivalent
+        isEnabled = viewState.isEnabled
     }
 }

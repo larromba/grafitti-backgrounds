@@ -22,11 +22,17 @@ final class PreferencesViewController: NSViewController, PreferencesViewControll
     @IBOutlet private(set) weak var numberOfPhotosTextField: NSTextField!
 
     private weak var delegate: PreferencesViewControllerDelegate?
-    private(set) var viewState: PreferencesViewState?
+    private(set) var viewState: PreferencesViewState? {
+        didSet { _ = viewState.map(bind) }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        _ = viewState.map(bind)
+    }
 
     func setViewState(_ viewState: PreferencesViewState) {
         self.viewState = viewState
-        updateViewState(viewState)
     }
 
     func setDelegate(_ delegate: PreferencesViewControllerDelegate) {
@@ -40,7 +46,8 @@ final class PreferencesViewController: NSViewController, PreferencesViewControll
         notifyDelegateViewStateUpdated()
     }
 
-    private func updateViewState(_ viewState: PreferencesViewState) {
+    private func bind(_ viewState: PreferencesViewState) {
+        guard isViewLoaded else { return }
         autoRefreshCheckBox.state = viewState.isAutoRefreshEnabledState
         autoRefreshIntervalTextField.stringValue = viewState.autoRefreshTimeIntervalHoursString
         numberOfPhotosTextField.stringValue = viewState.numberOfPhotosString

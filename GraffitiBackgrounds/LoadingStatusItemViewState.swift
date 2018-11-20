@@ -26,7 +26,9 @@ struct LoadingStatusItemViewState {
     let loadingPercentage: Double
     let style: Style
     let alpha: CGFloat
+}
 
+extension LoadingStatusItemViewState {
     func copy(isLoading: Bool) -> LoadingStatusItemViewState {
         return LoadingStatusItemViewState(
             isLoading: isLoading,
