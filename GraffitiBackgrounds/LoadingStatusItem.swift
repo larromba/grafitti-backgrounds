@@ -10,9 +10,7 @@ protocol LoadingStatusItemable: AnyObject, Mockable {
 
 final class LoadingStatusItem: LoadingStatusItemable {
     var viewState: LoadingStatusItemViewState {
-        didSet {
-            update(viewState: viewState)
-        }
+        didSet { bind(viewState) }
     }
     var menu: Menuable? {
         get {
@@ -65,7 +63,7 @@ final class LoadingStatusItem: LoadingStatusItemable {
         self.viewState = viewState
         self.statusBar = statusBar
         self.item = statusBar.statusItem(withLength: NSStatusItem.variableLength)
-        item.image = viewState.style.image
+        bind(viewState)
     }
 
     deinit {
@@ -78,9 +76,10 @@ final class LoadingStatusItem: LoadingStatusItemable {
 
     // MARK: - private
 
-    private func update(viewState: LoadingStatusItemViewState) {
+    private func bind(_ viewState: LoadingStatusItemViewState) {
         isLoading = viewState.isLoading
         loadingPercentage = viewState.loadingPercentage
         item.button?.alphaValue = viewState.alpha
+        item.image = viewState.style.image
     }
 }

@@ -9,15 +9,13 @@ protocol Menuable: Mockable {
 
 final class Menu: NSMenu, Menuable {
     var viewState: MenuViewState {
-        didSet {
-            update(viewState: viewState)
-        }
+        didSet { bind(viewState) }
     }
 
     init(viewState: MenuViewState) {
         self.viewState = viewState
         super.init(title: viewState.title)
-        update(viewState: viewState)
+        bind(viewState)
     }
 
     @available(*, unavailable)
@@ -31,7 +29,7 @@ final class Menu: NSMenu, Menuable {
 
     // MARK: - private
 
-    private func update(viewState: MenuViewState) {
+    private func bind(_ viewState: MenuViewState) {
         title = viewState.title
         autoenablesItems = viewState.autoenablesItems
         setItems(viewState.items)
