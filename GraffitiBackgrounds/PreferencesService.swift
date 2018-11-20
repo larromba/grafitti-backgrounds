@@ -32,21 +32,14 @@ final class PreferencesService: PreferencesServicing {
     }
 
     func load() -> Result<Preferences> {
-        switch dataManager.load(key: Key.preferences) {
-        case .success(let data):
-            do {
-                let preferences = try decoder.decode(Preferences.self, from: data)
-                return .success(preferences)
-            } catch {
-                return .failure(PreferencesError.decodeError(error))
-            }
-        case .failure(let error):
-            switch error {
-            case DataError.dataNotFound:
-                return .success(Preferences())
-            default:
-                return .failure(error)
-            }
+        guard let data = dataManager.load(key: Key.preferences) else {
+            return .success(Preferences())
+        }
+        do {
+            let preferences = try decoder.decode(Preferences.self, from: data)
+            return .success(preferences)
+        } catch {
+            return .failure(PreferencesError.decodeError(error))
         }
     }
 }
