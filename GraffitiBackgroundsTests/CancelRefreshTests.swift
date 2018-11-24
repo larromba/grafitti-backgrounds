@@ -46,7 +46,8 @@ final class CancelRefreshTests: XCTestCase {
     func testCancelRefreshOnMenuClickCancelsAllNetworkOperations() {
         // mocks
         let operationQueue = MockOperationQueue()
-        let networkManager = NetworkManager(urlSession: MockURLSession(), queue: operationQueue)
+        let networkManager = NetworkManager(urlSession: MockURLSession(), fileManager: MockFileManager(),
+                                            queue: operationQueue)
         let photoController = PhotoController.testable(
             photoAlbumService: PhotoAlbumService(networkManager: networkManager),
             photoService: PhotoService(networkManager: networkManager, fileManager: MockFileManager()),

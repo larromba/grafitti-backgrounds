@@ -6,7 +6,7 @@ protocol PhotoStorageServicing: Mockable {
     func save(_ resources: [PhotoResource]) -> Result<Void>
     // sourcery: returnValue = Result.success([PhotoResource]())
     func load() -> Result<[PhotoResource]>
-    // sourcery: returnValue = Result.success([ResultItem<PhotoResource>]())
+    // sourcery: returnValue = Result.success([PhotoResource]())
     func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]>
 }
 
@@ -48,6 +48,10 @@ final class PhotoStorageService: PhotoStorageServicing {
     }
 
     func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
+        guard !resources.isEmpty else {
+            return .success([])
+        }
+
         var savedResources: [PhotoResource]
         switch load() {
         case .success(let resources):
