@@ -7,14 +7,6 @@ protocol NetworkManaging: Mockable {
     func cancelAll()
 }
 
-// TODO: move?
-enum FileDownloadOption {
-    case move(folder: URL)
-    case moveReplaceName(folder: URL, newFileName: String)
-    case moveReplaceExtension(folder: URL, newFileExtension: String)
-    case replaceExtension(newFileExtension: String)
-}
-
 final class NetworkManager: NetworkManaging {
     private let urlSession: URLSessioning
     private let fileManager: FileManaging

@@ -77,7 +77,7 @@ enum PhotoServiceError: LocalizedError {
         switch self {
         case .cantCreateDownloadFolder:
             return L10n.Alert.CreatingDownloadFolderError.message
-        case .resourceMissingFileURL, .moveError: // TODO: moveError?
+        case .resourceMissingFileURL, .moveError:
             return fallbackMessage
         case .someImagesMissingAfterMove:
             return L10n.Alert.SomeImagesMissingAfterDownload.message
