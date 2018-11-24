@@ -1,4 +1,4 @@
-// modifid from on "freshOS/then" async / await implementation https://github.com/freshOS/then/tree/master/Source
+// modified from on "freshOS/then" async / await implementation https://github.com/freshOS/then/tree/master/Source
 
 import Foundation
 
@@ -21,9 +21,7 @@ func await<T>(_ operation: Async<T>) throws -> T {
     }
     group.wait()
 
-    if let error = error {
-        throw error
-    }
+    if let error = error { throw error }
     return value
 }
 
@@ -34,29 +32,30 @@ func awaitAll<T>(_ operations: [Async<T>],
     var values = [T]()
     var errors = [Error]()
     let group = DispatchGroup()
+    var isBailed = false
 
-    operations.forEach { operation in
+    for operation in operations {
         group.enter()
         operation.completion { result in
+            guard !isBailed else { return }
             switch result {
             case .success(let resultValue):
-                values.append(resultValue)
+                values += [resultValue]
                 group.leave()
             case .failure(let resultError):
-                errors.append(resultError)
-                if bailEarly {
+                errors += [resultError]
+                guard !bailEarly else {
+                    isBailed = true
                     (values.count..<operations.count).forEach { _ in group.leave() }
-                } else {
-                    group.leave()
+                    return
                 }
+                group.leave()
             }
             progress?(Double(values.count + errors.count) / Double(operations.count))
         }
     }
     group.wait()
 
-    if bailEarly {
-        throw errors[0]
-    }
+    guard !isBailed else { throw errors[0] }
     return (values, errors)
 }

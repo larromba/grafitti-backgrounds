@@ -18,10 +18,8 @@ final class PhotoAlbumService: PhotoAlbumServicing {
             async({
                 let request = PhotoAlbumsRequest()
                 let response: PhotoAlbumsResponse = try await(self.networkManager.fetch(request: request))
-
                 let fetchPhotoResourceOperations = response.photoAlbums.map { self.fetchPhotoResources(for: $0) }
                 let fetchPhotoResourceResults = try awaitAll(fetchPhotoResourceOperations, progress: progress)
-
                 let isCancelledErrors = fetchPhotoResourceResults.1.filter { $0.isNetworkErrorCancelled }
                 guard isCancelledErrors.isEmpty else {
                     completion(.failure(isCancelledErrors[0]))

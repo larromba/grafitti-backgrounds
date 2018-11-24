@@ -1,4 +1,4 @@
-// modifid from on "freshOS/then" async / await implementation https://github.com/freshOS/then/tree/master/Source
+// modified from on "freshOS/then" async / await implementation https://github.com/freshOS/then/tree/master/Source
 
 import Foundation
 
@@ -19,5 +19,11 @@ struct Async<T> {
 
     init(_ completion: @escaping (@escaping Completion) -> Void) {
         self.completion = completion
+    }
+}
+
+func onMain(callback: @escaping () -> Void) {
+    DispatchQueue.main.async {
+        callback()
     }
 }

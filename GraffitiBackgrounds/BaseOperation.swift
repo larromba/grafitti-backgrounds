@@ -1,11 +1,16 @@
 import Foundation
 
-class BaseOperation: Operation { // please subclass
+class BaseOperation: Operation {
     private enum State {
         case ready, executing, finished
     }
     private enum KVOKey: String {
         case isExecuting, isFinished
+    }
+
+    override init() {
+        super.init()
+        assert(superclass != nil, "please subclass")
     }
 
     private var _state: State = .ready

@@ -1,4 +1,5 @@
-//swiftlint:disable file_header
+// swiftlint:disable file_header
+
 //
 //  Reachability.swift
 //  Etcetera

@@ -29,6 +29,11 @@ final class PhotoService: PhotoServicing {
                 let downloadResults = try awaitAll(downloadOperations, progress: { percentage in
                     progress(Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2))
                 })
+                let isCancelledErrors = downloadResults.1.filter { $0.isNetworkErrorCancelled }
+                guard isCancelledErrors.isEmpty else {
+                    completion(.failure(isCancelledErrors[0]))
+                    return
+                }
                 completion(.success(downloadResults.0))
             }, onError: { error in
                 completion(.failure(error))

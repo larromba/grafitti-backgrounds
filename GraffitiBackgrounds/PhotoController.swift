@@ -27,9 +27,7 @@ final class PhotoController: PhotoControllable {
     private weak var delegate: PhotoControllerDelegate?
 
     private(set) var isDownloadInProgress = false {
-        didSet {
-            delegate?.photoController(self, didChangeDownloadState: isDownloadInProgress)
-        }
+        didSet { delegate?.photoController(self, didChangeDownloadState: isDownloadInProgress) }
     }
     let photoFolderURL: URL
 
@@ -57,20 +55,14 @@ final class PhotoController: PhotoControllable {
         return Async { completion in
             async({
                 guard !self.isDownloadInProgress else {
-                    DispatchQueue.main.async {
-                        completion(.failure(PhotoError.downloadInProgress))
-                    }
-                    return
+                    return onMain { completion(.failure(PhotoError.downloadInProgress)) }
                 }
-                DispatchQueue.main.async {
-                    self.setupTimer()
-                    self.isDownloadInProgress = true
-                }
+                onMain { self.startReloading() }
                 let numberOfPhotos = self.preferences.numberOfPhotos
 
                 log("1. get all albums")
                 let albums = try await(self.photoAlbumService.fetchPhotoAlbums(progress: { percentage in
-                    DispatchQueue.main.async {
+                    onMain {
                         let normalized = Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2)
                         self.delegate?.photoController(self, updatedDownloadPercentage: normalized)
                     }
@@ -79,10 +71,7 @@ final class PhotoController: PhotoControllable {
                 log("2. ensure there are enough photos to download within the albums")
                 let numOfPossibleDownloads = albums.reduce(0, { $0 + $1.resources.count })
                 guard numOfPossibleDownloads >= numberOfPhotos else {
-                    DispatchQueue.main.async {
-                        completion(.failure(PhotoError.notEnoughImagesAvailable))
-                    }
-                    return
+                    return onMain { completion(.failure(PhotoError.notEnoughImagesAvailable)) }
                 }
 
                 log("3. choose some random photos from the albums to download")
@@ -93,7 +82,7 @@ final class PhotoController: PhotoControllable {
 
                 log("4. download \(resources.count) photos")
                 let downloaded = try await(self.photoService.downloadPhotos(resources, progress: { percentage in
-                    DispatchQueue.main.async {
+                    onMain {
                         let normalized = Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2)
                         self.delegate?.photoController(self, updatedDownloadPercentage: normalized)
                     }
@@ -101,10 +90,7 @@ final class PhotoController: PhotoControllable {
 
                 log("5. ensure enough photos were downloaded (\(downloaded.count) / \(numberOfPhotos)")
                 guard downloaded.count >= numberOfPhotos else {
-                    DispatchQueue.main.async {
-                        completion(.failure(PhotoError.notEnoughImagesDownloaded))
-                    }
-                    return
+                    return onMain { completion(.failure(PhotoError.notEnoughImagesDownloaded)) }
                 }
 
                 log("6. clear previous photos, move new photos, save resource information")
@@ -121,13 +107,13 @@ final class PhotoController: PhotoControllable {
                     }
 
                 log("7. finish up")
-                DispatchQueue.main.async {
-                    self.isDownloadInProgress = false
-                    self.delegate?.photoController(self, updatedDownloadPercentage: 0.0)
+                onMain {
+                    self.stopReloading()
                     completion(result)
                 }
             }, onError: { error in
-                DispatchQueue.main.async {
+                onMain {
+                    self.stopReloading()
                     completion(.failure(error))
                 }
             })
@@ -180,5 +166,15 @@ final class PhotoController: PhotoControllable {
     private func stopTimer() {
         reloadTimer?.invalidate()
         reloadTimer = nil
+    }
+
+    private func startReloading() {
+        setupTimer()
+        isDownloadInProgress = true
+    }
+
+    private func stopReloading() {
+        isDownloadInProgress = false
+        delegate?.photoController(self, updatedDownloadPercentage: 0.0)
     }
 }
