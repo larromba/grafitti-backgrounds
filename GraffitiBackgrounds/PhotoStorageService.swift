@@ -7,7 +7,7 @@ protocol PhotoStorageServicing: Mockable {
     // sourcery: returnValue = Result.success([PhotoResource]())
     func load() -> Result<[PhotoResource]>
     // sourcery: returnValue = Result.success([ResultItem<PhotoResource>]())
-    func remove(_ resources: [PhotoResource]) -> Result<[ResultItem<PhotoResource>]>
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]>
 }
 
 final class PhotoStorageService: PhotoStorageServicing {
@@ -47,7 +47,7 @@ final class PhotoStorageService: PhotoStorageServicing {
         }
     }
 
-    func remove(_ resources: [PhotoResource]) -> Result<[ResultItem<PhotoResource>]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
         var savedResources: [PhotoResource]
         switch load() {
         case .success(let resources):
@@ -56,17 +56,22 @@ final class PhotoStorageService: PhotoStorageServicing {
             return .failure(error)
         }
 
-        var results = [ResultItem<PhotoResource>]()
+        var results = [PhotoResource]()
+        var errors = [Error]()
         resources.forEach { resource in
             do {
                 if let fileURL = resource.fileURL, self.fileManager.fileExists(atPath: fileURL.path) {
                     try self.fileManager.removeItem(at: fileURL)
                 }
                 savedResources.remove(resource)
-                results += [ResultItem(item: resource, result: .success(()))]
+                results += [resource]
             } catch {
-                results += [ResultItem(item: resource, result: .failure(PhotoStorageError.fileDeleteError(error)))]
+                errors += [PhotoStorageError.fileDeleteError(error)]
             }
+        }
+
+        guard !results.isEmpty else {
+            return .failure(errors[0])
         }
 
         switch save(savedResources) {

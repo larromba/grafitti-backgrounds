@@ -3,7 +3,9 @@ import Foundation
 enum Result<T> {
     case success(T)
     case failure(Error)
+}
 
+extension Result {
     var isSuccess: Bool {
         switch self {
         case .success: return true

@@ -21,8 +21,8 @@ enum AppDelegateFactory {
         let urlSession = URLSession(configuration: .default)
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 3
-        let networkManager = NetworkManager(urlSession: urlSession, queue: queue)
         let fileManager = FileManager.default
+        let networkManager = NetworkManager(urlSession: urlSession, fileManager: fileManager, queue: queue)
 
         let photoAlbumService = PhotoAlbumService(networkManager: networkManager)
         let photoService = PhotoService(

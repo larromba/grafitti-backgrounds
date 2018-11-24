@@ -2,27 +2,13 @@ import Cocoa
 
 // sourcery: name = PhotoService
 protocol PhotoServicing: Mockable {
-    func downloadPhotos(_ resource: [PhotoResource],
-                        progress: @escaping (Double) -> Void,
-                        completion: @escaping (Result<[ResultItem<PhotoResource>]>) -> Void)
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[ResultItem<PhotoResource>]>
+    func downloadPhotos(_ resources: [PhotoResource],
+                        progress: @escaping (Double) -> Void) -> Async<[PhotoResource]>
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource]>
     func cancelAll()
 }
 
 final class PhotoService: PhotoServicing {
-    private class DownloadFlow: AsyncFlowContext {
-        var callBacks = [() -> Void]()
-        var finally: (() -> Void)?
-        var fetchURLGroup = DispatchGroup()
-        var downloadURLGroup = DispatchGroup()
-        var resources = [PhotoResource]()
-        var downloadResults = [ResultItem<PhotoResource>]()
-    }
-    private enum FileExtension: String {
-        case tmp = ".tmp"
-        case png = ".png"
-    }
-
     private let networkManager: NetworkManaging
     private let fileManager: FileManaging
 
@@ -31,82 +17,26 @@ final class PhotoService: PhotoServicing {
         self.fileManager = fileManager
     }
 
-    // swiftlint:disable function_body_length
     func downloadPhotos(_ resources: [PhotoResource],
-                        progress: @escaping (Double) -> Void,
-                        completion: @escaping (Result<[ResultItem<PhotoResource>]>) -> Void) {
-        let flow = DownloadFlow()
-
-        // 1. get photo download urls
-        flow.add {
-            resources.forEach { resource in
-                flow.fetchURLGroup.enter()
-                let request = PhotoRequest(resource: resource)
-                self.networkManager.fetch(request: request, completion: { (result: Result<PhotoResponse>) in
-                    switch result {
-                    case .success(let response):
-                        var resource = resource
-                        resource.downloadURL = response.imageURL
-                        flow.resources += [resource]
-                    case .failure(let error):
-                        completion(.failure(error))
-                        flow.finished()
-                    }
-                    let percentage = Double(flow.resources.count) / Double(resources.count)
+                        progress: @escaping (Double) -> Void) -> Async<[PhotoResource]> {
+        return Async { completion in
+            async({
+                let fetchDownloadURLOperations = resources.map { self.fetchDownloadURL(resource: $0) }
+                let fetchResults = try awaitAll(fetchDownloadURLOperations, progress: { percentage in
                     progress(Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2))
-                    flow.fetchURLGroup.leave()
                 })
-            }
-            flow.fetchURLGroup.notify(queue: .global()) {
-                flow.next()
-            }
-        }
-
-        // 2. download photos
-        flow.add {
-            flow.resources.forEach({ resource in
-                guard let downloadURL = resource.downloadURL else { return }
-                flow.downloadURLGroup.enter()
-                self.networkManager.download(downloadURL, completion: { result in
-                    switch result {
-                    case .success(let fileURL):
-                        // must rename file else it's removed
-                        // see https://developer.apple.com/documentation/foundation/urlsession/1411511-downloadtask
-                        let newFilePath = fileURL.path.replacingOccurrences(
-                            of: FileExtension.tmp.rawValue,
-                            with: FileExtension.png.rawValue
-                        )
-                        let newfileURL = URL(fileURLWithPath: newFilePath)
-                        var resource = resource
-                        resource.fileURL = newfileURL
-                        do {
-                            try self.fileManager.moveItem(at: fileURL, to: newfileURL)
-                            flow.downloadResults += [.init(item: resource, result: .success(()))]
-                        } catch {
-                            flow.downloadResults += [.init(item: resource, result: .failure(error))]
-                        }
-                    case .failure(let error):
-                        flow.downloadResults += [.init(item: resource, result: .failure(error))]
-                    }
-                    let percentage = Double(flow.downloadResults.count) / Double(flow.resources.count)
+                let downloadOperations = fetchResults.0.map { self.downloadPhoto(resource: $0) }
+                let downloadResults = try awaitAll(downloadOperations, progress: { percentage in
                     progress(Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2))
-                    flow.downloadURLGroup.leave()
                 })
+                completion(.success(downloadResults.0))
+            }, onError: { error in
+                completion(.failure(error))
             })
-            flow.downloadURLGroup.notify(queue: .global()) {
-                flow.finished()
-            }
         }
-
-        // 3. report downloads
-        flow.setFinally {
-            completion(.success(flow.downloadResults))
-        }
-
-        flow.start()
     }
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[ResultItem<PhotoResource>]> {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource]> {
         if !fileManager.fileExists(atPath: url.path) {
             do {
                 try fileManager.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
@@ -115,10 +45,10 @@ final class PhotoService: PhotoServicing {
             }
         }
 
-        var results = [ResultItem<PhotoResource>]()
+        var results = [PhotoResource]()
+        var errors = [Error]()
         for resource in resources {
             guard let fileURL = resource.fileURL else {
-                results += [ResultItem(item: resource, result: .failure(PhotoServiceError.resourceMissingFileURL))]
                 continue
             }
             let newFilePath = url.appendingPathComponent(fileURL.lastPathComponent).path
@@ -127,15 +57,57 @@ final class PhotoService: PhotoServicing {
                 try self.fileManager.moveItem(at: fileURL, to: newFileURL)
                 var resource = resource
                 resource.fileURL = newFileURL
-                results += [ResultItem(item: resource, result: .success(()))]
+                results += [resource]
             } catch {
-                results += [ResultItem(item: resource, result: .failure(error))]
+                errors += [PhotoServiceError.moveError(error)]
             }
         }
+
+        guard !results.isEmpty else {
+            return .failure(errors[0])
+        }
+        guard errors.isEmpty else {
+            return .failure(PhotoServiceError.someImagesMissingAfterMove)
+        }
+
         return .success(results)
     }
 
     func cancelAll() {
         networkManager.cancelAll()
+    }
+
+    // MARK: - private
+
+    private func fetchDownloadURL(resource: PhotoResource) -> Async<PhotoResource> {
+        return Async { completion in
+            async({
+                let request = PhotoRequest(resource: resource)
+                let response: PhotoResponse = try await(self.networkManager.fetch(request: request))
+                var resource = resource
+                resource.downloadURL = response.imageURL
+                completion(.success(resource))
+            }, onError: { error in
+                completion(.failure(error))
+            })
+        }
+    }
+
+    private func downloadPhoto(resource: PhotoResource) -> Async<PhotoResource> {
+        return Async { completion in
+            async({
+                guard let downloadURL = resource.downloadURL else {
+                    completion(.failure(PhotoServiceError.resourceMissingFileURL))
+                    return
+                }
+                let downloadOption = FileDownloadOption.replaceExtension(newFileExtension: ".png")
+                let fileURL = try await(self.networkManager.download(downloadURL, option: downloadOption))
+                var resource = resource
+                resource.fileURL = fileURL
+                completion(.success(resource))
+            }, onError: { error in
+                completion(.failure(error))
+            })
+        }
     }
 }
