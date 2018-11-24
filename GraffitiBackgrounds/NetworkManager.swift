@@ -20,7 +20,7 @@ final class NetworkManager: NetworkManaging {
         log("fetching: \(request.httpVerb) \(request.url)")
 
         let operation = NetworkOperation()
-        operation.task = urlSession.dataTask(with: request.url) { [weak operation] data, response, error in
+        operation.task = urlSession.dataTask(with: request.urlRequest) { [weak operation] data, response, error in
             defer {
                 operation?.finish()
             }

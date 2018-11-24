@@ -1,8 +1,6 @@
 import Foundation
 
 struct PhotoAlbumsResponse: Response {
-    typealias ErrorType = PhotoAlbumsResponseError
-
     let data: Data
     let photoAlbums: [PhotoAlbum]
 

@@ -1,6 +1,6 @@
-import Cocoa
+import Foundation
 
-final class PhotoResponse: Response {
+struct PhotoResponse: Response {
     typealias ErrorType = PhotoResponseError
 
     let data: Data

@@ -1,8 +1,6 @@
 import Foundation
 
 struct PhotoResourceResponse: Response {
-    typealias ErrorType = PhotoResourceResponseError
-
     let data: Data
     let resources: [PhotoResource]
 
