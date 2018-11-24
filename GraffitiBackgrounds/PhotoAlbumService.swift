@@ -69,6 +69,7 @@ final class PhotoAlbumService: PhotoAlbumServicing {
             let isCancelledResults = flow.results.filter { ($0.result.error as? NetworkError)?.isCancelled ?? false }
             guard isCancelledResults.isEmpty else {
                 completion(.failure(isCancelledResults[0].result.error!))
+                flow.finished()
                 return
             }
             completion(.success(flow.results))
