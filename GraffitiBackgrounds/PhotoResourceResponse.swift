@@ -1,4 +1,5 @@
 import Foundation
+import Log
 
 struct PhotoResourceResponse: Response {
     let data: Data

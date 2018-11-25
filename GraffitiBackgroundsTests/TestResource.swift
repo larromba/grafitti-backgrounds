@@ -1,5 +1,6 @@
 import Foundation
 @testable import Graffiti_Backgrounds
+import Log
 
 enum TestResource: String {
     private class Dummy {}

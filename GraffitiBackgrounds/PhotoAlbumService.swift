@@ -1,3 +1,4 @@
+import AsyncAwait
 import Cocoa
 
 // sourcery: name = PhotoAlbumService
