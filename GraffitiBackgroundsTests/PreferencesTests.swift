@@ -1,6 +1,7 @@
 @testable import Graffiti_Backgrounds
 import Reachability
 import Result
+import TestExtensions
 import XCTest
 
 final class PreferencesTests: XCTestCase {

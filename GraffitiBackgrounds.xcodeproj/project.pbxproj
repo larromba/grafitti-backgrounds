@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; };
 		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
+		7F02A48821AB08A6007A6ECD /* TestExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; };
+		7F02A48A21AB090D007A6ECD /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; };
 		7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2956219CAA3D0062C85D /* StatusBarable.swift */; };
 		7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2958219CABF30062C85D /* StatusItemable.swift */; };
 		7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B295A219DF34B0062C85D /* TestEnvironment.swift */; };
@@ -101,7 +103,6 @@
 		7FF290702196EF8E0018C003 /* SharingServicable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2906F2196EF8E0018C003 /* SharingServicable.swift */; };
 		7FF290722196F40D0018C003 /* EmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290712196F40D0018C003 /* EmailTests.swift */; };
 		7FF290742196F5D50018C003 /* HelpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290732196F5D50018C003 /* HelpTests.swift */; };
-		7FF290762196FBA30018C003 /* Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290752196FBA30018C003 /* Wait.swift */; };
 		7FF29078219730A90018C003 /* OperationQueueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29077219730A90018C003 /* OperationQueueable.swift */; };
 		7FF2907A219730BE0018C003 /* URLSessioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29079219730BE0018C003 /* URLSessioning.swift */; };
 		7FF2908D21973E100018C003 /* TestResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2908C21973E100018C003 /* TestResource.swift */; };
@@ -121,6 +122,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		7F02A48621AB088D007A6ECD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				7F02A48821AB08A6007A6ECD /* TestExtensions.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7F71B93921AADF5200135925 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -137,6 +148,7 @@
 /* Begin PBXFileReference section */
 		7F02A47F21AB020A007A6ECD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		7F02A48021AB020A007A6ECD /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/Mac/Reachability.framework; sourceTree = "<group>"; };
+		7F02A48721AB08A6007A6ECD /* TestExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TestExtensions.framework; path = Carthage/Build/Mac/TestExtensions.framework; sourceTree = "<group>"; };
 		7F1B2956219CAA3D0062C85D /* StatusBarable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarable.swift; sourceTree = "<group>"; };
 		7F1B2958219CABF30062C85D /* StatusItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemable.swift; sourceTree = "<group>"; };
 		7F1B295A219DF34B0062C85D /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
@@ -237,7 +249,6 @@
 		7FF2906F2196EF8E0018C003 /* SharingServicable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingServicable.swift; sourceTree = "<group>"; };
 		7FF290712196F40D0018C003 /* EmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTests.swift; sourceTree = "<group>"; };
 		7FF290732196F5D50018C003 /* HelpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTests.swift; sourceTree = "<group>"; };
-		7FF290752196FBA30018C003 /* Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wait.swift; sourceTree = "<group>"; };
 		7FF29077219730A90018C003 /* OperationQueueable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationQueueable.swift; sourceTree = "<group>"; };
 		7FF29079219730BE0018C003 /* URLSessioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessioning.swift; sourceTree = "<group>"; };
 		7FF2908421973D0D0018C003 /* photoResponse_real.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = photoResponse_real.html; sourceTree = "<group>"; };
@@ -247,12 +258,24 @@
 		7FF2908C21973E100018C003 /* TestResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		7F02A48921AB0904007A6ECD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F02A48A21AB090D007A6ECD /* TestExtensions.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
 		7F02A48321AB02C1007A6ECD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				7F02A48021AB020A007A6ECD /* Reachability.framework */,
 				7F02A47F21AB020A007A6ECD /* Result.framework */,
+				7F02A48721AB08A6007A6ECD /* TestExtensions.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -547,7 +570,6 @@
 		7FF29091219740EF0018C003 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7FF290752196FBA30018C003 /* Wait.swift */,
 				7FF2908C21973E100018C003 /* TestResource.swift */,
 				7FDE1123219A0976001A424C /* TestNetworkManager.swift */,
 			);
@@ -583,7 +605,9 @@
 			buildPhases = (
 				7F876CB5216EAEA000483E8F /* ShellScript */,
 				7F6738BC1FE2E4CB004DDAE1 /* Sources */,
+				7F02A48921AB0904007A6ECD /* Frameworks */,
 				7F6738BE1FE2E4CB004DDAE1 /* Resources */,
+				7F02A48621AB088D007A6ECD /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -819,7 +843,6 @@
 				7FF290742196F5D50018C003 /* HelpTests.swift in Sources */,
 				7F65C8B3218A014600634454 /* RefreshTests.swift in Sources */,
 				7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */,
-				7FF290762196FBA30018C003 /* Wait.swift in Sources */,
 				7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */,
 				7FF2908D21973E100018C003 /* TestResource.swift in Sources */,
 				7FF29066219617FC0018C003 /* ResponseTests.swift in Sources */,

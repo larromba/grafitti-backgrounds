@@ -1,2 +1,3 @@
 github "larromba/reachability" "1.0.0"
 github "larromba/result" "1.0.0"
+github "larromba/testextensions" "1.0.0"

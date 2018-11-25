@@ -1,5 +1,6 @@
 @testable import Graffiti_Backgrounds
 import Reachability
+import TestExtensions
 import XCTest
 
 final class RefreshTests: XCTestCase {
