@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; };
+		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
 		7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2956219CAA3D0062C85D /* StatusBarable.swift */; };
 		7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2958219CABF30062C85D /* StatusItemable.swift */; };
 		7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B295A219DF34B0062C85D /* TestEnvironment.swift */; };
@@ -75,7 +77,6 @@
 		7F71B8F521A9918C00135925 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8F421A9918C00135925 /* Async.swift */; };
 		7F71B8F921A9D86800135925 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8F821A9D86800135925 /* Await.swift */; };
 		7F71B8FB21A9F38600135925 /* FileDownloadOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8FA21A9F38600135925 /* FileDownloadOption.swift */; };
-		7F71B93B21AADF6E00135925 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F71B93A21AADF6E00135925 /* Result.framework */; };
 		7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewState.swift */; };
 		7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */; };
 		7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1E2177BFC20088E621 /* Keyable.swift */; };
@@ -95,7 +96,6 @@
 		7FF290642196030B0018C003 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290632196030B0018C003 /* Alert.swift */; };
 		7FF29066219617FC0018C003 /* ResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29065219617FC0018C003 /* ResponseTests.swift */; };
 		7FF29068219622BD0018C003 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF29067219622BD0018C003 /* Error.swift */; };
-		7FF2906A2196279A0018C003 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF290692196279A0018C003 /* Reachability.swift */; };
 		7FF2906C21962D190018C003 /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2906B21962D190018C003 /* ReachabilityTests.swift */; };
 		7FF2906E2196ECEF0018C003 /* EmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2906D2196ECEF0018C003 /* EmailController.swift */; };
 		7FF290702196EF8E0018C003 /* SharingServicable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF2906F2196EF8E0018C003 /* SharingServicable.swift */; };
@@ -127,13 +127,16 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				7F71B93B21AADF6E00135925 /* Result.framework in CopyFiles */,
+				7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */,
+				7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F02A47F21AB020A007A6ECD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
+		7F02A48021AB020A007A6ECD /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/Mac/Reachability.framework; sourceTree = "<group>"; };
 		7F1B2956219CAA3D0062C85D /* StatusBarable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarable.swift; sourceTree = "<group>"; };
 		7F1B2958219CABF30062C85D /* StatusItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemable.swift; sourceTree = "<group>"; };
 		7F1B295A219DF34B0062C85D /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
@@ -210,7 +213,6 @@
 		7F71B8F421A9918C00135925 /* Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
 		7F71B8F821A9D86800135925 /* Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Await.swift; sourceTree = "<group>"; };
 		7F71B8FA21A9F38600135925 /* FileDownloadOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadOption.swift; sourceTree = "<group>"; };
-		7F71B93A21AADF6E00135925 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		7F925E6620460B250071F249 /* PreferencesViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewState.swift; sourceTree = "<group>"; };
 		7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7FCA8F1E2177BFC20088E621 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
@@ -230,7 +232,6 @@
 		7FF290632196030B0018C003 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		7FF29065219617FC0018C003 /* ResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseTests.swift; sourceTree = "<group>"; };
 		7FF29067219622BD0018C003 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
-		7FF290692196279A0018C003 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		7FF2906B21962D190018C003 /* ReachabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		7FF2906D2196ECEF0018C003 /* EmailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailController.swift; sourceTree = "<group>"; };
 		7FF2906F2196EF8E0018C003 /* SharingServicable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingServicable.swift; sourceTree = "<group>"; };
@@ -247,6 +248,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		7F02A48321AB02C1007A6ECD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7F02A48021AB020A007A6ECD /* Reachability.framework */,
+				7F02A47F21AB020A007A6ECD /* Result.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7F1B296C219E25130062C85D /* Generated */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,7 +376,7 @@
 				7F51DAA01FD33DF100502804 /* GraffitiBackgrounds */,
 				7F6738C11FE2E4CC004DDAE1 /* GraffitiBackgroundsTests */,
 				7F51DA9F1FD33DF100502804 /* Products */,
-				7F71B93621AADEC100135925 /* Frameworks */,
+				7F02A48321AB02C1007A6ECD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -443,7 +453,6 @@
 				7F247E791FD3944B0077D878 /* NetworkOperation.swift */,
 				7F247E751FD393A50077D878 /* BaseOperation.swift */,
 				7F51DACD1FD34A4500502804 /* Log.swift */,
-				7FF290692196279A0018C003 /* Reachability.swift */,
 				7FDE11212199FC77001A424C /* Progress.swift */,
 				7F71B8F421A9918C00135925 /* Async.swift */,
 				7F71B8F821A9D86800135925 /* Await.swift */,
@@ -508,14 +517,6 @@
 				7F247E6E1FD3858E0077D878 /* DataManager.swift */,
 			);
 			name = Manager;
-			sourceTree = "<group>";
-		};
-		7F71B93621AADEC100135925 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7F71B93A21AADF6E00135925 /* Result.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		7FF290602195971C0018C003 /* ViewState */ = {
@@ -679,7 +680,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nswiftgen config run --config .swiftgen.yml\n";
+			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nif which swiftgen >/dev/null; then\n    swiftgen config run --config .swiftgen.yml\nelse\n    echo \"warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
 		};
 		7F247EA91FD476ED0077D878 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -722,7 +723,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nsourcery\n";
+			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nif which sourcery >/dev/null; then\n    sourcery\nelse\n    echo \"warning: Sourcery not installed, download from https://github.com/krzysztofzablocki/Sourcery\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -734,7 +735,6 @@
 				7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */,
 				7F247E761FD393A50077D878 /* BaseOperation.swift in Sources */,
 				7F247E971FD46E770077D878 /* PreferencesService.swift in Sources */,
-				7FF2906A2196279A0018C003 /* Reachability.swift in Sources */,
 				7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */,
 				7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */,
 				7F247E7A1FD3944B0077D878 /* NetworkOperation.swift in Sources */,

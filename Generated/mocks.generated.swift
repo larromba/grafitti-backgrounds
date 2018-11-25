@@ -1056,33 +1056,6 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
     }
 }
 
-class MockReachability: NSObject, Reachable {
-    var isReachable: Bool {
-        get { return _isReachable }
-        set(value) { _isReachable = value; _isReachableHistory.append(_Variable(value)) }
-    }
-    var _isReachable: Bool!
-    var _isReachableHistory: [_Variable<Bool>] = []
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - setDelegate
-
-    func setDelegate(_ delegate: ReachabilityDelegate) {
-        let functionName = setDelegate1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
-        invocations.record(invocation)
-    }
-
-    enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ReachabilityDelegate).delegate"
-      }
-    }
-}
-
 class MockSharingService: NSObject, SharingServicing {
     var subject: String? {
         get { return _subject }

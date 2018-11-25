@@ -1,4 +1,5 @@
 import Cocoa
+import Reachability
 
 enum AppDelegateFactory {
     static func make(for app: NSApplication) -> AppDelegatable {
