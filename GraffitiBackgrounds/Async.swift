@@ -1,6 +1,7 @@
-// modified from on "freshOS/then" async / await implementation https://github.com/freshOS/then/tree/master/Source
+// modified from "freshOS/then" https://github.com/freshOS/then/tree/master/Source
 
 import Foundation
+import Result
 
 func async(_ callback: @escaping () throws -> Void, onError: @escaping (Error) -> Void) {
     DispatchQueue(label: "async.queue", attributes: .concurrent).async {

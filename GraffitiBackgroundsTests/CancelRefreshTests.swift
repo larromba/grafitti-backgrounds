@@ -1,4 +1,4 @@
-@testable import Grafitti_Backgrounds
+@testable import Graffiti_Backgrounds
 import XCTest
 
 final class CancelRefreshTests: XCTestCase {

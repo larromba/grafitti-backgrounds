@@ -1,4 +1,5 @@
 import Cocoa
+import Result
 
 protocol PreferencesControllerDelegate: AnyObject {
     func preferencesController(_ controller: PreferencesController, errorLoadingPreferences error: Error)

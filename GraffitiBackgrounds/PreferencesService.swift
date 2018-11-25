@@ -1,4 +1,5 @@
 import Foundation
+import Result
 
 // sourcery: name = PreferencesService
 protocol PreferencesServicing: Mockable {

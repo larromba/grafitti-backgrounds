@@ -75,8 +75,8 @@
 		7F71B8F521A9918C00135925 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8F421A9918C00135925 /* Async.swift */; };
 		7F71B8F921A9D86800135925 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8F821A9D86800135925 /* Await.swift */; };
 		7F71B8FB21A9F38600135925 /* FileDownloadOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8FA21A9F38600135925 /* FileDownloadOption.swift */; };
+		7F71B93B21AADF6E00135925 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F71B93A21AADF6E00135925 /* Result.framework */; };
 		7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewState.swift */; };
-		7F98DB8D2180EBCA00656466 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F98DB8C2180EBCA00656466 /* Result.swift */; };
 		7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */; };
 		7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1E2177BFC20088E621 /* Keyable.swift */; };
 		7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */; };
@@ -120,6 +120,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7F71B93921AADF5200135925 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				7F71B93B21AADF6E00135925 /* Result.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		7F1B2956219CAA3D0062C85D /* StatusBarable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarable.swift; sourceTree = "<group>"; };
 		7F1B2958219CABF30062C85D /* StatusItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemable.swift; sourceTree = "<group>"; };
@@ -159,7 +172,7 @@
 		7F4291F4217B27AA003E64C2 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		7F509A9C1FDB399E00152B33 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		7F509A9E1FDD6C0800152B33 /* Workspacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspacing.swift; sourceTree = "<group>"; };
-		7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Grafitti Backgrounds.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F51DA9E1FD33DF100502804 /* Graffiti Backgrounds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Graffiti Backgrounds.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F51DAA11FD33DF100502804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F51DAA31FD33DF100502804 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7F51DAA81FD33DF100502804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -197,8 +210,8 @@
 		7F71B8F421A9918C00135925 /* Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
 		7F71B8F821A9D86800135925 /* Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Await.swift; sourceTree = "<group>"; };
 		7F71B8FA21A9F38600135925 /* FileDownloadOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadOption.swift; sourceTree = "<group>"; };
+		7F71B93A21AADF6E00135925 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		7F925E6620460B250071F249 /* PreferencesViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewState.swift; sourceTree = "<group>"; };
-		7F98DB8C2180EBCA00656466 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7FCA8F1E2177BFC20088E621 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextFieldExtensions.swift; sourceTree = "<group>"; };
@@ -232,23 +245,6 @@
 		7FF2908721973D0E0018C003 /* photoResourceResponse_real.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = photoResourceResponse_real.html; sourceTree = "<group>"; };
 		7FF2908C21973E100018C003 /* TestResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		7F51DA9B1FD33DF100502804 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7F6738BD1FE2E4CB004DDAE1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		7F1B296C219E25130062C85D /* Generated */ = {
@@ -370,13 +366,14 @@
 				7F51DAA01FD33DF100502804 /* GraffitiBackgrounds */,
 				7F6738C11FE2E4CC004DDAE1 /* GraffitiBackgroundsTests */,
 				7F51DA9F1FD33DF100502804 /* Products */,
+				7F71B93621AADEC100135925 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		7F51DA9F1FD33DF100502804 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */,
+				7F51DA9E1FD33DF100502804 /* Graffiti Backgrounds.app */,
 				7F6738C01FE2E4CB004DDAE1 /* GraffitiBackgroundsTests.xctest */,
 			);
 			name = Products;
@@ -446,7 +443,6 @@
 				7F247E791FD3944B0077D878 /* NetworkOperation.swift */,
 				7F247E751FD393A50077D878 /* BaseOperation.swift */,
 				7F51DACD1FD34A4500502804 /* Log.swift */,
-				7F98DB8C2180EBCA00656466 /* Result.swift */,
 				7FF290692196279A0018C003 /* Reachability.swift */,
 				7FDE11212199FC77001A424C /* Progress.swift */,
 				7F71B8F421A9918C00135925 /* Async.swift */,
@@ -514,6 +510,14 @@
 			name = Manager;
 			sourceTree = "<group>";
 		};
+		7F71B93621AADEC100135925 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7F71B93A21AADF6E00135925 /* Result.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7FF290602195971C0018C003 /* ViewState */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,7 +564,7 @@
 				7F13D517219F4FBF00891DF7 /* ShellScript */,
 				7F4291F3217B2002003E64C2 /* ShellScript */,
 				7F51DA9A1FD33DF100502804 /* Sources */,
-				7F51DA9B1FD33DF100502804 /* Frameworks */,
+				7F71B93921AADF5200135925 /* CopyFiles */,
 				7F51DA9C1FD33DF100502804 /* Resources */,
 			);
 			buildRules = (
@@ -569,7 +573,7 @@
 			);
 			name = GraffitiBackgrounds;
 			productName = GooglePhotosBackground;
-			productReference = 7F51DA9E1FD33DF100502804 /* Grafitti Backgrounds.app */;
+			productReference = 7F51DA9E1FD33DF100502804 /* Graffiti Backgrounds.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7F6738BF1FE2E4CB004DDAE1 /* GraffitiBackgroundsTests */ = {
@@ -578,7 +582,6 @@
 			buildPhases = (
 				7F876CB5216EAEA000483E8F /* ShellScript */,
 				7F6738BC1FE2E4CB004DDAE1 /* Sources */,
-				7F6738BD1FE2E4CB004DDAE1 /* Frameworks */,
 				7F6738BE1FE2E4CB004DDAE1 /* Resources */,
 			);
 			buildRules = (
@@ -756,7 +759,6 @@
 				7F615D941FD6A49E00DD519C /* AppMenuController.swift in Sources */,
 				7F509A9D1FDB399E00152B33 /* AppMenu.swift in Sources */,
 				7F247E8B1FD43F510077D878 /* NSViewExtensions.swift in Sources */,
-				7F98DB8D2180EBCA00656466 /* Result.swift in Sources */,
 				7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */,
 				7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */,
 				7F24BE402194D243006BE4D0 /* AppDelegateFactory.swift in Sources */,
@@ -980,11 +982,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = PFC77GK3D7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = GraffitiBackgrounds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgrounds;
-				PRODUCT_NAME = "Grafitti Backgrounds";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgrounds;
+				PRODUCT_NAME = "Graffiti Backgrounds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
@@ -999,11 +1005,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = PFC77GK3D7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = GraffitiBackgrounds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgrounds;
-				PRODUCT_NAME = "Grafitti Backgrounds";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgrounds;
+				PRODUCT_NAME = "Graffiti Backgrounds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
@@ -1018,15 +1028,19 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = PFC77GK3D7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = GraffitiBackgroundsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgroundsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Grafitti Backgrounds.app/Contents/MacOS/Grafitti Backgrounds";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Graffiti Backgrounds.app/Contents/MacOS/Graffiti Backgrounds";
 			};
 			name = Debug;
 		};
@@ -1039,14 +1053,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = PFC77GK3D7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = GraffitiBackgroundsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GrafittiBackgroundsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Grafitti Backgrounds.app/Contents/MacOS/Grafitti Backgrounds";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Graffiti Backgrounds.app/Contents/MacOS/Graffiti Backgrounds";
 			};
 			name = Release;
 		};

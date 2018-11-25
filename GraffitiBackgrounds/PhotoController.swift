@@ -1,4 +1,5 @@
 import Foundation
+import Result
 
 protocol PhotoControllerDelegate: AnyObject, Mockable {
     func photoControllerTimerTriggered(_ photoController: PhotoController)

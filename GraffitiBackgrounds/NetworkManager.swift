@@ -1,4 +1,5 @@
 import Foundation
+import Result
 
 // sourcery: name = NetworkManager
 protocol NetworkManaging: Mockable {
@@ -23,36 +24,37 @@ final class NetworkManager: NetworkManaging {
 
         return Async { completion in
             let operation = NetworkOperation()
-            operation.task = self.urlSession.dataTask(with: request.urlRequest) { [weak operation] data, response, error in
-                defer {
-                    operation?.finish()
+            operation.task = self.urlSession
+                .dataTask(with: request.urlRequest) { [weak operation] data, response, error in
+                    defer {
+                        operation?.finish()
+                    }
+                    if let error = error {
+                        completion(.failure(error.isURLErrorCancelled ?
+                            NetworkError.cancelled : NetworkError.systemError(error)
+                            ))
+                        return
+                    }
+                    guard let data = data else {
+                        completion(.failure(NetworkError.noData))
+                        return
+                    }
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        completion(.failure(NetworkError.httpErrorCode(500)))
+                        return
+                    }
+                    guard httpResponse.isValidRange else {
+                        completion(.failure(NetworkError.httpErrorCode(httpResponse.statusCode)))
+                        return
+                    }
+                    do {
+                        log("fetched: \(request.httpVerb) ...\(request.url.lastPathComponent)")
+                        let response = try T(data: data)
+                        completion(.success(response))
+                    } catch {
+                        completion(.failure(NetworkError.badResponse(error)))
+                    }
                 }
-                if let error = error {
-                    completion(.failure(error.isURLErrorCancelled ?
-                        NetworkError.cancelled : NetworkError.systemError(error)
-                        ))
-                    return
-                }
-                guard let data = data else {
-                    completion(.failure(NetworkError.noData))
-                    return
-                }
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    completion(.failure(NetworkError.httpErrorCode(500)))
-                    return
-                }
-                guard httpResponse.isValidRange else {
-                    completion(.failure(NetworkError.httpErrorCode(httpResponse.statusCode)))
-                    return
-                }
-                do {
-                    log("fetched: \(request.httpVerb) ...\(request.url.lastPathComponent)")
-                    let response = try T(data: data)
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(NetworkError.badResponse(error)))
-                }
-            }
             self.queue.addOperation(operation)
         }
     }

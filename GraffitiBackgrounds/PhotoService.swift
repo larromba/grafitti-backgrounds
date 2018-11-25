@@ -1,4 +1,5 @@
 import Cocoa
+import Result
 
 // sourcery: name = PhotoService
 protocol PhotoServicing: Mockable {

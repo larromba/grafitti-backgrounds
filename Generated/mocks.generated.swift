@@ -11,7 +11,9 @@ import UIKit
 import AppKit
 #endif
 
-@testable import Grafitti_Backgrounds
+import Result
+
+@testable import Graffiti_Backgrounds
 
 // MARK: - Sourcery Helper
 

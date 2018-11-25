@@ -1,4 +1,5 @@
 import Foundation
+import Result
 
 // sourcery: name = EmailController
 protocol EmailControlling: Mockable {

@@ -1,4 +1,5 @@
 import Cocoa
+import Result
 
 // sourcery: name = AppController
 protocol AppControllable: Mockable {
