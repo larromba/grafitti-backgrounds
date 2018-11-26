@@ -11,7 +11,10 @@ import UIKit
 import AppKit
 #endif
 
-@testable import Grafitti_Backgrounds
+import Result
+import AsyncAwait
+
+@testable import Graffiti_Backgrounds
 
 // MARK: - Sourcery Helper
 
@@ -561,142 +564,37 @@ class MockMenu: NSObject, Menuable {
     }
 }
 
-class MockNetworkManager: NSObject, NetworkManaging {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - fetch<T: Response>
-
-    func fetch<T: Response>(request: Request, completion: @escaping (Result<T>) -> Void) {
-        let functionName = fetch1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: request, forKey: fetch1.params.request)
-        invocation.set(parameter: completion, forKey: fetch1.params.completion)
-        invocations.record(invocation)
-    }
-
-    enum fetch1: String, _StringRawRepresentable {
-      case name = "fetch1"
-      enum params: String, _StringRawRepresentable {
-        case request = "fetch<T:Response>(request:Request,completion:@escaping(Result<T>)->Void).request"
-        case completion = "fetch<T:Response>(request:Request,completion:@escaping(Result<T>)->Void).completion"
-      }
-    }
-
-    // MARK: - download
-
-    func download(_ url: URL, completion: @escaping (Result<URL>) -> Void) {
-        let functionName = download2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: url, forKey: download2.params.url)
-        invocation.set(parameter: completion, forKey: download2.params.completion)
-        invocations.record(invocation)
-    }
-
-    enum download2: String, _StringRawRepresentable {
-      case name = "download2"
-      enum params: String, _StringRawRepresentable {
-        case url = "download(_url:URL,completion:@escaping(Result<URL>)->Void).url"
-        case completion = "download(_url:URL,completion:@escaping(Result<URL>)->Void).completion"
-      }
-    }
-
-    // MARK: - cancelAll
-
-    func cancelAll() {
-        let functionName = cancelAll3.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocations.record(invocation)
-    }
-
-    enum cancelAll3: String, _StringRawRepresentable {
-      case name = "cancelAll3"
-    }
-}
-
-class MockOperationQueue: NSObject, OperationQueable {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - addOperation
-
-    func addOperation(_ op: Operation) {
-        let functionName = addOperation1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: op, forKey: addOperation1.params.op)
-        invocations.record(invocation)
-    }
-
-    enum addOperation1: String, _StringRawRepresentable {
-      case name = "addOperation1"
-      enum params: String, _StringRawRepresentable {
-        case op = "addOperation(_op:Operation).op"
-      }
-    }
-
-    // MARK: - cancelAllOperations
-
-    func cancelAllOperations() {
-        let functionName = cancelAllOperations2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocations.record(invocation)
-    }
-
-    enum cancelAllOperations2: String, _StringRawRepresentable {
-      case name = "cancelAllOperations2"
-    }
-}
-
 class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     let invocations = _Invocations()
     let actions = _Actions()
 
     // MARK: - fetchPhotoAlbums
 
-    func fetchPhotoAlbums(progress: @escaping (Double) -> Void,completion: @escaping (Result<[ResultItem<PhotoAlbum>]>) -> Void) {
+    func fetchPhotoAlbums(progress: @escaping (Double) -> Void) -> Async<[PhotoAlbum]> {
         let functionName = fetchPhotoAlbums1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: progress, forKey: fetchPhotoAlbums1.params.progress)
-        invocation.set(parameter: completion, forKey: fetchPhotoAlbums1.params.completion)
         invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! Async<[PhotoAlbum]>
     }
 
     enum fetchPhotoAlbums1: String, _StringRawRepresentable {
       case name = "fetchPhotoAlbums1"
       enum params: String, _StringRawRepresentable {
-        case progress = "fetchPhotoAlbums(progress:@escaping(Double)->Void,completion:@escaping(Result<[ResultItem<PhotoAlbum>]>)->Void).progress"
-        case completion = "fetchPhotoAlbums(progress:@escaping(Double)->Void,completion:@escaping(Result<[ResultItem<PhotoAlbum>]>)->Void).completion"
-      }
-    }
-
-    // MARK: - fetchPhotoResources
-
-    func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void) {
-        let functionName = fetchPhotoResources2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: album, forKey: fetchPhotoResources2.params.album)
-        invocation.set(parameter: completion, forKey: fetchPhotoResources2.params.completion)
-        invocations.record(invocation)
-    }
-
-    enum fetchPhotoResources2: String, _StringRawRepresentable {
-      case name = "fetchPhotoResources2"
-      enum params: String, _StringRawRepresentable {
-        case album = "fetchPhotoResources(inalbum:PhotoAlbum,completion:@escaping(Result<[PhotoResource]>)->Void).album"
-        case completion = "fetchPhotoResources(inalbum:PhotoAlbum,completion:@escaping(Result<[PhotoResource]>)->Void).completion"
+        case progress = "fetchPhotoAlbums(progress:@escaping(Double)->Void).progress"
       }
     }
 
     // MARK: - cancelAll
 
     func cancelAll() {
-        let functionName = cancelAll3.name
+        let functionName = cancelAll2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum cancelAll3: String, _StringRawRepresentable {
-      case name = "cancelAll3"
+    enum cancelAll2: String, _StringRawRepresentable {
+      case name = "cancelAll2"
     }
 }
 
@@ -734,18 +632,15 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - reloadPhotos
 
-    func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void) {
+    func reloadPhotos() -> Async<[PhotoResource]> {
         let functionName = reloadPhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: completion, forKey: reloadPhotos2.params.completion)
         invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! Async<[PhotoResource]>
     }
 
     enum reloadPhotos2: String, _StringRawRepresentable {
       case name = "reloadPhotos2"
-      enum params: String, _StringRawRepresentable {
-        case completion = "reloadPhotos(completion:@escaping(Result<[PhotoResource]>)->Void).completion"
-      }
     }
 
     // MARK: - cancelReload
@@ -853,33 +748,32 @@ class MockPhotoService: NSObject, PhotoServicing {
 
     // MARK: - downloadPhotos
 
-    func downloadPhotos(_ resource: [PhotoResource],progress: @escaping (Double) -> Void,completion: @escaping (Result<[ResultItem<PhotoResource>]>) -> Void) {
+    func downloadPhotos(_ resources: [PhotoResource],progress: @escaping (Double) -> Void) -> Async<[PhotoResource]> {
         let functionName = downloadPhotos1.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: resource, forKey: downloadPhotos1.params.resource)
+        invocation.set(parameter: resources, forKey: downloadPhotos1.params.resources)
         invocation.set(parameter: progress, forKey: downloadPhotos1.params.progress)
-        invocation.set(parameter: completion, forKey: downloadPhotos1.params.completion)
         invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! Async<[PhotoResource]>
     }
 
     enum downloadPhotos1: String, _StringRawRepresentable {
       case name = "downloadPhotos1"
       enum params: String, _StringRawRepresentable {
-        case resource = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[ResultItem<PhotoResource>]>)->Void).resource"
-        case progress = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[ResultItem<PhotoResource>]>)->Void).progress"
-        case completion = "downloadPhotos(_resource:[PhotoResource],progress:@escaping(Double)->Void,completion:@escaping(Result<[ResultItem<PhotoResource>]>)->Void).completion"
+        case resources = "downloadPhotos(_resources:[PhotoResource],progress:@escaping(Double)->Void).resources"
+        case progress = "downloadPhotos(_resources:[PhotoResource],progress:@escaping(Double)->Void).progress"
       }
     }
 
     // MARK: - movePhotos
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[ResultItem<PhotoResource>]> {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource]> {
         let functionName = movePhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: movePhotos2.params.resources)
         invocation.set(parameter: url, forKey: movePhotos2.params.url)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<[ResultItem<PhotoResource>]>
+        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
     }
 
     enum movePhotos2: String, _StringRawRepresentable {
@@ -941,13 +835,13 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
 
     // MARK: - remove
 
-    func remove(_ resources: [PhotoResource]) -> Result<[ResultItem<PhotoResource>]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
         let functionName = remove3.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: remove3.params.resources)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success([ResultItem<PhotoResource>]()), for: functionName)
-        return actions.returnValue(for: functionName) as! Result<[ResultItem<PhotoResource>]>
+        actions.set(defaultReturnValue: Result.success([PhotoResource]()), for: functionName)
+        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
     }
 
     enum remove3: String, _StringRawRepresentable {
@@ -1073,33 +967,6 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
       case name = "setDelegate2"
       enum params: String, _StringRawRepresentable {
         case delegate = "setDelegate(_delegate:PreferencesViewControllerDelegate).delegate"
-      }
-    }
-}
-
-class MockReachability: NSObject, Reachable {
-    var isReachable: Bool {
-        get { return _isReachable }
-        set(value) { _isReachable = value; _isReachableHistory.append(_Variable(value)) }
-    }
-    var _isReachable: Bool!
-    var _isReachableHistory: [_Variable<Bool>] = []
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - setDelegate
-
-    func setDelegate(_ delegate: ReachabilityDelegate) {
-        let functionName = setDelegate1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
-        invocations.record(invocation)
-    }
-
-    enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ReachabilityDelegate).delegate"
       }
     }
 }
@@ -1234,49 +1101,6 @@ class MockStatusItemable: NSObject, StatusItemable {
       case name = "removeStatusItem2"
       enum params: String, _StringRawRepresentable {
         case item = "removeStatusItem(_item:NSStatusItem).item"
-      }
-    }
-}
-
-class MockURLSession: NSObject, URLSessioning {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - dataTask
-
-    func dataTask(with url: URL,completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        let functionName = dataTask1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: url, forKey: dataTask1.params.url)
-        invocation.set(parameter: completionHandler, forKey: dataTask1.params.completionHandler)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! URLSessionDataTask
-    }
-
-    enum dataTask1: String, _StringRawRepresentable {
-      case name = "dataTask1"
-      enum params: String, _StringRawRepresentable {
-        case url = "dataTask(withurl:URL,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).url"
-        case completionHandler = "dataTask(withurl:URL,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).completionHandler"
-      }
-    }
-
-    // MARK: - downloadTask
-
-    func downloadTask(with url: URL,completionHandler: @escaping (URL?, URLResponse?, Error?) -> Void) -> URLSessionDownloadTask {
-        let functionName = downloadTask2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: url, forKey: downloadTask2.params.url)
-        invocation.set(parameter: completionHandler, forKey: downloadTask2.params.completionHandler)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! URLSessionDownloadTask
-    }
-
-    enum downloadTask2: String, _StringRawRepresentable {
-      case name = "downloadTask2"
-      enum params: String, _StringRawRepresentable {
-        case url = "downloadTask(withurl:URL,completionHandler:@escaping(URL?,URLResponse?,Error?)->Void).url"
-        case completionHandler = "downloadTask(withurl:URL,completionHandler:@escaping(URL?,URLResponse?,Error?)->Void).completionHandler"
       }
     }
 }

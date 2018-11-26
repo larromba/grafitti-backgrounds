@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7F51DA9D1FD33DF100502804"
-               BuildableName = "Grafitti Backgrounds.app"
+               BuildableName = "Graffiti Backgrounds.app"
                BlueprintName = "GraffitiBackgrounds"
                ReferencedContainer = "container:GraffitiBackgrounds.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7F51DA9D1FD33DF100502804"
-            BuildableName = "Grafitti Backgrounds.app"
+            BuildableName = "Graffiti Backgrounds.app"
             BlueprintName = "GraffitiBackgrounds"
             ReferencedContainer = "container:GraffitiBackgrounds.xcodeproj">
          </BuildableReference>
@@ -67,7 +67,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7F51DA9D1FD33DF100502804"
-            BuildableName = "Grafitti Backgrounds.app"
+            BuildableName = "Graffiti Backgrounds.app"
             BlueprintName = "GraffitiBackgrounds"
             ReferencedContainer = "container:GraffitiBackgrounds.xcodeproj">
          </BuildableReference>
@@ -86,7 +86,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7F51DA9D1FD33DF100502804"
-            BuildableName = "Grafitti Backgrounds.app"
+            BuildableName = "Graffiti Backgrounds.app"
             BlueprintName = "GraffitiBackgrounds"
             ReferencedContainer = "container:GraffitiBackgrounds.xcodeproj">
          </BuildableReference>

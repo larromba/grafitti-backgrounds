@@ -1,4 +1,5 @@
 import Cocoa
+import Log
 
 // sourcery: name = AppDelegate
 protocol AppDelegatable: NSApplicationDelegate, Mockable {

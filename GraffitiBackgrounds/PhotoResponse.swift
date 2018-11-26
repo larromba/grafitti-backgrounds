@@ -1,6 +1,7 @@
-import Cocoa
+import Foundation
+import Networking
 
-final class PhotoResponse: Response {
+struct PhotoResponse: Response {
     typealias ErrorType = PhotoResponseError
 
     let data: Data

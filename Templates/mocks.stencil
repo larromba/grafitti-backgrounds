@@ -8,7 +8,10 @@ import UIKit
 import AppKit
 #endif
 
-@testable import Grafitti_Backgrounds
+import Result
+import AsyncAwait
+
+@testable import Graffiti_Backgrounds
 
 {% macro helperClassPrefix %}_{% endmacro %}
 {% macro swiftifyMethodName name %}{{ name | replace:"(","_" | replace:")","" | replace:":","_" | replace:"`","" | snakeToCamelCase | lowerFirstWord }}{% endmacro %}

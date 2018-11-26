@@ -22,19 +22,24 @@ This is a macOS app developed on and off since 02/12/2017 that downloads (and re
 
 `brew install sourcery`
 
+**Carthage** *(testing only)*
+
+`brew install carthage`
+
 ### Build Instructions
 This assumes you're farmiliar with Xcode and building macOS apps.
 
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
 
-1. open `GraffitiBackgrounds.xcodeproj`
-2. click the top menu `Project -> Archive`
-3. after archiving, select `Distribute App`. 
-4. Select `Developer ID`
-5. Select `Export`
-6. Select `Automatically manage signing`
-7. Select `Export` and choose a file location
-8. Once exported, copy `GraffitiBackgrounds.app` to your `Applications` folder
+1. `carthage update`
+2. open `GraffitiBackgrounds.xcodeproj`
+3. click the top menu `Project -> Archive`
+4. after archiving, select `Distribute App`. 
+5. Select `Developer ID`
+6. Select `Export`
+7. Select `Automatically manage signing`
+8. Select `Export` and choose a file location
+9. Once exported, copy `GraffitiBackgrounds.app` to your `Applications` folder
 
 ### Setting Up
 1. Run the app

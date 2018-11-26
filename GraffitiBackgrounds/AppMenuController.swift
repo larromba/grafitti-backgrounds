@@ -1,4 +1,5 @@
 import Cocoa
+import Reachability
 
 protocol AppMenuControllerDelegate: AnyObject {
     func menuController(_ controller: AppMenuController, selected action: AppMenu.Action)

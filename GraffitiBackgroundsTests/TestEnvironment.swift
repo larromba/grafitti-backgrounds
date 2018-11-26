@@ -1,5 +1,5 @@
 import Foundation
-@testable import Grafitti_Backgrounds
+@testable import Graffiti_Backgrounds
 
 protocol TestEnvironment: AnyObject {
     var appController: AppController? { get }

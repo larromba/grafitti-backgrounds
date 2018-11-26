@@ -1,4 +1,7 @@
+import AsyncAwait
 import Foundation
+import Log
+import Result
 
 protocol PhotoControllerDelegate: AnyObject, Mockable {
     func photoControllerTimerTriggered(_ photoController: PhotoController)
@@ -12,24 +15,13 @@ protocol PhotoControllable: Mockable {
     var photoFolderURL: URL { get }
 
     func setPreferences(_ preferences: Preferences)
-    func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void)
+    func reloadPhotos() -> Async<[PhotoResource]>
     func cancelReload()
     func clearFolder() -> Result<Void>
     func setDelegate(_ delegate: PhotoControllerDelegate)
 }
 
 final class PhotoController: PhotoControllable {
-    private class ReloadFlow: AsyncFlowContext {
-        var callBacks = [() -> Void]()
-        var finally: (() -> Void)?
-
-        var numberOfPhotos: Int = 0
-        var photoAlbumResults = [ResultItem<PhotoAlbum>]()
-        var photoDownloadResults = [ResultItem<PhotoResource>]()
-        var photoAlbums = [PhotoAlbum]()
-        var resources = [PhotoResource]()
-    }
-
     private let photoAlbumService: PhotoAlbumServicing
     private let photoService: PhotoServicing
     private let photoStorageService: PhotoStorageServicing
@@ -38,9 +30,7 @@ final class PhotoController: PhotoControllable {
     private weak var delegate: PhotoControllerDelegate?
 
     private(set) var isDownloadInProgress = false {
-        didSet {
-            delegate?.photoController(self, didChangeDownloadState: isDownloadInProgress)
-        }
+        didSet { delegate?.photoController(self, didChangeDownloadState: isDownloadInProgress) }
     }
     let photoFolderURL: URL
 
@@ -63,130 +53,74 @@ final class PhotoController: PhotoControllable {
         photoAlbumService.cancelAll()
     }
 
-    // swiftlint:disable function_body_length cyclomatic_complexity
-    func reloadPhotos(completion: @escaping (Result<[PhotoResource]>) -> Void) {
-        guard !isDownloadInProgress else {
-            completion(.failure(PhotoError.downloadInProgress))
-            return
-        }
-
-        setupTimer()
-        isDownloadInProgress = true
-
-        let flow = ReloadFlow()
-        flow.numberOfPhotos = preferences.numberOfPhotos
-
-        // 1. fetch photo albums
-        flow.add {
-            self.photoAlbumService.fetchPhotoAlbums(progress: { percentage in
-                DispatchQueue.main.async {
-                    let percentage = Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2)
-                    self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
+    // swiftlint:disable function_body_length
+    func reloadPhotos() -> Async<[PhotoResource]> {
+        return Async { completion in
+            async({
+                guard !self.isDownloadInProgress else {
+                    return onMain { completion(.failure(PhotoError.downloadInProgress)) }
                 }
-            }, completion: { result in
-                switch result {
-                case .success(let results):
-                    flow.photoAlbumResults = results
-                    flow.next()
-                case .failure(let error):
-                    completion(.failure(error))
-                    flow.finished()
+                onMain { self.startReloading() }
+                let numberOfPhotos = self.preferences.numberOfPhotos
+
+                log("1. get all albums")
+                let albums = try await(self.photoAlbumService.fetchPhotoAlbums(progress: { percentage in
+                    onMain {
+                        let normalized = Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2)
+                        self.delegate?.photoController(self, updatedDownloadPercentage: normalized)
+                    }
+                }))
+
+                log("2. ensure there are enough photos to download within the albums")
+                let numOfPossibleDownloads = albums.reduce(0, { $0 + $1.resources.count })
+                guard numOfPossibleDownloads >= numberOfPhotos else {
+                    return onMain { completion(.failure(PhotoError.notEnoughImagesAvailable)) }
                 }
-            })
-        }
 
-        // 2. ensure there are enough photos in the available albums to download
-        flow.add {
-            let successfulResults = flow.photoAlbumResults.filter { $0.result.isSuccess }
-            let numOfPossibleDownloads = successfulResults.reduce(0, { $0 + $1.item.resources.count })
-            guard numOfPossibleDownloads >= self.preferences.numberOfPhotos else {
-                // edge case
-                completion(.failure(PhotoError.notEnoughImagesAvailable))
-                flow.finished()
-                return
-            }
-            flow.photoAlbums = successfulResults.map { $0.item }
-            flow.next()
-        }
-
-        // 3. choose some random photos
-        flow.add {
-            let allPhotoResources = flow.photoAlbums.map { $0.resources }.reduce([], +)
-            flow.resources = (0..<flow.numberOfPhotos).map { _ in
-                allPhotoResources[Int(arc4random_uniform(UInt32(allPhotoResources.count)))]
-            }
-            flow.next()
-        }
-
-        // 4. download photos
-        flow.add {
-            self.photoService.downloadPhotos(flow.resources, progress: { percentage in
-                DispatchQueue.main.async {
-                    let percentage = Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2)
-                    self.delegate?.photoController(self, updatedDownloadPercentage: percentage)
+                log("3. choose some random photos from the albums to download")
+                var resources = albums.map { $0.resources }.reduce([], +)
+                resources = (0..<numberOfPhotos).map { _ in
+                    resources[Int(arc4random_uniform(UInt32(resources.count)))]
                 }
-            }, completion: { result in
-                switch result {
-                case .success(let results):
-                    flow.photoDownloadResults = results
-                    flow.next()
-                case .failure(let error):
-                    completion(.failure(error))
-                    flow.finished()
+
+                log("4. download \(resources.count) photos")
+                let downloaded = try await(self.photoService.downloadPhotos(resources, progress: { percentage in
+                    onMain {
+                        let normalized = Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2)
+                        self.delegate?.photoController(self, updatedDownloadPercentage: normalized)
+                    }
+                }))
+
+                log("5. ensure enough photos were downloaded (\(downloaded.count) / \(numberOfPhotos)")
+                guard downloaded.count >= numberOfPhotos else {
+                    return onMain { completion(.failure(PhotoError.notEnoughImagesDownloaded)) }
                 }
-            })
-        }
 
-        // 5. ensure enough photos were downloaded
-        flow.add {
-            flow.resources = flow.photoDownloadResults
-                .filter { $0.result.isSuccess }
-                .map { return $0.item }
-            guard flow.resources.count >= flow.numberOfPhotos else {
-                // edge case
-                completion(.failure(PhotoError.notEnoughImagesDownloaded))
-                flow.finished()
-                return
-            }
-            flow.next()
-        }
-
-        // 6. clear previous photos, try moving new photos, save resource information
-        flow.add {
-            let result = self.clearFolder().flatMap {
-                self.photoService.movePhotos(flow.resources, toFolder: self.photoFolderURL)
-                    .flatMap { result -> Result<[PhotoResource]> in
-                        let failedResults = result.filter { $0.result.isFailure }
-                        if failedResults.isEmpty {
-                            return .success(result.compactMap { $0.item })
-                        } else if failedResults.count == result.count {
-                            return .failure(failedResults[0].result.error!)
-                        } else {
-                            // edge case
-                            return .failure(PhotoError.someImagesMissingAfterMove)
+                log("6. clear previous photos, move new photos, save resource information")
+                let result = self.clearFolder()
+                    .flatMap {
+                        self.photoService.movePhotos(downloaded, toFolder: self.photoFolderURL)
+                    }.flatMap { resources -> Result<[PhotoResource]> in
+                        switch self.photoStorageService.save(resources) {
+                        case .success:
+                            return .success(resources)
+                        case .failure(let error):
+                            return .failure(error)
                         }
                     }
-            }.flatMap { resources -> Result<[PhotoResource]> in
-                switch self.photoStorageService.save(resources) {
-                case .success:
-                    return .success(resources)
-                case .failure(let error):
-                    return .failure(error)
+
+                log("7. finish up")
+                onMain {
+                    self.stopReloading()
+                    completion(result)
                 }
-            }
-            completion(result)
-            flow.finished()
+            }, onError: { error in
+                onMain {
+                    self.stopReloading()
+                    completion(.failure(error))
+                }
+            })
         }
-
-        // 7. finish up
-        flow.setFinally {
-            DispatchQueue.main.async {
-                self.isDownloadInProgress = false
-                self.delegate?.photoController(self, updatedDownloadPercentage: 0.0)
-            }
-        }
-
-        flow.start()
     }
 
     func cancelReload() {
@@ -197,16 +131,10 @@ final class PhotoController: PhotoControllable {
 
     func clearFolder() -> Result<Void> {
         return photoStorageService.load()
-            .flatMap { resources -> Result<[ResultItem<PhotoResource>]> in
-                return self.photoStorageService.remove(resources)
-            }.flatMap { results -> Result<Void> in
-                let badResults = results.filter { $0.result.isFailure }
-                if badResults.isEmpty {
-                    return .success(())
-                } else {
-                    let resources = badResults.map { $0.item }
-                    return .failure(PhotoError.fileDeleteError(resources))
-                }
+            .flatMap {
+                self.photoStorageService.remove($0)
+            }.flatMap { _ in
+                return Result.success(())
             }
     }
 
@@ -241,5 +169,15 @@ final class PhotoController: PhotoControllable {
     private func stopTimer() {
         reloadTimer?.invalidate()
         reloadTimer = nil
+    }
+
+    private func startReloading() {
+        setupTimer()
+        isDownloadInProgress = true
+    }
+
+    private func stopReloading() {
+        isDownloadInProgress = false
+        delegate?.photoController(self, updatedDownloadPercentage: 0.0)
     }
 }

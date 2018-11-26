@@ -1,4 +1,6 @@
+import AsyncAwait
 import Cocoa
+import Result
 
 // sourcery: name = AppController
 protocol AppControllable: Mockable {
@@ -52,16 +54,12 @@ final class AppController: AppControllable {
 
     private func reloadPhotos() {
         alertController.showAlert(.reloadingPhotos)
-        photoController.reloadPhotos(completion: { [weak self] result in
-            switch result {
-            case .success:
-                self?.alertController.showAlert(.reloadPhotosSuccess)
-            case .failure(let error as NetworkError):
-                guard !error.isCancelled else { return }
-                self?.alertController.showAlert(.error(error))
-            case .failure(let error):
-                self?.alertController.showAlert(.error(error))
-            }
+        async({
+            _ = try await(self.photoController.reloadPhotos())
+            self.alertController.showAlert(.reloadPhotosSuccess)
+        }, onError: { error in
+            guard !error.isNetworkErrorCancelled else { return }
+            self.alertController.showAlert(.error(error))
         })
     }
 

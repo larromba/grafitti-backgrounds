@@ -1,8 +1,8 @@
 import Foundation
+import Log
+import Networking
 
 struct PhotoAlbumsResponse: Response {
-    typealias ErrorType = PhotoAlbumsResponseError
-
     let data: Data
     let photoAlbums: [PhotoAlbum]
 

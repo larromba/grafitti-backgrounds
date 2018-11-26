@@ -6,7 +6,7 @@ extension URL {
             assertionFailure("shouldn't be nil")
             return URL(string: "file://")!
         }
-        let url = URL(fileURLWithPath: path).appendingPathComponent("GrafittiBackgrounds")
+        let url = URL(fileURLWithPath: path).appendingPathComponent(Bundle.appName)
         return url
     }
 

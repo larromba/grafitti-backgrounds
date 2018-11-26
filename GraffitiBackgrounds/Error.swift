@@ -36,7 +36,6 @@ enum PhotoError: LocalizedError {
     case downloadInProgress
     case notEnoughImagesAvailable
     case notEnoughImagesDownloaded
-    case someImagesMissingAfterMove
     case fileDeleteError([PhotoResource])
 
     var errorDescription: String? {
@@ -47,8 +46,6 @@ enum PhotoError: LocalizedError {
             return L10n.Alert.NotEnoughImagesToDownload.message
         case .notEnoughImagesDownloaded:
             return L10n.Alert.NotEnoughImagesDownloaded.message
-        case .someImagesMissingAfterMove:
-            return L10n.Alert.SomeImagesMissingAfterDownload.message
         case .fileDeleteError:
             return L10n.Alert.DeletePhotosError.message
         }
@@ -73,13 +70,17 @@ enum PhotoStorageError: LocalizedError {
 enum PhotoServiceError: LocalizedError {
     case resourceMissingFileURL
     case cantCreateDownloadFolder(Error)
+    case moveError(Error)
+    case someImagesMissingAfterMove
 
     var errorDescription: String? {
         switch self {
         case .cantCreateDownloadFolder:
             return L10n.Alert.CreatingDownloadFolderError.message
-        case .resourceMissingFileURL:
+        case .resourceMissingFileURL, .moveError:
             return fallbackMessage
+        case .someImagesMissingAfterMove:
+            return L10n.Alert.SomeImagesMissingAfterDownload.message
         }
     }
 }
@@ -114,21 +115,22 @@ enum NetworkError: LocalizedError {
     case systemError(Error)
     case httpErrorCode(Int)
     case badResponse(Error)
+    case cancelled
 
-    var isCancelled: Bool {
-        switch self {
-        case .systemError(let error):
-            return (error as NSError).code == NSURLErrorCancelled
+    var errorDescription: String? {
+        return L10n.Alert.NetworkError.message
+    }
+}
+
+extension Error {
+    var isNetworkErrorCancelled: Bool {
+        guard let error = self as? NetworkError else { return false }
+        switch error {
+        case .cancelled:
+            return true
         default:
             return false
         }
-    }
-
-    var errorDescription: String? {
-        guard !isCancelled else {
-            return fallbackMessage
-        }
-        return L10n.Alert.NetworkError.message
     }
 }
 

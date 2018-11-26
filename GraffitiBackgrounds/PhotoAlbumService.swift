@@ -1,93 +1,56 @@
+import AsyncAwait
 import Cocoa
+import Networking
 
 // sourcery: name = PhotoAlbumService
 protocol PhotoAlbumServicing: Mockable {
-    func fetchPhotoAlbums(progress: @escaping (Double) -> Void,
-                          completion: @escaping (Result<[ResultItem<PhotoAlbum>]>) -> Void)
-    func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void)
+    func fetchPhotoAlbums(progress: @escaping (Double) -> Void) -> Async<[PhotoAlbum]>
     func cancelAll()
 }
 
 final class PhotoAlbumService: PhotoAlbumServicing {
-    private class FetchAlbumFlow: AsyncFlowContext {
-        var callBacks = [() -> Void]()
-        var finally: (() -> Void)?
-        var albums = [PhotoAlbum]()
-        let resourcesGroup = DispatchGroup()
-        var results = [ResultItem<PhotoAlbum>]()
-    }
-
     private let networkManager: NetworkManaging
 
     init(networkManager: NetworkManaging) {
         self.networkManager = networkManager
     }
 
-    func fetchPhotoAlbums(progress: @escaping (Double) -> Void,
-                          completion: @escaping (Result<[ResultItem<PhotoAlbum>]>) -> Void) {
-        let flow = FetchAlbumFlow()
-
-        // 1. get photo albums
-        flow.add {
-            let request = PhotoAlbumsRequest()
-            self.networkManager.fetch(request: request, completion: { (result: Result<PhotoAlbumsResponse>) in
-                switch result {
-                case .success(let response):
-                    flow.albums = response.photoAlbums
-                    flow.next()
-                case .failure(let error):
-                    completion(.failure(error))
-                    flow.finished()
+    func fetchPhotoAlbums(progress: @escaping (Double) -> Void) -> Async<[PhotoAlbum]> {
+        return Async { completion in
+            async({
+                let request = PhotoAlbumsRequest()
+                let response: PhotoAlbumsResponse = try await(self.networkManager.fetch(request: request))
+                let fetchPhotoResourceOperations = response.photoAlbums.map { self.fetchPhotoResources(for: $0) }
+                let fetchPhotoResourceResults = try awaitAll(fetchPhotoResourceOperations, progress: progress)
+                let isCancelledErrors = fetchPhotoResourceResults.1.filter { $0.isNetworkErrorCancelled }
+                guard isCancelledErrors.isEmpty else {
+                    completion(.failure(isCancelledErrors[0]))
+                    return
                 }
+                completion(.success(fetchPhotoResourceResults.0.compactMap { $0 }))
+            }, onError: { error in
+                completion(.failure(error))
             })
         }
-
-        // 2. get album resources for each album
-        flow.add {
-            flow.albums.forEach({ album in
-                flow.resourcesGroup.enter()
-                self.fetchPhotoResources(in: album, completion: { result in
-                    switch result {
-                    case .success(let resources):
-                        var album = album
-                        album.resources = resources
-                        flow.results += [ResultItem(item: album, result: .success(()))]
-                    case .failure(let error):
-                        flow.results += [ResultItem(item: album, result: .failure(error))]
-                    }
-                    progress(Double(flow.results.count) / Double(flow.albums.count))
-                    flow.resourcesGroup.leave()
-                })
-            })
-            flow.resourcesGroup.notify(queue: .global()) {
-                flow.next()
-            }
-        }
-
-        // 2. make sure the user didn't cancel, and finish
-        flow.add {
-            let isCancelledResults = flow.results.filter { ($0.result.error as? NetworkError)?.isCancelled ?? false }
-            guard isCancelledResults.isEmpty else {
-                completion(.failure(isCancelledResults[0].result.error!))
-                return
-            }
-            completion(.success(flow.results))
-            flow.finished()
-        }
-
-        flow.start()
-    }
-
-    func fetchPhotoResources(in album: PhotoAlbum, completion: @escaping (Result<[PhotoResource]>) -> Void) {
-        let request = PhotoResourceRequest(album: album)
-        networkManager.fetch(request: request, completion: { (result: Result<PhotoResourceResponse>) in
-            completion(result.flatMap { response -> Result<[PhotoResource]> in
-                return .success(response.resources)
-            })
-        })
     }
 
     func cancelAll() {
         networkManager.cancelAll()
+    }
+
+    // MARK: - private
+
+    private func fetchPhotoResources(for album: PhotoAlbum) -> Async<PhotoAlbum> {
+        return Async { completion in
+            async({
+                let request = PhotoResourceRequest(album: album)
+                let response: PhotoResourceResponse = try await(self.networkManager.fetch(request: request))
+                var album = album
+                album.resources = response.resources
+                completion(.success(album))
+            }, onError: { error in
+                completion(.failure(error))
+            })
+        }
     }
 }

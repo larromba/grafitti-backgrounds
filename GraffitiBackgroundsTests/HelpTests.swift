@@ -1,4 +1,5 @@
-@testable import Grafitti_Backgrounds
+@testable import Graffiti_Backgrounds
+import Reachability
 import XCTest
 
 final class HelpTests: XCTestCase {

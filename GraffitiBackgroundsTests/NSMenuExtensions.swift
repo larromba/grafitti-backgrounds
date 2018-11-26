@@ -1,5 +1,5 @@
 import Cocoa
-@testable import Grafitti_Backgrounds
+@testable import Graffiti_Backgrounds
 
 extension Menuable {
     @discardableResult

@@ -1,4 +1,5 @@
 import AppKit
+import Log
 
 // sourcery: name = AlertController
 protocol AlertControlling: Mockable {

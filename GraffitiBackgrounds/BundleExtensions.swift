@@ -2,6 +2,6 @@ import Foundation
 
 extension Bundle {
     static var appName: String {
-        return main.infoDictionary?["CFBundleName"] as? String ?? "GrafittiBackgrounds" // fallback
+        return main.infoDictionary?["CFBundleName"] as? String ?? "GraffitiBackgrounds" // fallback
     }
 }
