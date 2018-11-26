@@ -1,4 +1,5 @@
 import Foundation
+import NetworkManager
 
 struct PhotoResourceRequest: Request {
     let url: URL

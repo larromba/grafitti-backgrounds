@@ -1,4 +1,5 @@
 @testable import Graffiti_Backgrounds
+import NetworkManager
 import Reachability
 import XCTest
 
@@ -51,8 +52,8 @@ final class CancelRefreshTests: XCTestCase {
                                             queue: operationQueue)
         let photoController = PhotoController.testable(
             photoAlbumService: PhotoAlbumService(networkManager: networkManager),
-            photoService: PhotoService(networkManager: networkManager, fileManager: MockFileManager()),
-            photoStorageService: PhotoStorageService(dataManager: MockDataManger(), fileManager: MockFileManager())
+            photoService: PhotoService(networkManager: networkManager, fileManager: MockFileManager2()),
+            photoStorageService: PhotoStorageService(dataManager: MockDataManger(), fileManager: MockFileManager2())
         )
         let env = Environment(photoController: photoController)
         env.inject()

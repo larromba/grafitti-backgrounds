@@ -3,3 +3,4 @@ github "larromba/reachability" ~> 1.0
 github "larromba/testextensions" ~> 1.0
 github "larromba/log" ~> 1.0
 github "larromba/asyncawait" ~> 1.0
+github "larromba/networkmanager" ~> 1.0

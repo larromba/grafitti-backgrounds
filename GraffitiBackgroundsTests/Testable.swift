@@ -1,5 +1,6 @@
 import Foundation
 @testable import Graffiti_Backgrounds
+import NetworkManager
 
 extension AppController {
     static func testable(
@@ -25,10 +26,11 @@ extension AppController {
 extension TestNetworkManager {
     static func make1PhotoDownloadSuccess(inFolder url: URL) -> TestNetworkManager {
         let fetchStubs = [
-            FetchStub(url: API.photoAlbums.url, resource: .photoAlbumResponse1Album),
-            FetchStub(url: URL(string: "https://photos.app.goo.gl/test")!, resource: .photoResourceResponse1Photo),
+            FetchStub(url: API.photoAlbums.url, resource: TestResource.photoAlbumResponse1Album.rawValue),
+            FetchStub(url: URL(string: "https://photos.app.goo.gl/test")!,
+                      resource: TestResource.photoResourceResponse1Photo.rawValue),
             FetchStub(url: URL(string: "https://photos.google.com/share/test/photo/test")!,
-                      resource: .photoResponse1Photo)
+                      resource: TestResource.photoResponse1Photo.rawValue)
         ]
         let downloadStubs = [
             DownloadStub(url: URL(string: "https://lh3.googleusercontent.com/test=w2148-h1610-no")!,

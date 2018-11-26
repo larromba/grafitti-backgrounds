@@ -1,5 +1,6 @@
 import Foundation
 import Log
+import NetworkManager
 
 struct PhotoAlbumsResponse: Response {
     let data: Data

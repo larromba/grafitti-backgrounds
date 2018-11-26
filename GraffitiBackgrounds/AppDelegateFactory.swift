@@ -1,4 +1,5 @@
 import Cocoa
+import NetworkManager
 import Reachability
 
 enum AppDelegateFactory {

@@ -379,7 +379,7 @@ class MockEmailController: NSObject, EmailControlling {
     }
 }
 
-class MockFileManager: NSObject, FileManaging {
+class MockFileManager2: NSObject, FileManaging {
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -561,92 +561,6 @@ class MockMenu: NSObject, Menuable {
       enum params: String, _StringRawRepresentable {
         case index = "item<T:MenuItemable>(atindex:Int).index"
       }
-    }
-}
-
-class MockNetworkManager: NSObject, NetworkManaging {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - fetch<T: Response>
-
-    func fetch<T: Response>(request: Request) -> Async<T> {
-        let functionName = fetch1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: request, forKey: fetch1.params.request)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Async<T>
-    }
-
-    enum fetch1: String, _StringRawRepresentable {
-      case name = "fetch1"
-      enum params: String, _StringRawRepresentable {
-        case request = "fetch<T:Response>(request:Request).request"
-      }
-    }
-
-    // MARK: - download
-
-    func download(_ url: URL, option: FileDownloadOption) -> Async<URL> {
-        let functionName = download2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: url, forKey: download2.params.url)
-        invocation.set(parameter: option, forKey: download2.params.option)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Async<URL>
-    }
-
-    enum download2: String, _StringRawRepresentable {
-      case name = "download2"
-      enum params: String, _StringRawRepresentable {
-        case url = "download(_url:URL,option:FileDownloadOption).url"
-        case option = "download(_url:URL,option:FileDownloadOption).option"
-      }
-    }
-
-    // MARK: - cancelAll
-
-    func cancelAll() {
-        let functionName = cancelAll3.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocations.record(invocation)
-    }
-
-    enum cancelAll3: String, _StringRawRepresentable {
-      case name = "cancelAll3"
-    }
-}
-
-class MockOperationQueue: NSObject, OperationQueable {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - addOperation
-
-    func addOperation(_ op: Operation) {
-        let functionName = addOperation1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: op, forKey: addOperation1.params.op)
-        invocations.record(invocation)
-    }
-
-    enum addOperation1: String, _StringRawRepresentable {
-      case name = "addOperation1"
-      enum params: String, _StringRawRepresentable {
-        case op = "addOperation(_op:Operation).op"
-      }
-    }
-
-    // MARK: - cancelAllOperations
-
-    func cancelAllOperations() {
-        let functionName = cancelAllOperations2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocations.record(invocation)
-    }
-
-    enum cancelAllOperations2: String, _StringRawRepresentable {
-      case name = "cancelAllOperations2"
     }
 }
 
@@ -1187,49 +1101,6 @@ class MockStatusItemable: NSObject, StatusItemable {
       case name = "removeStatusItem2"
       enum params: String, _StringRawRepresentable {
         case item = "removeStatusItem(_item:NSStatusItem).item"
-      }
-    }
-}
-
-class MockURLSession: NSObject, URLSessioning {
-    let invocations = _Invocations()
-    let actions = _Actions()
-
-    // MARK: - dataTask
-
-    func dataTask(with request: URLRequest,completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        let functionName = dataTask1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: request, forKey: dataTask1.params.request)
-        invocation.set(parameter: completionHandler, forKey: dataTask1.params.completionHandler)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! URLSessionDataTask
-    }
-
-    enum dataTask1: String, _StringRawRepresentable {
-      case name = "dataTask1"
-      enum params: String, _StringRawRepresentable {
-        case request = "dataTask(withrequest:URLRequest,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).request"
-        case completionHandler = "dataTask(withrequest:URLRequest,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).completionHandler"
-      }
-    }
-
-    // MARK: - downloadTask
-
-    func downloadTask(with url: URL,completionHandler: @escaping (URL?, URLResponse?, Error?) -> Void) -> URLSessionDownloadTask {
-        let functionName = downloadTask2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: url, forKey: downloadTask2.params.url)
-        invocation.set(parameter: completionHandler, forKey: downloadTask2.params.completionHandler)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! URLSessionDownloadTask
-    }
-
-    enum downloadTask2: String, _StringRawRepresentable {
-      case name = "downloadTask2"
-      enum params: String, _StringRawRepresentable {
-        case url = "downloadTask(withurl:URL,completionHandler:@escaping(URL?,URLResponse?,Error?)->Void).url"
-        case completionHandler = "downloadTask(withurl:URL,completionHandler:@escaping(URL?,URLResponse?,Error?)->Void).completionHandler"
       }
     }
 }

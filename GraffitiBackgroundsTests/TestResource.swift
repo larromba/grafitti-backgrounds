@@ -1,8 +1,9 @@
 import Foundation
 @testable import Graffiti_Backgrounds
+import NetworkManager
 import Log
 
-enum TestResource: String {
+enum TestResource: FileName {
     private class Dummy {}
 
     case photoAlbumResponseReal = "photoAlbumResponse_real.js"
@@ -14,6 +15,7 @@ enum TestResource: String {
     case photoResourceResponseReal = "photoResourceResponse_real.html"
     case photoResourceResponse1Photo = "photoResourceResponse_1photo.html"
 
+    // TODO: refactor in networkmanager
     func load() -> Data {
         let components = rawValue.components(separatedBy: ".")
         guard let fileName = components.first, let fileExt = components.last else {
