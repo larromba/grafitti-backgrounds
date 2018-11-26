@@ -1,6 +1,6 @@
 import Foundation
 import Log
-import NetworkManager
+import Networking
 
 struct PhotoResourceResponse: Response {
     let data: Data

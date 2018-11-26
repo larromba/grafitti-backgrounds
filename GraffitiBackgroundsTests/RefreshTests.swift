@@ -1,5 +1,5 @@
 @testable import Graffiti_Backgrounds
-import NetworkManager
+import Networking
 import Reachability
 import TestExtensions
 import XCTest

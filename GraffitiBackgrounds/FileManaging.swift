@@ -1,7 +1,6 @@
 import Cocoa
 
-// TODO: rename NetworkManager?
-// sourcery: name = FileManager2
+// sourcery: name = FileManager
 protocol FileManaging: Mockable {
     func removeItem(at URL: URL) throws
     func moveItem(at srcURL: URL, to dstURL: URL) throws

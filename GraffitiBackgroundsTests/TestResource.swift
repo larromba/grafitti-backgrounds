@@ -1,7 +1,7 @@
 import Foundation
 @testable import Graffiti_Backgrounds
-import NetworkManager
 import Log
+import Networking
 
 enum TestResource: FileName {
     private class Dummy {}

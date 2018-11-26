@@ -1,5 +1,5 @@
 import Foundation
-import NetworkManager
+import Networking
 
 struct PhotoResponse: Response {
     typealias ErrorType = PhotoResponseError

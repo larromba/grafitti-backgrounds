@@ -379,7 +379,7 @@ class MockEmailController: NSObject, EmailControlling {
     }
 }
 
-class MockFileManager2: NSObject, FileManaging {
+class MockFileManager: NSObject, FileManaging {
     let invocations = _Invocations()
     let actions = _Actions()
 

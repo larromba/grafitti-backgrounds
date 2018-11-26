@@ -1,7 +1,7 @@
 github "larromba/asyncawait" "1.0.0"
 github "larromba/baseoperation" "1.0.0"
 github "larromba/log" "1.0.0"
-github "larromba/networkmanager" "1.0.0"
+github "larromba/networking" "1.0.0"
 github "larromba/reachability" "1.0.0"
 github "larromba/result" "1.0.0"
 github "larromba/testextensions" "1.0.0"

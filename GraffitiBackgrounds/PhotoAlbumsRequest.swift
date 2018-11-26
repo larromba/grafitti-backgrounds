@@ -1,5 +1,5 @@
 import Foundation
-import NetworkManager
+import Networking
 
 struct PhotoAlbumsRequest: Request {
     let url: URL = API.photoAlbums.url

@@ -1,6 +1,6 @@
 import AsyncAwait
 import Cocoa
-import NetworkManager
+import Networking
 
 // sourcery: name = PhotoAlbumService
 protocol PhotoAlbumServicing: Mockable {

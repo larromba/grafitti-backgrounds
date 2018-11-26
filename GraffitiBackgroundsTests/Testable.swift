@@ -1,6 +1,6 @@
 import Foundation
 @testable import Graffiti_Backgrounds
-import NetworkManager
+import Networking
 
 extension AppController {
     static func testable(

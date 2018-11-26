@@ -1,6 +1,6 @@
 import AsyncAwait
 import Cocoa
-import NetworkManager
+import Networking
 import Result
 
 // sourcery: name = PhotoService

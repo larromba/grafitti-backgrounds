@@ -11,9 +11,9 @@
 		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
 		7F02A4B421AB0E58007A6ECD /* Log.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4B321AB0E58007A6ECD /* Log.framework */; };
 		7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; };
-		7F02A57F21AB71FA007A6ECD /* NetworkManager.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A57E21AB71FA007A6ECD /* NetworkManager.framework */; };
 		7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; };
 		7F02A58421AB7E05007A6ECD /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; };
+		7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; };
 		7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2956219CAA3D0062C85D /* StatusBarable.swift */; };
 		7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2958219CABF30062C85D /* StatusItemable.swift */; };
 		7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B295A219DF34B0062C85D /* TestEnvironment.swift */; };
@@ -127,11 +127,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */,
 				7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */,
 				7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */,
 				7F02A4B421AB0E58007A6ECD /* Log.framework in CopyFiles */,
 				7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */,
-				7F02A57F21AB71FA007A6ECD /* NetworkManager.framework in CopyFiles */,
 				7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,8 +144,8 @@
 		7F02A48721AB08A6007A6ECD /* TestExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TestExtensions.framework; path = Carthage/Build/Mac/TestExtensions.framework; sourceTree = "<group>"; };
 		7F02A4B321AB0E58007A6ECD /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/Mac/Log.framework; sourceTree = "<group>"; };
 		7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AsyncAwait.framework; path = Carthage/Build/Mac/AsyncAwait.framework; sourceTree = "<group>"; };
-		7F02A57E21AB71FA007A6ECD /* NetworkManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkManager.framework; path = Carthage/Build/Mac/NetworkManager.framework; sourceTree = "<group>"; };
 		7F02A58021AB7B00007A6ECD /* BaseOperation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaseOperation.framework; path = Carthage/Build/Mac/BaseOperation.framework; sourceTree = "<group>"; };
+		7F02A58821AC06DD007A6ECD /* Networking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Networking.framework; path = Carthage/Build/Mac/Networking.framework; sourceTree = "<group>"; };
 		7F1B2956219CAA3D0062C85D /* StatusBarable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarable.swift; sourceTree = "<group>"; };
 		7F1B2958219CABF30062C85D /* StatusItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemable.swift; sourceTree = "<group>"; };
 		7F1B295A219DF34B0062C85D /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
@@ -262,7 +262,8 @@
 				7F02A48721AB08A6007A6ECD /* TestExtensions.framework */,
 				7F02A4B321AB0E58007A6ECD /* Log.framework */,
 				7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */,
-				7F02A57E21AB71FA007A6ECD /* NetworkManager.framework */,
+				7F02A58821AC06DD007A6ECD /* Networking.framework */,
+				7F02A58021AB7B00007A6ECD /* BaseOperation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -378,7 +379,6 @@
 		7F51DA951FD33DF100502804 = {
 			isa = PBXGroup;
 			children = (
-				7F02A58021AB7B00007A6ECD /* BaseOperation.framework */,
 				7F247EB51FD496860077D878 /* README.md */,
 				7F51DAA01FD33DF100502804 /* GraffitiBackgrounds */,
 				7F6738C11FE2E4CC004DDAE1 /* GraffitiBackgroundsTests */,
@@ -1018,7 +1018,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = GraffitiBackgroundsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/Frameworks $(PROJECT_DIR)/Carthage/Build/Mac";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1043,7 +1043,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = GraffitiBackgroundsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/Frameworks $(PROJECT_DIR)/Carthage/Build/Mac";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
