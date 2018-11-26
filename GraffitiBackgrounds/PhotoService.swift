@@ -28,10 +28,10 @@ final class PhotoService: PhotoServicing {
                 let fetchResults = try awaitAll(fetchDownloadURLOperations, progress: { percentage in
                     progress(Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2))
                 })
-				let downloadOperations = fetchResults.0.map { self.downloadPhoto(resource: $0) }
-				let downloadResults = try awaitAll(downloadOperations, progress: { percentage in
-					progress(Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2))
-				})
+                let downloadOperations = fetchResults.0.map { self.downloadPhoto(resource: $0) }
+                let downloadResults = try awaitAll(downloadOperations, progress: { percentage in
+                    progress(Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2))
+                })
                 let isCancelledErrors = downloadResults.1.filter { $0.isNetworkErrorCancelled }
                 guard isCancelledErrors.isEmpty else {
                     completion(.failure(isCancelledErrors[0]))
