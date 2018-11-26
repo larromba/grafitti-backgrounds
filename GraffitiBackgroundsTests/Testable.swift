@@ -26,11 +26,11 @@ extension AppController {
 extension TestNetworkManager {
     static func make1PhotoDownloadSuccess(inFolder url: URL) -> TestNetworkManager {
         let fetchStubs = [
-            FetchStub(url: API.photoAlbums.url, resource: TestResource.photoAlbumResponse1Album.rawValue),
+            FetchStub(url: API.photoAlbums.url, resource: TestResource.photoAlbumResponse1Album.file),
             FetchStub(url: URL(string: "https://photos.app.goo.gl/test")!,
-                      resource: TestResource.photoResourceResponse1Photo.rawValue),
+                      resource: TestResource.photoResourceResponse1Photo.file),
             FetchStub(url: URL(string: "https://photos.google.com/share/test/photo/test")!,
-                      resource: TestResource.photoResponse1Photo.rawValue)
+                      resource: TestResource.photoResponse1Photo.file)
         ]
         let downloadStubs = [
             DownloadStub(url: URL(string: "https://lh3.googleusercontent.com/test=w2148-h1610-no")!,

@@ -3,9 +3,7 @@ import Foundation
 import Log
 import Networking
 
-enum TestResource: FileName {
-    private class Dummy {}
-
+enum TestResource: String {
     case photoAlbumResponseReal = "photoAlbumResponse_real.js"
     case photoAlbumResponse1Album = "photoAlbumResponse_1album.js"
 
@@ -15,21 +13,8 @@ enum TestResource: FileName {
     case photoResourceResponseReal = "photoResourceResponse_real.html"
     case photoResourceResponse1Photo = "photoResourceResponse_1photo.html"
 
-    // TODO: refactor in networkmanager
-    func load() -> Data {
-        let components = rawValue.components(separatedBy: ".")
-        guard let fileName = components.first, let fileExt = components.last else {
-            log_error("invalid fileName: \(rawValue)")
-            return Data()
-        }
-        guard let url = Bundle(for: Dummy.self).url(forResource: fileName, withExtension: fileExt) else {
-            log_error("missing resource url")
-            return Data()
-        }
-        guard let data = try? Data(contentsOf: url) else {
-            log_error("missing resource data")
-            return Data()
-        }
-        return data
+    var file: FileResource {
+        class Dummy {}
+        return FileResource(name: self.rawValue, bundle: Bundle(for: Dummy.self))
     }
 }
