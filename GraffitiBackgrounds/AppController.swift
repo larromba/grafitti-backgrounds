@@ -54,7 +54,6 @@ final class AppController: AppControllable {
 
     private func reloadPhotos() {
         alertController.showAlert(.reloadingPhotos)
-
         async({
             _ = try await(self.photoController.reloadPhotos())
             self.alertController.showAlert(.reloadPhotosSuccess)
