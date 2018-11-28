@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; };
-		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
-		7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; };
-		7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; };
+		7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F02A58421AB7E05007A6ECD /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; };
-		7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; };
+		7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2956219CAA3D0062C85D /* StatusBarable.swift */; };
 		7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2958219CABF30062C85D /* StatusItemable.swift */; };
 		7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B295A219DF34B0062C85D /* TestEnvironment.swift */; };
@@ -77,7 +77,7 @@
 		7F88A6DA21AF139E0086D6BE /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; };
 		7F88A6DB21AF139E0086D6BE /* BaseOperation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; };
 		7F88A6DD21AF13AC0086D6BE /* Logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F88A6DC21AF13AC0086D6BE /* Logging.framework */; };
-		7F88A6DE21AF13B40086D6BE /* Logging.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F88A6DC21AF13AC0086D6BE /* Logging.framework */; };
+		7F88A6DE21AF13B40086D6BE /* Logging.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F88A6DC21AF13AC0086D6BE /* Logging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewState.swift */; };
 		7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */; };
 		7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1E2177BFC20088E621 /* Keyable.swift */; };
@@ -122,7 +122,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "";
-			dstSubfolderSpec = 16;
+			dstSubfolderSpec = 10;
 			files = (
 				7F88A6DE21AF13B40086D6BE /* Logging.framework in CopyFiles */,
 				7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */,
