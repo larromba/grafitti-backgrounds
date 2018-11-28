@@ -1,6 +1,6 @@
 import AsyncAwait
 import Foundation
-import Log
+import Logging
 import Result
 
 protocol PhotoControllerDelegate: AnyObject, Mockable {

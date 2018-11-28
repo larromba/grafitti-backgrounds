@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; };
 		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
-		7F02A4B421AB0E58007A6ECD /* Log.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4B321AB0E58007A6ECD /* Log.framework */; };
 		7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; };
 		7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; };
 		7F02A58421AB7E05007A6ECD /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; };
@@ -72,6 +71,13 @@
 		7F65C8B5218A015600634454 /* ClearFolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65C8B4218A015600634454 /* ClearFolderTests.swift */; };
 		7F6738B31FE2CE3A004DDAE1 /* FileManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B21FE2CE3A004DDAE1 /* FileManaging.swift */; };
 		7F6738C31FE2E4CC004DDAE1 /* QuitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738C21FE2E4CC004DDAE1 /* QuitTests.swift */; };
+		7F88A6D621AF139E0086D6BE /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
+		7F88A6D721AF139E0086D6BE /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; };
+		7F88A6D921AF139E0086D6BE /* AsyncAwait.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; };
+		7F88A6DA21AF139E0086D6BE /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; };
+		7F88A6DB21AF139E0086D6BE /* BaseOperation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; };
+		7F88A6DD21AF13AC0086D6BE /* Logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F88A6DC21AF13AC0086D6BE /* Logging.framework */; };
+		7F88A6DE21AF13B40086D6BE /* Logging.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F88A6DC21AF13AC0086D6BE /* Logging.framework */; };
 		7F925E6720460B250071F249 /* PreferencesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F925E6620460B250071F249 /* PreferencesViewState.swift */; };
 		7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */; };
 		7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1E2177BFC20088E621 /* Keyable.swift */; };
@@ -112,25 +118,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		7F02A48621AB088D007A6ECD /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		7F71B93921AADF5200135925 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				7F88A6DE21AF13B40086D6BE /* Logging.framework in CopyFiles */,
 				7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */,
 				7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */,
 				7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */,
-				7F02A4B421AB0E58007A6ECD /* Log.framework in CopyFiles */,
 				7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */,
 				7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */,
 			);
@@ -142,7 +139,6 @@
 		7F02A47F21AB020A007A6ECD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		7F02A48021AB020A007A6ECD /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/Mac/Reachability.framework; sourceTree = "<group>"; };
 		7F02A48721AB08A6007A6ECD /* TestExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TestExtensions.framework; path = Carthage/Build/Mac/TestExtensions.framework; sourceTree = "<group>"; };
-		7F02A4B321AB0E58007A6ECD /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/Mac/Log.framework; sourceTree = "<group>"; };
 		7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AsyncAwait.framework; path = Carthage/Build/Mac/AsyncAwait.framework; sourceTree = "<group>"; };
 		7F02A58021AB7B00007A6ECD /* BaseOperation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaseOperation.framework; path = Carthage/Build/Mac/BaseOperation.framework; sourceTree = "<group>"; };
 		7F02A58821AC06DD007A6ECD /* Networking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Networking.framework; path = Carthage/Build/Mac/Networking.framework; sourceTree = "<group>"; };
@@ -212,6 +208,7 @@
 		7F6738C01FE2E4CB004DDAE1 /* GraffitiBackgroundsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GraffitiBackgroundsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F6738C21FE2E4CC004DDAE1 /* QuitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitTests.swift; sourceTree = "<group>"; };
 		7F6738C41FE2E4CC004DDAE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F88A6DC21AF13AC0086D6BE /* Logging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Logging.framework; path = Carthage/Build/Mac/Logging.framework; sourceTree = "<group>"; };
 		7F925E6620460B250071F249 /* PreferencesViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewState.swift; sourceTree = "<group>"; };
 		7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7FCA8F1E2177BFC20088E621 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
@@ -251,16 +248,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7F88A6D521AF13930086D6BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F88A6D621AF139E0086D6BE /* Reachability.framework in Frameworks */,
+				7F88A6D721AF139E0086D6BE /* Result.framework in Frameworks */,
+				7F88A6D921AF139E0086D6BE /* AsyncAwait.framework in Frameworks */,
+				7F88A6DA21AF139E0086D6BE /* Networking.framework in Frameworks */,
+				7F88A6DB21AF139E0086D6BE /* BaseOperation.framework in Frameworks */,
+				7F88A6DD21AF13AC0086D6BE /* Logging.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		7F02A48321AB02C1007A6ECD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F88A6DC21AF13AC0086D6BE /* Logging.framework */,
 				7F02A48021AB020A007A6ECD /* Reachability.framework */,
 				7F02A47F21AB020A007A6ECD /* Result.framework */,
 				7F02A48721AB08A6007A6ECD /* TestExtensions.framework */,
-				7F02A4B321AB0E58007A6ECD /* Log.framework */,
 				7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */,
 				7F02A58821AC06DD007A6ECD /* Networking.framework */,
 				7F02A58021AB7B00007A6ECD /* BaseOperation.framework */,
@@ -561,6 +571,7 @@
 				7F247EA91FD476ED0077D878 /* ShellScript */,
 				7F13D517219F4FBF00891DF7 /* ShellScript */,
 				7F4291F3217B2002003E64C2 /* ShellScript */,
+				7F88A6D521AF13930086D6BE /* Frameworks */,
 				7F51DA9A1FD33DF100502804 /* Sources */,
 				7F71B93921AADF5200135925 /* CopyFiles */,
 				7F51DA9C1FD33DF100502804 /* Resources */,
@@ -582,7 +593,6 @@
 				7F6738BC1FE2E4CB004DDAE1 /* Sources */,
 				7F02A48921AB0904007A6ECD /* Frameworks */,
 				7F6738BE1FE2E4CB004DDAE1 /* Resources */,
-				7F02A48621AB088D007A6ECD /* CopyFiles */,
 			);
 			buildRules = (
 			);

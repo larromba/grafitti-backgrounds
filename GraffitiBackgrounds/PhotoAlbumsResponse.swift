@@ -1,5 +1,5 @@
 import Foundation
-import Log
+import Logging
 import Networking
 
 struct PhotoAlbumsResponse: Response {
@@ -25,7 +25,7 @@ struct PhotoAlbumsResponse: Response {
         }
         photoAlbums = matches.compactMap {
             guard let range = Range($0.range, in: html), let url = URL(string: String(html[range])) else {
-                log_error("couldn't create photo album url")
+                logError("couldn't create photo album url")
                 return nil
             }
             return PhotoAlbum(url: url, resources: [])
