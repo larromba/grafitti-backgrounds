@@ -5,8 +5,7 @@ import XCTest
 
 final class CancelRefreshTests: XCTestCase {
     private class Environment: TestEnvironment {
-        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
-        lazy var statusItem = LoadingStatusItem(viewState: viewState, statusBar: NSStatusBar.system)
+        lazy var statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
         lazy var menuController: AppMenuController = {
             let controller = AppMenuController(statusItem: statusItem, reachability: MockReachability())
             controller.setRefreshAction(.cancel)
@@ -42,7 +41,7 @@ final class CancelRefreshTests: XCTestCase {
         XCTAssertEqual(env.statusItem.item.button?.alphaValue, 1.0)
         XCTAssertEqual(env.statusItem.item.button?.subviews
             .contains(where: { $0.classForCoder == NSProgressIndicator.self }), false)
-        XCTAssertEqual(env.statusItem.item.image, env.statusItem.viewState.style.image)
+        XCTAssertEqual(env.statusItem.item.image, env.statusItem.viewState.image)
     }
 
     func testCancelRefreshOnMenuClickCancelsAllNetworkOperations() {

@@ -8,8 +8,7 @@ final class RefreshTests: XCTestCase {
     private class Environment: TestEnvironment {
         let statusItem: MockLoadingStatusItem = {
             let statusItem = MockLoadingStatusItem()
-            statusItem.viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan,
-                                                              alpha: 1.0)
+            statusItem.viewState = LoadingStatusItemViewState()
             return statusItem
         }()
         lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())

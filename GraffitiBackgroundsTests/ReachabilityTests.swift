@@ -4,8 +4,7 @@ import XCTest
 
 final class ReachabilityTests: XCTestCase {
     private class Environment: TestEnvironment {
-        let viewState = LoadingStatusItemViewState(isLoading: false, loadingPercentage: 0, style: .sprayCan, alpha: 1.0)
-        lazy var statusItem = LoadingStatusItem(viewState: viewState, statusBar: NSStatusBar.system)
+        lazy var statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
         let reachability = MockReachability()
         lazy var menuController = AppMenuController(statusItem: statusItem, reachability: reachability)
         var delegate: ReachabilityDelegate? {
