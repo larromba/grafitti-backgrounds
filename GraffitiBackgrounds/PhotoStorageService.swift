@@ -3,11 +3,8 @@ import Result
 
 // sourcery: name = PhotoStorageService
 protocol PhotoStorageServicing: Mockable {
-    // sourcery: returnValue = Result.success(())
     func save(_ resources: [PhotoResource]) -> Result<Void>
-    // sourcery: returnValue = Result.success([PhotoResource]())
     func load() -> Result<[PhotoResource]>
-    // sourcery: returnValue = Result.success([PhotoResource]())
     func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]>
 }
 

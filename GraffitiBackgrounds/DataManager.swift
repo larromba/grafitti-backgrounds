@@ -3,7 +3,6 @@ import Foundation
 // sourcery: name = DataManger
 protocol DataManaging: Mockable {
     func save<T: Keyable>(_ data: Data?, key: T)
-    // sourcery: returnValue = Result.success(Data())
     func load<T: Keyable>(key: T) -> Data?
 }
 

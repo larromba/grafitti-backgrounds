@@ -341,7 +341,6 @@ class MockDataManger: NSObject, DataManaging {
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: key, forKey: load2.params.key)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success(Data()), for: functionName)
         return actions.returnValue(for: functionName) as? Data
     }
 
@@ -455,7 +454,6 @@ class MockFileManager: NSObject, FileManaging {
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: path, forKey: fileExists4.params.path)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: true, for: functionName)
         return actions.returnValue(for: functionName) as! Bool
     }
 
@@ -808,7 +806,6 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: save1.params.resources)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success(()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Void>
     }
 
@@ -825,7 +822,6 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
         let functionName = load2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success([PhotoResource]()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
     }
 
@@ -840,7 +836,6 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: remove3.params.resources)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success([PhotoResource]()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
     }
 
@@ -857,7 +852,7 @@ class MockPreferencesController: NSViewController, PreferencesControllable {
         get { return _preferences }
         set(value) { _preferences = value; _preferencesHistory.append(_Variable(value)) }
     }
-    var _preferences: Preferences! = Preferences()
+    var _preferences: Preferences!
     var _preferencesHistory: [_Variable<Preferences>] = []
     let invocations = _Invocations()
     let actions = _Actions()
@@ -902,7 +897,6 @@ class MockPreferencesService: NSObject, PreferencesServicing {
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: preferences, forKey: save1.params.preferences)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success(()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Void>
     }
 
@@ -919,7 +913,6 @@ class MockPreferencesService: NSObject, PreferencesServicing {
         let functionName = load2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: Result.success(Preferences()), for: functionName)
         return actions.returnValue(for: functionName) as! Result<Preferences>
     }
 

@@ -8,7 +8,6 @@ protocol PreferencesControllerDelegate: AnyObject {
 
 // sourcery: name = PreferencesController, inherits = NSViewController
 protocol PreferencesControllable: Mockable {
-    // sourcery: value = Preferences()
     var preferences: Preferences { get }
 
     func open()
