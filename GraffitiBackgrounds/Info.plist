@@ -78,7 +78,8 @@
 		</dict>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017 Pink Chicken. All rights reserved.</string>
+	<string>Open Source
+https://github.com/larromba/graffiti-backgrounds</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

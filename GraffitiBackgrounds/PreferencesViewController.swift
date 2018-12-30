@@ -2,14 +2,13 @@ import Cocoa
 
 protocol PreferencesViewControllerDelegate: AnyObject {
     func preferencesViewController(_ viewController: PreferencesViewController,
-                                   didUpdateViewState viewState: PreferencesViewState)
+                                   didUpdateViewState viewState: PreferencesViewStating)
 }
 
 // sourcery: name = PreferencesViewController, inherits = NSViewController
-protocol PreferencesViewControllable: Mockable {
-    var viewState: PreferencesViewState? { get }
+protocol PreferencesViewControllable: AnyObject, Mockable {
+    var viewState: PreferencesViewStating? { get set }
 
-    func setViewState(_ viewState: PreferencesViewState)
     func setDelegate(_ delegate: PreferencesViewControllerDelegate)
 }
 
@@ -22,17 +21,13 @@ final class PreferencesViewController: NSViewController, PreferencesViewControll
     @IBOutlet private(set) weak var numberOfPhotosTextField: NSTextField!
 
     private weak var delegate: PreferencesViewControllerDelegate?
-    private(set) var viewState: PreferencesViewState? {
+    var viewState: PreferencesViewStating? {
         didSet { _ = viewState.map(bind) }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         _ = viewState.map(bind)
-    }
-
-    func setViewState(_ viewState: PreferencesViewState) {
-        self.viewState = viewState
     }
 
     func setDelegate(_ delegate: PreferencesViewControllerDelegate) {
@@ -46,7 +41,7 @@ final class PreferencesViewController: NSViewController, PreferencesViewControll
         notifyDelegateViewStateUpdated()
     }
 
-    private func bind(_ viewState: PreferencesViewState) {
+    private func bind(_ viewState: PreferencesViewStating) {
         guard isViewLoaded else { return }
         autoRefreshCheckBox.state = viewState.isAutoRefreshEnabledState
         autoRefreshIntervalTextField.stringValue = viewState.autoRefreshTimeIntervalHoursString
@@ -54,9 +49,7 @@ final class PreferencesViewController: NSViewController, PreferencesViewControll
     }
 
     private func notifyDelegateViewStateUpdated() {
-        guard let viewState = viewState else {
-            return
-        }
+        guard let viewState = viewState else { return }
         delegate?.preferencesViewController(self, didUpdateViewState: viewState)
     }
 }
@@ -65,9 +58,7 @@ final class PreferencesViewController: NSViewController, PreferencesViewControll
 
 extension PreferencesViewController: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
-        guard let textField = obj.object as? NSTextField, !textField.stringValue.isEmpty else {
-            return
-        }
+        guard let textField = obj.object as? NSTextField, !textField.stringValue.isEmpty else { return }
         switch textField {
         case numberOfPhotosTextField:
             viewState?.numberOfPhotos = Int(textField.intValue)

@@ -482,8 +482,8 @@
 		7F543E97214E8358008C2D5D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */,
 				7F65C8A82189E6D700634454 /* Testable.swift */,
+				7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */,
 				7F635A41218A6D7A0013E970 /* NSTextFieldExensions.swift */,
 				7F1B295A219DF34B0062C85D /* TestEnvironment.swift */,
 			);

@@ -31,10 +31,10 @@ final class AppController: AppControllable {
         self.emailController = emailController
         self.app = app
 
-        self.preferencesController.setDelegate(self)
-        self.menuController.setDelegate(self)
-        self.photoController.setDelegate(self)
-        self.photoController.setPreferences(preferencesController.preferences)
+        preferencesController.setDelegate(self)
+        menuController.setDelegate(self)
+        photoController.setDelegate(self)
+        photoController.setPreferences(preferencesController.preferences)
     }
 
     func start() {

@@ -468,12 +468,12 @@ class MockFileManager: NSObject, FileManaging {
 }
 
 class MockLoadingStatusItem: NSObject, LoadingStatusItemable {
-    var viewState: LoadingStatusItemViewState {
+    var viewState: LoadingStatusItemViewStating {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: LoadingStatusItemViewState!
-    var _viewStateHistory: [_Variable<LoadingStatusItemViewState>] = []
+    var _viewState: LoadingStatusItemViewStating!
+    var _viewStateHistory: [_Variable<LoadingStatusItemViewStating>] = []
     var menu: Menuable? {
         get { return _menu }
         set(value) { _menu = value; _menuHistory.append(_Variable(value)) }
@@ -510,12 +510,12 @@ class MockMenuItem: NSObject, MenuItemable {
     }
     var _actionType: ActionType!
     var _actionTypeHistory: [_Variable<ActionType>] = []
-    var viewState: MenuItemViewState {
+    var viewState: MenuItemViewStating {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: MenuItemViewState!
-    var _viewStateHistory: [_Variable<MenuItemViewState>] = []
+    var _viewState: MenuItemViewStating!
+    var _viewStateHistory: [_Variable<MenuItemViewStating>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -537,12 +537,12 @@ class MockMenuItem: NSObject, MenuItemable {
 }
 
 class MockMenu: NSObject, Menuable {
-    var viewState: MenuViewState {
+    var viewState: MenuViewStating {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: MenuViewState!
-    var _viewStateHistory: [_Variable<MenuViewState>] = []
+    var _viewState: MenuViewStating!
+    var _viewStateHistory: [_Variable<MenuViewStating>] = []
     let invocations = _Invocations()
     let actions = _Actions()
 
@@ -929,42 +929,26 @@ class MockPreferencesService: NSObject, PreferencesServicing {
 }
 
 class MockPreferencesViewController: NSViewController, PreferencesViewControllable {
-    var viewState: PreferencesViewState? {
+    var viewState: PreferencesViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: PreferencesViewState?
-    var _viewStateHistory: [_Variable<PreferencesViewState?>] = []
+    var _viewState: PreferencesViewStating?
+    var _viewStateHistory: [_Variable<PreferencesViewStating?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
-
-    // MARK: - setViewState
-
-    func setViewState(_ viewState: PreferencesViewState) {
-        let functionName = setViewState1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: viewState, forKey: setViewState1.params.viewState)
-        invocations.record(invocation)
-    }
-
-    enum setViewState1: String, _StringRawRepresentable {
-      case name = "setViewState1"
-      enum params: String, _StringRawRepresentable {
-        case viewState = "setViewState(_viewState:PreferencesViewState).viewState"
-      }
-    }
 
     // MARK: - setDelegate
 
     func setDelegate(_ delegate: PreferencesViewControllerDelegate) {
-        let functionName = setDelegate2.name
+        let functionName = setDelegate1.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: delegate, forKey: setDelegate2.params.delegate)
+        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
         invocations.record(invocation)
     }
 
-    enum setDelegate2: String, _StringRawRepresentable {
-      case name = "setDelegate2"
+    enum setDelegate1: String, _StringRawRepresentable {
+      case name = "setDelegate1"
       enum params: String, _StringRawRepresentable {
         case delegate = "setDelegate(_delegate:PreferencesViewControllerDelegate).delegate"
       }
@@ -1143,6 +1127,27 @@ class MockUserDefaults: NSObject, UserDefaultable {
       enum params: String, _StringRawRepresentable {
         case value = "set(_value:Any?,forKeydefaultName:String).value"
         case defaultName = "set(_value:Any?,forKeydefaultName:String).defaultName"
+      }
+    }
+}
+
+class MockUserNotificationCenter: NSObject, UserNotificationCentering {
+    let invocations = _Invocations()
+    let actions = _Actions()
+
+    // MARK: - deliver
+
+    func deliver(_ notification: NSUserNotification) {
+        let functionName = deliver1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: notification, forKey: deliver1.params.notification)
+        invocations.record(invocation)
+    }
+
+    enum deliver1: String, _StringRawRepresentable {
+      case name = "deliver1"
+      enum params: String, _StringRawRepresentable {
+        case notification = "deliver(_notification:NSUserNotification).notification"
       }
     }
 }

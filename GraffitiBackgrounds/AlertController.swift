@@ -6,7 +6,7 @@ protocol AlertControlling: Mockable {
     func showAlert(_ alert: Alert)
 }
 
-class AlertController: AlertControlling {
+final class AlertController: AlertControlling {
     private let notificationCenter: UserNotificationCentering
 
     init(notificationCenter: UserNotificationCentering) {
