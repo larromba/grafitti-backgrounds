@@ -14,8 +14,8 @@ final class PreferencesService: PreferencesServicing {
         case preferences
     }
 
-    private let encoder = PropertyListEncoder()
-    private let decoder = PropertyListDecoder()
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
     private let dataManager: DataManaging
 
     init(dataManager: DataManaging) {

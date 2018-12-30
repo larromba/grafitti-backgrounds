@@ -1,6 +1,4 @@
 import Foundation
-@testable import Graffiti_Backgrounds
-import Logging
 import Networking
 
 enum TestResource: String {

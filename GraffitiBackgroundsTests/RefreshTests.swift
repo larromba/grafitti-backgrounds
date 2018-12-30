@@ -5,119 +5,132 @@ import TestExtensions
 import XCTest
 
 final class RefreshTests: XCTestCase {
-    private class Environment: TestEnvironment {
-        let statusItem: MockLoadingStatusItem = {
-            let statusItem = MockLoadingStatusItem()
-            statusItem.viewState = LoadingStatusItemViewState()
-            return statusItem
-        }()
-        lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-        let photoFolderURL = URL.makePhotoFolderURL()
-        let userDefaults = UserDefaults.mock
-        let fileManager = FileManager.default
-        lazy var networkManager = TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL())
-        lazy var photoAlbumService = PhotoAlbumService(networkManager: networkManager)
-        lazy var dataManager = DataManger(database: userDefaults)
-        lazy var photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
-        lazy var photoService = PhotoService(networkManager: networkManager, fileManager: fileManager)
-        lazy var photoController = PhotoController(photoAlbumService: photoAlbumService, photoService: photoService,
-                                                   photoStorageService: photoStorageService,
-                                                   photoFolderURL: photoFolderURL)
-        let alertController = MockAlertController()
-        var appController: AppController?
-
-        func inject() {
-            appController = AppController.testable(menuController: menuController, photoController: photoController,
-                                                   alertController: alertController)
-            let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1,
-                                          numberOfPhotos: 1)
-            photoController.setPreferences(preferences)
-        }
-
-        func writePhoto(at fileURL: URL) -> Error? {
-            do {
-                try fileManager.createDirectory(at: photoFolderURL, withIntermediateDirectories: false, attributes: nil)
-                try Data().write(to: fileURL)
-                let photoResource = PhotoResource(url: .mock, downloadURL: .mock, fileURL: fileURL)
-                return photoStorageService.save([photoResource]).error
-            } catch {
-                return error
-            }
-        }
-    }
-
     func testRefreshFolderOnMenuClickTriggersLoadingIndicator() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL()
+        )
         env.inject()
 
         // sut
-        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+        statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            let loadingProgress = env.statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
+            let loadingProgress = statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
             XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
         }
     }
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsNormalStatusItem() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL()
+        )
         env.inject()
+        let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
+        env.photoController.setPreferences(preferences)
 
         // sut
-        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+        statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            let viewState = env.statusItem._viewStateHistory.last?.variable
+            let viewState = statusItem._viewStateHistory.last?.variable
             XCTAssertEqual(viewState?.isLoading, false)
             XCTAssertEqual(viewState?.loadingPercentage, 0.0)
             XCTAssertEqual(viewState?.alpha, 1.0)
         }
     }
 
-    func testRefreshFolderOnMenuClickWhenStartedShowsAlert() {
+    func testRefreshFolderOnMenuClickWhenStartedShowsAlertNotification() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let notificationCenter = MockUserNotificationCenter()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL(),
+            notificationCenter: notificationCenter
+        )
         env.inject()
+        let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
+        env.photoController.setPreferences(preferences)
 
         // sut
-        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+        statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
-            let beginAlert = invocations.first?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
-            XCTAssertEqual(beginAlert?.title, "Refreshing...")
-            XCTAssertEqual(beginAlert?.text, "Your photos are now refreshing")
+            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+            let notification = invocations.first?
+                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+            XCTAssertEqual(notification?.title, "Refreshing...")
+            XCTAssertEqual(notification?.informativeText, "Your photos are now refreshing")
             XCTAssertEqual(invocations.count, 2)
         }
     }
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsAlert() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let notificationCenter = MockUserNotificationCenter()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL(),
+            notificationCenter: notificationCenter
+        )
         env.inject()
+        let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
+        env.photoController.setPreferences(preferences)
 
         // sut
-        env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+        statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
-            let endAlert = invocations.last?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
-            XCTAssertEqual(endAlert?.title, "Success!")
-            XCTAssertEqual(endAlert?.text, "Your photos were reloaded")
+            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+            let notification = invocations[safe: 1]?
+                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+            XCTAssertEqual(notification?.title, "Success!")
+            XCTAssertEqual(notification?.informativeText, "Your photos were reloaded")
             XCTAssertEqual(invocations.count, 2)
         }
     }
 
     func testRefreshFolderOnMenuClickClearsPreviousFiles() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL()
+        )
         env.inject()
+        let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
+        env.photoController.setPreferences(preferences)
 
         let fileURL = URL(fileURLWithPath: env.photoFolderURL.path.appending("/testphoto.png"))
         XCTAssertNil(env.writePhoto(at: fileURL))
@@ -127,14 +140,24 @@ final class RefreshTests: XCTestCase {
 
         // test
         wait {
-            XCTAssertFalse(env.fileManager.fileExists(atPath: fileURL.path))
+            XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
         }
     }
 
     func testRefreshFolderOnMenuClickSavesToUserDefaults() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL()
+        )
         env.inject()
+        let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
+        env.photoController.setPreferences(preferences)
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
@@ -148,15 +171,25 @@ final class RefreshTests: XCTestCase {
 
     func testRefreshFolderOnMenuClickDownloadsNewFiles() {
         // mocks
-        let env = Environment()
+        let statusItem = MockLoadingStatusItem()
+        statusItem.viewState = LoadingStatusItemViewState()
+        let env = AppControllerEnvironment(
+            userDefaults: UserDefaults.mock,
+            statusItem: statusItem,
+            networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
+            fileManager: FileManager.default,
+            photoFolderURL: .makePhotoFolderURL()
+        )
         env.inject()
+        let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
+        env.photoController.setPreferences(preferences)
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
         wait {
-            let folderContents = try? env.fileManager.contentsOfDirectory(atPath: env.photoFolderURL.path)
+            let folderContents = try? FileManager.default.contentsOfDirectory(atPath: env.photoFolderURL.path)
             XCTAssertEqual(folderContents?.count, 1)
         }
     }

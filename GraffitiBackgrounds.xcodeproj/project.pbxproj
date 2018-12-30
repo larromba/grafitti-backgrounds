@@ -58,11 +58,14 @@
 		7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */; };
 		7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */; };
 		7F543E94214E8333008C2D5D /* NSMenuExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */; };
+		7F5A839B21D92763008F30BE /* AppControllerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */; };
+		7F5A839D21D92791008F30BE /* TestNetworkManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839C21D92791008F30BE /* TestNetworkManagerExtensions.swift */; };
+		7F5A839F21D927A8008F30BE /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839E21D927A8008F30BE /* URLExtensions.swift */; };
+		7F5A83A121D927C2008F30BE /* UserDefaultsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A021D927C2008F30BE /* UserDefaultsExtensions.swift */; };
 		7F615D941FD6A49E00DD519C /* AppMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F615D931FD6A49E00DD519C /* AppMenuController.swift */; };
 		7F635A42218A6D7A0013E970 /* NSTextFieldExensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F635A41218A6D7A0013E970 /* NSTextFieldExensions.swift */; };
 		7F65672D1FE04B1200A6CB7F /* Applicationable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65672C1FE04B1200A6CB7F /* Applicationable.swift */; };
 		7F6567481FE2A9F200A6CB7F /* WindowControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6567471FE2A9F200A6CB7F /* WindowControlling.swift */; };
-		7F65C8A92189E6D700634454 /* Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65C8A82189E6D700634454 /* Testable.swift */; };
 		7F65C8AB218A00E500634454 /* AboutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65C8AA218A00E500634454 /* AboutTests.swift */; };
 		7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65C8AC218A011600634454 /* SystemPreferencesTests.swift */; };
 		7F65C8AF218A012A00634454 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F65C8AE218A012A00634454 /* PreferencesTests.swift */; };
@@ -193,11 +196,14 @@
 		7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceRequest.swift; sourceTree = "<group>"; };
 		7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceResponse.swift; sourceTree = "<group>"; };
 		7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMenuExtensions.swift; sourceTree = "<group>"; };
+		7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllerEnvironment.swift; sourceTree = "<group>"; };
+		7F5A839C21D92791008F30BE /* TestNetworkManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNetworkManagerExtensions.swift; sourceTree = "<group>"; };
+		7F5A839E21D927A8008F30BE /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
+		7F5A83A021D927C2008F30BE /* UserDefaultsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtensions.swift; sourceTree = "<group>"; };
 		7F615D931FD6A49E00DD519C /* AppMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenuController.swift; sourceTree = "<group>"; };
 		7F635A41218A6D7A0013E970 /* NSTextFieldExensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextFieldExensions.swift; sourceTree = "<group>"; };
 		7F65672C1FE04B1200A6CB7F /* Applicationable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Applicationable.swift; sourceTree = "<group>"; };
 		7F6567471FE2A9F200A6CB7F /* WindowControlling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControlling.swift; sourceTree = "<group>"; };
-		7F65C8A82189E6D700634454 /* Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testable.swift; sourceTree = "<group>"; };
 		7F65C8AA218A00E500634454 /* AboutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTests.swift; sourceTree = "<group>"; };
 		7F65C8AC218A011600634454 /* SystemPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPreferencesTests.swift; sourceTree = "<group>"; };
 		7F65C8AE218A012A00634454 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
@@ -482,12 +488,21 @@
 		7F543E97214E8358008C2D5D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7F65C8A82189E6D700634454 /* Testable.swift */,
+				7F5A839C21D92791008F30BE /* TestNetworkManagerExtensions.swift */,
+				7F5A839E21D927A8008F30BE /* URLExtensions.swift */,
+				7F5A83A021D927C2008F30BE /* UserDefaultsExtensions.swift */,
 				7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */,
 				7F635A41218A6D7A0013E970 /* NSTextFieldExensions.swift */,
-				7F1B295A219DF34B0062C85D /* TestEnvironment.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		7F5A83A221D927D3008F30BE /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				7F1B295A219DF34B0062C85D /* TestEnvironment.swift */,
+			);
+			name = Protocol;
 			sourceTree = "<group>";
 		};
 		7F6738C11FE2E4CC004DDAE1 /* GraffitiBackgroundsTests */ = {
@@ -506,6 +521,7 @@
 				7FF2906B21962D190018C003 /* ReachabilityTests.swift */,
 				7FF29091219740EF0018C003 /* Utility */,
 				7F543E97214E8358008C2D5D /* Extensions */,
+				7F5A83A221D927D3008F30BE /* Protocol */,
 				7F6BC6BC216E9B2900353FA1 /* Generated */,
 				7F543E96214E8342008C2D5D /* Resources */,
 			);
@@ -557,6 +573,7 @@
 			isa = PBXGroup;
 			children = (
 				7FF2908C21973E100018C003 /* TestResource.swift */,
+				7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -810,18 +827,21 @@
 				7F65C8AB218A00E500634454 /* AboutTests.swift in Sources */,
 				7F65C8B5218A015600634454 /* ClearFolderTests.swift in Sources */,
 				7F6738C31FE2E4CC004DDAE1 /* QuitTests.swift in Sources */,
-				7F65C8A92189E6D700634454 /* Testable.swift in Sources */,
 				7F65C8B1218A013A00634454 /* CancelRefreshTests.swift in Sources */,
 				7F543E94214E8333008C2D5D /* NSMenuExtensions.swift in Sources */,
 				7FF290742196F5D50018C003 /* HelpTests.swift in Sources */,
+				7F5A839D21D92791008F30BE /* TestNetworkManagerExtensions.swift in Sources */,
 				7F65C8B3218A014600634454 /* RefreshTests.swift in Sources */,
 				7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */,
 				7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */,
 				7FF2908D21973E100018C003 /* TestResource.swift in Sources */,
 				7FF29066219617FC0018C003 /* ResponseTests.swift in Sources */,
+				7F5A839B21D92763008F30BE /* AppControllerEnvironment.swift in Sources */,
 				7FF290722196F40D0018C003 /* EmailTests.swift in Sources */,
 				7FF2906C21962D190018C003 /* ReachabilityTests.swift in Sources */,
+				7F5A839F21D927A8008F30BE /* URLExtensions.swift in Sources */,
 				7F65C8AF218A012A00634454 /* PreferencesTests.swift in Sources */,
+				7F5A83A121D927C2008F30BE /* UserDefaultsExtensions.swift in Sources */,
 				7F635A42218A6D7A0013E970 /* NSTextFieldExensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

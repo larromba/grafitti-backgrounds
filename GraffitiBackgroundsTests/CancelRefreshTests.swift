@@ -4,30 +4,11 @@ import Reachability
 import XCTest
 
 final class CancelRefreshTests: XCTestCase {
-    private class Environment: TestEnvironment {
-        lazy var statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
-        lazy var menuController: AppMenuController = {
-            let controller = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-            controller.setRefreshAction(.cancel)
-            return controller
-        }()
-        let photoController: PhotoControllable
-        let alertController = MockAlertController()
-        var appController: AppController?
-
-        init(photoController: PhotoControllable = PhotoController.testable()) {
-            self.photoController = photoController
-        }
-
-        func inject() {
-            appController = AppController.testable(menuController: menuController, photoController: photoController,
-                                                   alertController: alertController)
-        }
-    }
-
     func testCancelRefreshOnMenuClickChangesMenuAndIconState() {
         // mocks
-        let env = Environment()
+        let statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
+        let env = AppControllerEnvironment(statusItem: statusItem)
+        env.menuController.setRefreshAction(.cancel)
         env.inject()
 
         // sut
@@ -37,24 +18,21 @@ final class CancelRefreshTests: XCTestCase {
         let menuViewState = env.statusItem.menu?.viewState
         XCTAssertEqual(menuViewState?.items[safe: AppMenu.Order.refreshFolder.rawValue]?.title, "Refresh Folder")
         XCTAssertEqual(menuViewState?.items[safe: AppMenu.Order.clearFolder.rawValue]?.isEnabled, true)
-        XCTAssertEqual(env.statusItem.viewState.isLoading, false)
-        XCTAssertEqual(env.statusItem.item.button?.alphaValue, 1.0)
-        XCTAssertEqual(env.statusItem.item.button?.subviews
+        XCTAssertEqual(statusItem.viewState.isLoading, false)
+        XCTAssertEqual(statusItem.item.button?.alphaValue, 1.0)
+        XCTAssertEqual(statusItem.item.button?.subviews
             .contains(where: { $0.classForCoder == NSProgressIndicator.self }), false)
-        XCTAssertEqual(env.statusItem.item.image, env.statusItem.viewState.image)
+        XCTAssertEqual(statusItem.item.image, env.statusItem.viewState.image)
     }
 
     func testCancelRefreshOnMenuClickCancelsAllNetworkOperations() {
         // mocks
+        let statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
         let operationQueue = MockOperationQueue()
         let networkManager = NetworkManager(urlSession: MockURLSession(), fileManager: Networking.MockFileManager(),
                                             queue: operationQueue)
-        let photoController = PhotoController.testable(
-            photoAlbumService: PhotoAlbumService(networkManager: networkManager),
-            photoService: PhotoService(networkManager: networkManager, fileManager: MockFileManager()),
-            photoStorageService: PhotoStorageService(dataManager: MockDataManger(), fileManager: MockFileManager())
-        )
-        let env = Environment(photoController: photoController)
+        let env = AppControllerEnvironment(statusItem: statusItem, networkManager: networkManager)
+        env.menuController.setRefreshAction(.cancel)
         env.inject()
 
         // sut
@@ -64,19 +42,23 @@ final class CancelRefreshTests: XCTestCase {
         XCTAssertTrue(operationQueue.invocations.isInvoked(MockOperationQueue.cancelAllOperations2.name))
     }
 
-    func testCancelRefreshDisplaysAlert() {
+    func testCancelRefreshDisplaysNotificationAlert() {
         // mocks
-        let env = Environment()
+        let statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
+        let notificationCenter = MockUserNotificationCenter()
+        let env = AppControllerEnvironment(statusItem: statusItem, notificationCenter: notificationCenter)
+        env.menuController.setRefreshAction(.cancel)
         env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
-        let alert = invocations.first?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
-        XCTAssertEqual(alert?.title, "")
-        XCTAssertEqual(alert?.text, "Your reload was cancelled")
+        let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+        let notification = invocations.first?
+            .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+        XCTAssertEqual(notification?.title, "")
+        XCTAssertEqual(notification?.informativeText, "Your reload was cancelled")
         XCTAssertEqual(invocations.count, 1)
     }
 }
