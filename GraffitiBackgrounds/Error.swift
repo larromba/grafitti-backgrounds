@@ -18,7 +18,12 @@ enum PhotoAlbumsResponseError: LocalizedError {
     case noPhotoAlbumsFound
 
     var errorDescription: String? {
-        return L10n.Alert.NetworkError.message
+        switch self {
+        case .noPhotoAlbumsFound:
+            return L10n.Alert.NotEnoughImagesToDownload.message
+        case .malformedHTML:
+            return L10n.Alert.NetworkError.message
+        }
     }
 }
 

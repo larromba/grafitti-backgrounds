@@ -90,7 +90,7 @@ final class RefreshTests: XCTestCase {
         // test
         wait {
             let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
-            let notification = invocations[safe: 1]?
+            let notification = invocations.last?
                 .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
             XCTAssertEqual(notification?.title, "Success!")
             XCTAssertEqual(notification?.informativeText, "Your photos were reloaded")
@@ -145,7 +145,55 @@ final class RefreshTests: XCTestCase {
         }
     }
 
-    // TODO: maybe test these errors: notEnoughImagesAvailable, notEnoughImagesDownloaded ?
+    func testNotEnoughImagesAvailableShowsAlertNotification() {
+        // mocks
+        let notificationCenter = MockUserNotificationCenter()
+        env.notificationCenter = notificationCenter
+        env.networkManager = TestNetworkManager.make0PhotosAvailable()
+        env.inject()
+        setPreferences()
+
+        // sut
+        statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+            let notification = invocations.last?
+                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+            XCTAssertEqual(notification?.title, "Error")
+            XCTAssertEqual(notification?.informativeText, """
+There aren't enough images to download.\
+ Try reducing the number of photos in your preferences, and try again
+""")
+            XCTAssertEqual(invocations.count, 2)
+        }
+    }
+
+    func testNotEnoghImagesDownloadedShowsAlertNotification() {
+        // mocks
+        let notificationCenter = MockUserNotificationCenter()
+        env.notificationCenter = notificationCenter
+        env.networkManager = TestNetworkManager.make0PhotoDownloadSuccess()
+        env.inject()
+        setPreferences()
+
+        // sut
+        statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
+
+        // test
+        wait {
+            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+            let notification = invocations.last?
+                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+            XCTAssertEqual(notification?.title, "Error")
+            XCTAssertEqual(notification?.informativeText, """
+We couldn't download enough images. Please Try again.\
+ If the problem persists, try reducing the number of photos in your preferences
+""")
+            XCTAssertEqual(invocations.count, 2)
+        }
+    }
 
     // MARK: - private
 

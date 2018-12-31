@@ -10,4 +10,4 @@ xcassets:
     - GraffitiBackgrounds/Colors.xcassets
   outputs:
     - templateName: swift4
-      output: Generated/assets-images.swift
+      output: Generated/assets.swift

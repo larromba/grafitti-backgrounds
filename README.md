@@ -22,7 +22,7 @@ A macOS app that downloads (and re-downloads every so many hours) a random numbe
 
 `brew install sourcery`
 
-**Carthage** *(testing only)*
+**Carthage**
 
 `brew install carthage`
 

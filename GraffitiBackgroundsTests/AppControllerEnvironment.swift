@@ -66,6 +66,8 @@ final class AppControllerEnvironment {
     }
 }
 
+// MARK: - TestEnvironment
+
 extension AppControllerEnvironment: TestEnvironment {
     func inject() {
         if !(preferencesWindowController.contentViewController is PreferencesViewController) {
