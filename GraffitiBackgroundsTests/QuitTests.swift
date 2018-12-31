@@ -3,26 +3,16 @@ import Reachability
 import XCTest
 
 final class QuitTests: XCTestCase {
-    private class Environment: TestEnvironment {
-        let statusItem = MockLoadingStatusItem()
-        lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-        let app = MockApplication()
-        var appController: AppController?
-
-        func inject() {
-            appController = AppController.testable(menuController: menuController, app: app)
-        }
-    }
-
     func testQuitOnMenuClickQuitsApp() {
         // mocks
-        let env = Environment()
+        let app = MockApplication()
+        let env = AppControllerEnvironment(app: app)
         env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.quit.rawValue)
 
         // test
-        XCTAssertTrue(env.app.invocations.isInvoked(MockApplication.terminate4.name))
+        XCTAssertTrue(app.invocations.isInvoked(MockApplication.terminate4.name))
     }
 }

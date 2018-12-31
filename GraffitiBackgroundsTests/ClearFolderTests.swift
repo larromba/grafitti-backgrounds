@@ -3,41 +3,22 @@ import Reachability
 import XCTest
 
 final class ClearFolderTests: XCTestCase {
-    private class Environment: TestEnvironment {
-        let statusItem = MockLoadingStatusItem()
-        lazy var menuController = AppMenuController(statusItem: statusItem, reachability: MockReachability())
-        let photoFolderURL = URL.makePhotoFolderURL()
-        let userDefaults = UserDefaults.mock
-        let fileManager = FileManager.default
-        lazy var dataManager = DataManger(database: userDefaults)
-        lazy var photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
-        lazy var photoController = PhotoController.testable(photoStorageService: photoStorageService,
-                                                            photoFolderURL: photoFolderURL)
-        let alertController = MockAlertController()
-        var appController: AppController?
+    private var env: AppControllerEnvironment!
 
-        func inject() {
-            appController = AppController.testable(menuController: menuController, photoController: photoController,
-                                                   alertController: alertController)
-        }
+    override func setUp() {
+        super.setUp()
+        env = AppControllerEnvironment(userDefaults: UserDefaults.mock, fileManager: FileManager.default,
+                                       photoFolderURL: .makePhotoFolderURL())
+    }
 
-        func writePhoto(at fileURL: URL) -> Error? {
-            do {
-                try fileManager.createDirectory(at: photoFolderURL, withIntermediateDirectories: false, attributes: nil)
-                try Data().write(to: fileURL)
-                let photoResource = PhotoResource(url: .mock, downloadURL: .mock, fileURL: fileURL)
-                return photoStorageService.save([photoResource]).error
-            } catch {
-                return error
-            }
-        }
+    override func tearDown() {
+        env = nil
+        super.tearDown()
     }
 
     func testClearFolderOnMenuClickDeletesAllPhotos() {
         // mocks
-        let env = Environment()
         env.inject()
-
         let fileURL = URL(fileURLWithPath: env.photoFolderURL.path.appending("/testphoto.png"))
         XCTAssertNil(env.writePhoto(at: fileURL))
 
@@ -45,22 +26,24 @@ final class ClearFolderTests: XCTestCase {
         env.statusItem.menu?.click(at: AppMenu.Order.clearFolder.rawValue)
 
         // test
-        XCTAssertFalse(env.fileManager.fileExists(atPath: fileURL.path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
     }
 
     func testClearFolderDisplaysAlert() {
         // mocks
-        let env = Environment()
+        let notificationCenter = MockUserNotificationCenter()
+        env.notificationCenter = notificationCenter
         env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.clearFolder.rawValue)
 
         // test
-        let invocations = env.alertController.invocations.find(MockAlertController.showAlert1.name)
-        let alert = invocations.first?.parameter(for: MockAlertController.showAlert1.params.alert) as? Alert
-        XCTAssertEqual(alert?.title, "Success!")
-        XCTAssertEqual(alert?.text, "Your photos were cleared")
+        let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+        let notification = invocations.first?
+            .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+        XCTAssertEqual(notification?.title, "Success!")
+        XCTAssertEqual(notification?.informativeText, "Your photos were cleared")
         XCTAssertEqual(invocations.count, 1)
     }
 }

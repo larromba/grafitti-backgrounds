@@ -3,6 +3,7 @@ import Logging
 
 // sourcery: name = AppDelegate
 protocol AppDelegatable: NSApplicationDelegate, Mockable {
+    // 🦄
 }
 
 final class AppDelegate: NSObject, AppDelegatable {

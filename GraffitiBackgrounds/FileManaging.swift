@@ -7,7 +7,6 @@ protocol FileManaging: Mockable {
     func createDirectory(at url: URL,
                          withIntermediateDirectories createIntermediates: Bool,
                          attributes: [FileAttributeKey: Any]?) throws
-    // sourcery: returnValue = true
     func fileExists(atPath path: String) -> Bool
 }
 extension FileManager: FileManaging {}

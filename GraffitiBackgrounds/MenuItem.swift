@@ -9,7 +9,7 @@ protocol MenuItemable: Mockable {
     associatedtype DelegateType
 
     var actionType: ActionType { get set }
-    var viewState: MenuItemViewState { get set }
+    var viewState: MenuItemViewStating { get set }
 
     func setDelegate(_ delegate: DelegateType)
 }
@@ -26,11 +26,11 @@ final class MenuItem<T, U: MenuItemDelegate>: NSMenuItem, MenuItemable where T =
 
     private weak var delegate: DelegateType?
     var actionType: ActionType
-    var viewState: MenuItemViewState {
+    var viewState: MenuItemViewStating {
         didSet { bind(viewState) }
     }
 
-    init(viewState: MenuItemViewState, actionType: ActionType, delegate: U) {
+    init(viewState: MenuItemViewStating, actionType: ActionType, delegate: U) {
         self.viewState = viewState
         self.delegate = delegate
         self.actionType = actionType
@@ -55,7 +55,7 @@ final class MenuItem<T, U: MenuItemDelegate>: NSMenuItem, MenuItemable where T =
         delegate?.menuItemPressed(self)
     }
 
-    private func bind(_ viewState: MenuItemViewState) {
+    private func bind(_ viewState: MenuItemViewStating) {
         title = viewState.title
         keyEquivalent = viewState.keyEquivalent
         isEnabled = viewState.isEnabled

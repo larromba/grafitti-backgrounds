@@ -2,17 +2,17 @@ import Cocoa
 
 // sourcery: name = Menu
 protocol Menuable: Mockable {
-    var viewState: MenuViewState { get set }
+    var viewState: MenuViewStating { get set }
 
     func item<T: MenuItemable>(at index: Int) -> T?
 }
 
 final class Menu: NSMenu, Menuable {
-    var viewState: MenuViewState {
+    var viewState: MenuViewStating {
         didSet { bind(viewState) }
     }
 
-    init(viewState: MenuViewState) {
+    init(viewState: MenuViewStating) {
         self.viewState = viewState
         super.init(title: viewState.title)
         bind(viewState)
@@ -29,7 +29,7 @@ final class Menu: NSMenu, Menuable {
 
     // MARK: - private
 
-    private func bind(_ viewState: MenuViewState) {
+    private func bind(_ viewState: MenuViewStating) {
         title = viewState.title
         autoenablesItems = viewState.autoenablesItems
         setItems(viewState.items)

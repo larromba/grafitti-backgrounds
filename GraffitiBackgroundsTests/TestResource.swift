@@ -1,6 +1,4 @@
 import Foundation
-@testable import Graffiti_Backgrounds
-import Logging
 import Networking
 
 enum TestResource: String {
@@ -8,6 +6,7 @@ enum TestResource: String {
     case photoAlbumResponse1Album = "photoAlbumResponse_1album.js"
 
     case photoResponseReal = "photoResponse_real.html"
+    case photoResponse0Photo = "photoResponse_0photo.html"
     case photoResponse1Photo = "photoResponse_1photo.html"
 
     case photoResourceResponseReal = "photoResourceResponse_real.html"
@@ -15,6 +14,6 @@ enum TestResource: String {
 
     var file: FileResource {
         class Dummy {}
-        return FileResource(name: self.rawValue, bundle: Bundle(for: Dummy.self))
+        return FileResource(name: rawValue, bundle: Bundle(for: Dummy.self))
     }
 }

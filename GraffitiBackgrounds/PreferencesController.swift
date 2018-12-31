@@ -8,7 +8,6 @@ protocol PreferencesControllerDelegate: AnyObject {
 
 // sourcery: name = PreferencesController, inherits = NSViewController
 protocol PreferencesControllable: Mockable {
-    // sourcery: value = Preferences()
     var preferences: Preferences { get }
 
     func open()
@@ -60,7 +59,7 @@ final class PreferencesController: PreferencesControllable {
     }
 
     private func render(_ preferences: Preferences) {
-        preferencesViewController.setViewState(PreferencesViewState(preferences: preferences))
+        preferencesViewController.viewState = PreferencesViewState(preferences: preferences)
     }
 }
 
@@ -68,7 +67,7 @@ final class PreferencesController: PreferencesControllable {
 
 extension PreferencesController: PreferencesViewControllerDelegate {
     func preferencesViewController(_ viewController: PreferencesViewController,
-                                   didUpdateViewState viewState: PreferencesViewState) {
+                                   didUpdateViewState viewState: PreferencesViewStating) {
         preferences.numberOfPhotos = viewState.numberOfPhotos
         preferences.isAutoRefreshEnabled = viewState.isAutoRefreshEnabled
         preferences.autoRefreshTimeIntervalHours = viewState.autoRefreshTimeIntervalHours

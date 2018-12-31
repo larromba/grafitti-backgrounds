@@ -3,9 +3,7 @@ import Result
 
 // sourcery: name = PreferencesService
 protocol PreferencesServicing: Mockable {
-    // sourcery: returnValue = Result.success(())
     func save(_ preferences: Preferences) -> Result<Void>
-    // sourcery: returnValue = Result.success(Preferences())
     func load() -> Result<Preferences>
 }
 
@@ -14,8 +12,8 @@ final class PreferencesService: PreferencesServicing {
         case preferences
     }
 
-    private let encoder = PropertyListEncoder()
-    private let decoder = PropertyListDecoder()
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
     private let dataManager: DataManaging
 
     init(dataManager: DataManaging) {
