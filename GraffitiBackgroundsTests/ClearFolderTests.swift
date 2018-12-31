@@ -3,13 +3,21 @@ import Reachability
 import XCTest
 
 final class ClearFolderTests: XCTestCase {
+    private var env: AppControllerEnvironment!
+
+    override func setUp() {
+        super.setUp()
+        env = AppControllerEnvironment(userDefaults: UserDefaults.mock, fileManager: FileManager.default,
+                                       photoFolderURL: .makePhotoFolderURL())
+    }
+
+    override func tearDown() {
+        env = nil
+        super.tearDown()
+    }
+
     func testClearFolderOnMenuClickDeletesAllPhotos() {
         // mocks
-        let env = AppControllerEnvironment(
-            userDefaults: UserDefaults.mock,
-            fileManager: FileManager.default,
-            photoFolderURL: .makePhotoFolderURL()
-        )
         env.inject()
         let fileURL = URL(fileURLWithPath: env.photoFolderURL.path.appending("/testphoto.png"))
         XCTAssertNil(env.writePhoto(at: fileURL))
@@ -24,12 +32,7 @@ final class ClearFolderTests: XCTestCase {
     func testClearFolderDisplaysAlert() {
         // mocks
         let notificationCenter = MockUserNotificationCenter()
-        let env = AppControllerEnvironment(
-            userDefaults: UserDefaults.mock,
-            fileManager: FileManager.default,
-            photoFolderURL: .makePhotoFolderURL(),
-            notificationCenter: notificationCenter
-        )
+        env.notificationCenter = notificationCenter
         env.inject()
 
         // sut

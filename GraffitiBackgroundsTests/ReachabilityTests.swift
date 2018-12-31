@@ -3,13 +3,26 @@ import Reachability
 import XCTest
 
 final class ReachabilityTests: XCTestCase {
-    func testNetworkLossChangesIconState() {
-        // mocks
-        let statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
-        let reachability = MockReachability()
-        let env = AppControllerEnvironment(statusItem: statusItem, reachability: reachability)
-        env.inject()
+    private var statusItem: LoadingStatusItem!
+    private var reachability: MockReachability!
+    private var env: AppControllerEnvironment!
 
+    override func setUp() {
+        super.setUp()
+        statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
+        reachability = MockReachability()
+        env = AppControllerEnvironment(statusItem: statusItem, reachability: reachability)
+        env.inject()
+    }
+
+    override func tearDown() {
+        statusItem = nil
+        reachability = nil
+        env = nil
+        super.tearDown()
+    }
+
+    func testNetworkLossChangesIconState() {
         // sut
         reachability.delegate?.reachabilityDidChange(env.reachability, isReachable: false)
 
@@ -18,12 +31,6 @@ final class ReachabilityTests: XCTestCase {
     }
 
     func testNetworkConnectionChangesIconState() {
-        // mocks
-        let statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
-        let reachability = MockReachability()
-        let env = AppControllerEnvironment(statusItem: statusItem, reachability: reachability)
-        env.inject()
-
         // sut
         reachability.delegate?.reachabilityDidChange(env.reachability, isReachable: true)
 

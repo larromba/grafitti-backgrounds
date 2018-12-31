@@ -572,8 +572,8 @@
 		7FF29091219740EF0018C003 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7FF2908C21973E100018C003 /* TestResource.swift */,
 				7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */,
+				7FF2908C21973E100018C003 /* TestResource.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
