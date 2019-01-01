@@ -34,7 +34,7 @@ final class RefreshTests: XCTestCase {
 
         // test
         wait {
-            let loadingProgress = self.statusItem._viewStateHistory.map { $0.variable.loadingPercentage }
+            let loadingProgress = self.statusItem._viewStateHistory.compactMap { $0.variable?.loadingPercentage }
             XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
         }
     }
