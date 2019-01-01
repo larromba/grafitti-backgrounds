@@ -19,85 +19,85 @@ import AsyncAwait
 // MARK: - Sourcery Helper
 
 protocol _StringRawRepresentable: RawRepresentable {
-  var rawValue: String { get }
+    var rawValue: String { get }
 }
 
 struct _Variable<T> {
-  let date = Date()
-  var variable: T
+    let date = Date()
+    var variable: T
 
-  init(_ variable: T) {
-    self.variable = variable
-  }
+    init(_ variable: T) {
+        self.variable = variable
+    }
 }
 
 final class _Invocation {
-  let name: String
-  let date = Date()
-  private var parameters: [String: Any] = [:]
+    let name: String
+    let date = Date()
+    private var parameters: [String: Any] = [:]
 
-  init(name: String) {
-    self.name = name
-  }
+    init(name: String) {
+        self.name = name
+    }
 
-  fileprivate func set<T: _StringRawRepresentable>(parameter: Any, forKey key: T) {
-    parameters[key.rawValue] = parameter
-  }
-  func parameter<T: _StringRawRepresentable>(for key: T) -> Any? {
-    return parameters[key.rawValue]
-  }
+    fileprivate func set<T: _StringRawRepresentable>(parameter: Any, forKey key: T) {
+        parameters[key.rawValue] = parameter
+    }
+    func parameter<T: _StringRawRepresentable>(for key: T) -> Any? {
+        return parameters[key.rawValue]
+    }
 }
 
 final class _Actions {
   enum Keys: String, _StringRawRepresentable {
-    case returnValue
-    case defaultReturnValue
-    case error
+      case returnValue
+      case defaultReturnValue
+      case error
   }
   private var invocations: [_Invocation] = []
 
   // MARK: - returnValue
 
   func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.returnValue)
+      let invocation = self.invocation(for: functionName)
+      invocation.set(parameter: value, forKey: Keys.returnValue)
   }
   func returnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
+      let invocation = self.invocation(for: functionName)
+      return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
   }
 
   // MARK: - defaultReturnValue
 
   fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
+      let invocation = self.invocation(for: functionName)
+      invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
   }
   fileprivate func defaultReturnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
+      let invocation = self.invocation(for: functionName)
+      return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
   }
 
   // MARK: - error
 
   func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: error, forKey: Keys.error)
+      let invocation = self.invocation(for: functionName)
+      invocation.set(parameter: error, forKey: Keys.error)
   }
   func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.error) as? Error
+      let invocation = self.invocation(for: functionName)
+      return invocation.parameter(for: Keys.error) as? Error
   }
 
   // MARK: - private
 
   private func invocation<T: _StringRawRepresentable>(for name: T) -> _Invocation {
-    if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+      if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+          return invocation
+      }
+      let invocation = _Invocation(name: name.rawValue)
+      invocations += [invocation]
       return invocation
-    }
-    let invocation = _Invocation(name: name.rawValue)
-    invocations += [invocation]
-    return invocation
   }
 }
 
@@ -105,23 +105,23 @@ final class _Invocations {
   private var history = [_Invocation]()
 
   fileprivate func record(_ invocation: _Invocation) {
-    history += [invocation]
+      history += [invocation]
   }
 
   func isInvoked<T: _StringRawRepresentable>(_ name: T) -> Bool {
-    return history.contains(where: { $0.name == name.rawValue })
+      return history.contains(where: { $0.name == name.rawValue })
   }
 
   func count<T: _StringRawRepresentable>(_ name: T) -> Int {
-    return history.filter {  $0.name == name.rawValue }.count
+      return history.filter {  $0.name == name.rawValue }.count
   }
 
   func all() -> [_Invocation] {
-    return history.sorted { $0.date < $1.date }
+      return history.sorted { $0.date < $1.date }
   }
 
   func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
-    return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
+      return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
   }
 }
 
@@ -130,6 +130,8 @@ final class _Invocations {
 class MockAlertController: NSObject, AlertControlling {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - showAlert
 
@@ -141,16 +143,18 @@ class MockAlertController: NSObject, AlertControlling {
     }
 
     enum showAlert1: String, _StringRawRepresentable {
-      case name = "showAlert1"
-      enum params: String, _StringRawRepresentable {
-        case alert = "showAlert(_alert:Alert).alert"
-      }
+        case name = "showAlert1"
+        enum params: String, _StringRawRepresentable {
+            case alert = "showAlert(_alert:Alert).alert"
+        }
     }
 }
 
 class MockAppController: NSObject, AppControllable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - start
 
@@ -161,7 +165,7 @@ class MockAppController: NSObject, AppControllable {
     }
 
     enum start1: String, _StringRawRepresentable {
-      case name = "start1"
+        case name = "start1"
     }
 }
 
@@ -171,6 +175,8 @@ class MockAppDelegate: NSObject, AppDelegatable {
 class MockAppMenuController: NSObject, AppMenuControllable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - setLoadingPercentage
 
@@ -182,10 +188,10 @@ class MockAppMenuController: NSObject, AppMenuControllable {
     }
 
     enum setLoadingPercentage1: String, _StringRawRepresentable {
-      case name = "setLoadingPercentage1"
-      enum params: String, _StringRawRepresentable {
-        case percentage = "setLoadingPercentage(_percentage:Double).percentage"
-      }
+        case name = "setLoadingPercentage1"
+        enum params: String, _StringRawRepresentable {
+            case percentage = "setLoadingPercentage(_percentage:Double).percentage"
+        }
     }
 
     // MARK: - setIsLoading
@@ -198,10 +204,10 @@ class MockAppMenuController: NSObject, AppMenuControllable {
     }
 
     enum setIsLoading2: String, _StringRawRepresentable {
-      case name = "setIsLoading2"
-      enum params: String, _StringRawRepresentable {
-        case isLoading = "setIsLoading(_isLoading:Bool).isLoading"
-      }
+        case name = "setIsLoading2"
+        enum params: String, _StringRawRepresentable {
+            case isLoading = "setIsLoading(_isLoading:Bool).isLoading"
+        }
     }
 
     // MARK: - setRefreshAction
@@ -214,10 +220,10 @@ class MockAppMenuController: NSObject, AppMenuControllable {
     }
 
     enum setRefreshAction3: String, _StringRawRepresentable {
-      case name = "setRefreshAction3"
-      enum params: String, _StringRawRepresentable {
-        case action = "setRefreshAction(_action:AppMenu.Action.Refresh).action"
-      }
+        case name = "setRefreshAction3"
+        enum params: String, _StringRawRepresentable {
+            case action = "setRefreshAction(_action:AppMenu.Action.Refresh).action"
+        }
     }
 
     // MARK: - setDelegate
@@ -230,16 +236,18 @@ class MockAppMenuController: NSObject, AppMenuControllable {
     }
 
     enum setDelegate4: String, _StringRawRepresentable {
-      case name = "setDelegate4"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:AppMenuControllerDelegate).delegate"
-      }
+        case name = "setDelegate4"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:AppMenuControllerDelegate).delegate"
+        }
     }
 }
 
 class MockApplication: NSObject, Applicationable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - activate
 
@@ -251,10 +259,10 @@ class MockApplication: NSObject, Applicationable {
     }
 
     enum activate1: String, _StringRawRepresentable {
-      case name = "activate1"
-      enum params: String, _StringRawRepresentable {
-        case flag = "activate(ignoringOtherAppsflag:Bool).flag"
-      }
+        case name = "activate1"
+        enum params: String, _StringRawRepresentable {
+            case flag = "activate(ignoringOtherAppsflag:Bool).flag"
+        }
     }
 
     // MARK: - orderFrontStandardAboutPanel
@@ -269,10 +277,10 @@ class MockApplication: NSObject, Applicationable {
     }
 
     enum orderFrontStandardAboutPanel2: String, _StringRawRepresentable {
-      case name = "orderFrontStandardAboutPanel2"
-      enum params: String, _StringRawRepresentable {
-        case sender = "orderFrontStandardAboutPanel(_sender:Any?).sender"
-      }
+        case name = "orderFrontStandardAboutPanel2"
+        enum params: String, _StringRawRepresentable {
+            case sender = "orderFrontStandardAboutPanel(_sender:Any?).sender"
+        }
     }
 
     // MARK: - orderFrontStandardAboutPanel
@@ -285,10 +293,10 @@ class MockApplication: NSObject, Applicationable {
     }
 
     enum orderFrontStandardAboutPanel3: String, _StringRawRepresentable {
-      case name = "orderFrontStandardAboutPanel3"
-      enum params: String, _StringRawRepresentable {
-        case optionsDictionary = "orderFrontStandardAboutPanel(optionsoptionsDictionary:[NSApplication.AboutPanelOptionKey:Any]).optionsDictionary"
-      }
+        case name = "orderFrontStandardAboutPanel3"
+        enum params: String, _StringRawRepresentable {
+            case optionsDictionary = "orderFrontStandardAboutPanel(optionsoptionsDictionary:[NSApplication.AboutPanelOptionKey:Any]).optionsDictionary"
+        }
     }
 
     // MARK: - terminate
@@ -303,16 +311,18 @@ class MockApplication: NSObject, Applicationable {
     }
 
     enum terminate4: String, _StringRawRepresentable {
-      case name = "terminate4"
-      enum params: String, _StringRawRepresentable {
-        case sender = "terminate(_sender:Any?).sender"
-      }
+        case name = "terminate4"
+        enum params: String, _StringRawRepresentable {
+            case sender = "terminate(_sender:Any?).sender"
+        }
     }
 }
 
 class MockDataManger: NSObject, DataManaging {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - save<T: Keyable>
 
@@ -327,11 +337,11 @@ class MockDataManger: NSObject, DataManaging {
     }
 
     enum save1: String, _StringRawRepresentable {
-      case name = "save1"
-      enum params: String, _StringRawRepresentable {
-        case data = "save<T:Keyable>(_data:Data?,key:T).data"
-        case key = "save<T:Keyable>(_data:Data?,key:T).key"
-      }
+        case name = "save1"
+        enum params: String, _StringRawRepresentable {
+            case data = "save<T:Keyable>(_data:Data?,key:T).data"
+            case key = "save<T:Keyable>(_data:Data?,key:T).key"
+        }
     }
 
     // MARK: - load<T: Keyable>
@@ -345,16 +355,18 @@ class MockDataManger: NSObject, DataManaging {
     }
 
     enum load2: String, _StringRawRepresentable {
-      case name = "load2"
-      enum params: String, _StringRawRepresentable {
-        case key = "load<T:Keyable>(key:T).key"
-      }
+        case name = "load2"
+        enum params: String, _StringRawRepresentable {
+            case key = "load<T:Keyable>(key:T).key"
+        }
     }
 }
 
 class MockEmailController: NSObject, EmailControlling {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - openMail
 
@@ -369,18 +381,20 @@ class MockEmailController: NSObject, EmailControlling {
     }
 
     enum openMail1: String, _StringRawRepresentable {
-      case name = "openMail1"
-      enum params: String, _StringRawRepresentable {
-        case receipient = "openMail(receipient:String,subject:String,body:String).receipient"
-        case subject = "openMail(receipient:String,subject:String,body:String).subject"
-        case body = "openMail(receipient:String,subject:String,body:String).body"
-      }
+        case name = "openMail1"
+        enum params: String, _StringRawRepresentable {
+            case receipient = "openMail(receipient:String,subject:String,body:String).receipient"
+            case subject = "openMail(receipient:String,subject:String,body:String).subject"
+            case body = "openMail(receipient:String,subject:String,body:String).body"
+        }
     }
 }
 
 class MockFileManager: NSObject, FileManaging {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - removeItem
 
@@ -395,10 +409,10 @@ class MockFileManager: NSObject, FileManaging {
     }
 
     enum removeItem1: String, _StringRawRepresentable {
-      case name = "removeItem1"
-      enum params: String, _StringRawRepresentable {
-        case URL = "removeItem(atURL:URL).URL"
-      }
+        case name = "removeItem1"
+        enum params: String, _StringRawRepresentable {
+            case URL = "removeItem(atURL:URL).URL"
+        }
     }
 
     // MARK: - moveItem
@@ -415,11 +429,11 @@ class MockFileManager: NSObject, FileManaging {
     }
 
     enum moveItem2: String, _StringRawRepresentable {
-      case name = "moveItem2"
-      enum params: String, _StringRawRepresentable {
-        case srcURL = "moveItem(atsrcURL:URL,todstURL:URL).srcURL"
-        case dstURL = "moveItem(atsrcURL:URL,todstURL:URL).dstURL"
-      }
+        case name = "moveItem2"
+        enum params: String, _StringRawRepresentable {
+            case srcURL = "moveItem(atsrcURL:URL,todstURL:URL).srcURL"
+            case dstURL = "moveItem(atsrcURL:URL,todstURL:URL).dstURL"
+        }
     }
 
     // MARK: - createDirectory
@@ -439,12 +453,12 @@ class MockFileManager: NSObject, FileManaging {
     }
 
     enum createDirectory3: String, _StringRawRepresentable {
-      case name = "createDirectory3"
-      enum params: String, _StringRawRepresentable {
-        case url = "createDirectory(aturl:URL,withIntermediateDirectoriescreateIntermediates:Bool,attributes:[FileAttributeKey:Any]?).url"
-        case createIntermediates = "createDirectory(aturl:URL,withIntermediateDirectoriescreateIntermediates:Bool,attributes:[FileAttributeKey:Any]?).createIntermediates"
-        case attributes = "createDirectory(aturl:URL,withIntermediateDirectoriescreateIntermediates:Bool,attributes:[FileAttributeKey:Any]?).attributes"
-      }
+        case name = "createDirectory3"
+        enum params: String, _StringRawRepresentable {
+            case url = "createDirectory(aturl:URL,withIntermediateDirectoriescreateIntermediates:Bool,attributes:[FileAttributeKey:Any]?).url"
+            case createIntermediates = "createDirectory(aturl:URL,withIntermediateDirectoriescreateIntermediates:Bool,attributes:[FileAttributeKey:Any]?).createIntermediates"
+            case attributes = "createDirectory(aturl:URL,withIntermediateDirectoriescreateIntermediates:Bool,attributes:[FileAttributeKey:Any]?).attributes"
+        }
     }
 
     // MARK: - fileExists
@@ -458,10 +472,10 @@ class MockFileManager: NSObject, FileManaging {
     }
 
     enum fileExists4: String, _StringRawRepresentable {
-      case name = "fileExists4"
-      enum params: String, _StringRawRepresentable {
-        case path = "fileExists(atPathpath:String).path"
-      }
+        case name = "fileExists4"
+        enum params: String, _StringRawRepresentable {
+            case path = "fileExists(atPathpath:String).path"
+        }
     }
 }
 
@@ -471,7 +485,7 @@ class MockLoadingStatusItem: NSObject, LoadingStatusItemable {
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
     var _viewState: LoadingStatusItemViewStating!
-    var _viewStateHistory: [_Variable<LoadingStatusItemViewStating>] = []
+    var _viewStateHistory: [_Variable<LoadingStatusItemViewStating?>] = []
     var menu: Menuable? {
         get { return _menu }
         set(value) { _menu = value; _menuHistory.append(_Variable(value)) }
@@ -480,6 +494,8 @@ class MockLoadingStatusItem: NSObject, LoadingStatusItemable {
     var _menuHistory: [_Variable<Menuable?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - item<T: MenuItemable>
 
@@ -492,10 +508,10 @@ class MockLoadingStatusItem: NSObject, LoadingStatusItemable {
     }
 
     enum item1: String, _StringRawRepresentable {
-      case name = "item1"
-      enum params: String, _StringRawRepresentable {
-        case index = "item<T:MenuItemable>(atindex:Int).index"
-      }
+        case name = "item1"
+        enum params: String, _StringRawRepresentable {
+            case index = "item<T:MenuItemable>(atindex:Int).index"
+        }
     }
 }
 
@@ -507,15 +523,17 @@ class MockMenuItem: NSObject, MenuItemable {
         set(value) { _actionType = value; _actionTypeHistory.append(_Variable(value)) }
     }
     var _actionType: ActionType!
-    var _actionTypeHistory: [_Variable<ActionType>] = []
+    var _actionTypeHistory: [_Variable<ActionType?>] = []
     var viewState: MenuItemViewStating {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
     var _viewState: MenuItemViewStating!
-    var _viewStateHistory: [_Variable<MenuItemViewStating>] = []
+    var _viewStateHistory: [_Variable<MenuItemViewStating?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - setDelegate
 
@@ -527,10 +545,10 @@ class MockMenuItem: NSObject, MenuItemable {
     }
 
     enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:DelegateType).delegate"
-      }
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:DelegateType).delegate"
+        }
     }
 }
 
@@ -540,9 +558,11 @@ class MockMenu: NSObject, Menuable {
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
     var _viewState: MenuViewStating!
-    var _viewStateHistory: [_Variable<MenuViewStating>] = []
+    var _viewStateHistory: [_Variable<MenuViewStating?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - item<T: MenuItemable>
 
@@ -555,16 +575,18 @@ class MockMenu: NSObject, Menuable {
     }
 
     enum item1: String, _StringRawRepresentable {
-      case name = "item1"
-      enum params: String, _StringRawRepresentable {
-        case index = "item<T:MenuItemable>(atindex:Int).index"
-      }
+        case name = "item1"
+        enum params: String, _StringRawRepresentable {
+            case index = "item<T:MenuItemable>(atindex:Int).index"
+        }
     }
 }
 
 class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - fetchPhotoAlbums
 
@@ -577,10 +599,10 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     }
 
     enum fetchPhotoAlbums1: String, _StringRawRepresentable {
-      case name = "fetchPhotoAlbums1"
-      enum params: String, _StringRawRepresentable {
-        case progress = "fetchPhotoAlbums(progress:@escaping(Double)->Void).progress"
-      }
+        case name = "fetchPhotoAlbums1"
+        enum params: String, _StringRawRepresentable {
+            case progress = "fetchPhotoAlbums(progress:@escaping(Double)->Void).progress"
+        }
     }
 
     // MARK: - cancelAll
@@ -592,7 +614,7 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     }
 
     enum cancelAll2: String, _StringRawRepresentable {
-      case name = "cancelAll2"
+        case name = "cancelAll2"
     }
 }
 
@@ -602,15 +624,17 @@ class MockPhotoController: NSObject, PhotoControllable {
         set(value) { _isDownloadInProgress = value; _isDownloadInProgressHistory.append(_Variable(value)) }
     }
     var _isDownloadInProgress: Bool!
-    var _isDownloadInProgressHistory: [_Variable<Bool>] = []
+    var _isDownloadInProgressHistory: [_Variable<Bool?>] = []
     var photoFolderURL: URL {
         get { return _photoFolderURL }
         set(value) { _photoFolderURL = value; _photoFolderURLHistory.append(_Variable(value)) }
     }
     var _photoFolderURL: URL!
-    var _photoFolderURLHistory: [_Variable<URL>] = []
+    var _photoFolderURLHistory: [_Variable<URL?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - setPreferences
 
@@ -622,10 +646,10 @@ class MockPhotoController: NSObject, PhotoControllable {
     }
 
     enum setPreferences1: String, _StringRawRepresentable {
-      case name = "setPreferences1"
-      enum params: String, _StringRawRepresentable {
-        case preferences = "setPreferences(_preferences:Preferences).preferences"
-      }
+        case name = "setPreferences1"
+        enum params: String, _StringRawRepresentable {
+            case preferences = "setPreferences(_preferences:Preferences).preferences"
+        }
     }
 
     // MARK: - reloadPhotos
@@ -638,7 +662,7 @@ class MockPhotoController: NSObject, PhotoControllable {
     }
 
     enum reloadPhotos2: String, _StringRawRepresentable {
-      case name = "reloadPhotos2"
+        case name = "reloadPhotos2"
     }
 
     // MARK: - cancelReload
@@ -650,7 +674,7 @@ class MockPhotoController: NSObject, PhotoControllable {
     }
 
     enum cancelReload3: String, _StringRawRepresentable {
-      case name = "cancelReload3"
+        case name = "cancelReload3"
     }
 
     // MARK: - clearFolder
@@ -663,7 +687,7 @@ class MockPhotoController: NSObject, PhotoControllable {
     }
 
     enum clearFolder4: String, _StringRawRepresentable {
-      case name = "clearFolder4"
+        case name = "clearFolder4"
     }
 
     // MARK: - setDelegate
@@ -676,16 +700,18 @@ class MockPhotoController: NSObject, PhotoControllable {
     }
 
     enum setDelegate5: String, _StringRawRepresentable {
-      case name = "setDelegate5"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:PhotoControllerDelegate).delegate"
-      }
+        case name = "setDelegate5"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:PhotoControllerDelegate).delegate"
+        }
     }
 }
 
 class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - photoControllerTimerTriggered
 
@@ -697,10 +723,10 @@ class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
     }
 
     enum photoControllerTimerTriggered1: String, _StringRawRepresentable {
-      case name = "photoControllerTimerTriggered1"
-      enum params: String, _StringRawRepresentable {
-        case photoController = "photoControllerTimerTriggered(_photoController:PhotoController).photoController"
-      }
+        case name = "photoControllerTimerTriggered1"
+        enum params: String, _StringRawRepresentable {
+            case photoController = "photoControllerTimerTriggered(_photoController:PhotoController).photoController"
+        }
     }
 
     // MARK: - photoController
@@ -714,11 +740,11 @@ class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
     }
 
     enum photoController2: String, _StringRawRepresentable {
-      case name = "photoController2"
-      enum params: String, _StringRawRepresentable {
-        case photoController = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).photoController"
-        case percentage = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).percentage"
-      }
+        case name = "photoController2"
+        enum params: String, _StringRawRepresentable {
+            case photoController = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).photoController"
+            case percentage = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).percentage"
+        }
     }
 
     // MARK: - photoController
@@ -732,17 +758,19 @@ class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
     }
 
     enum photoController3: String, _StringRawRepresentable {
-      case name = "photoController3"
-      enum params: String, _StringRawRepresentable {
-        case photoController = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).photoController"
-        case inProgress = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).inProgress"
-      }
+        case name = "photoController3"
+        enum params: String, _StringRawRepresentable {
+            case photoController = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).photoController"
+            case inProgress = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).inProgress"
+        }
     }
 }
 
 class MockPhotoService: NSObject, PhotoServicing {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - downloadPhotos
 
@@ -756,11 +784,11 @@ class MockPhotoService: NSObject, PhotoServicing {
     }
 
     enum downloadPhotos1: String, _StringRawRepresentable {
-      case name = "downloadPhotos1"
-      enum params: String, _StringRawRepresentable {
-        case resources = "downloadPhotos(_resources:[PhotoResource],progress:@escaping(Double)->Void).resources"
-        case progress = "downloadPhotos(_resources:[PhotoResource],progress:@escaping(Double)->Void).progress"
-      }
+        case name = "downloadPhotos1"
+        enum params: String, _StringRawRepresentable {
+            case resources = "downloadPhotos(_resources:[PhotoResource],progress:@escaping(Double)->Void).resources"
+            case progress = "downloadPhotos(_resources:[PhotoResource],progress:@escaping(Double)->Void).progress"
+        }
     }
 
     // MARK: - movePhotos
@@ -775,11 +803,11 @@ class MockPhotoService: NSObject, PhotoServicing {
     }
 
     enum movePhotos2: String, _StringRawRepresentable {
-      case name = "movePhotos2"
-      enum params: String, _StringRawRepresentable {
-        case resources = "movePhotos(_resources:[PhotoResource],toFolderurl:URL).resources"
-        case url = "movePhotos(_resources:[PhotoResource],toFolderurl:URL).url"
-      }
+        case name = "movePhotos2"
+        enum params: String, _StringRawRepresentable {
+            case resources = "movePhotos(_resources:[PhotoResource],toFolderurl:URL).resources"
+            case url = "movePhotos(_resources:[PhotoResource],toFolderurl:URL).url"
+        }
     }
 
     // MARK: - cancelAll
@@ -791,13 +819,15 @@ class MockPhotoService: NSObject, PhotoServicing {
     }
 
     enum cancelAll3: String, _StringRawRepresentable {
-      case name = "cancelAll3"
+        case name = "cancelAll3"
     }
 }
 
 class MockPhotoStorageService: NSObject, PhotoStorageServicing {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - save
 
@@ -810,10 +840,10 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
     }
 
     enum save1: String, _StringRawRepresentable {
-      case name = "save1"
-      enum params: String, _StringRawRepresentable {
-        case resources = "save(_resources:[PhotoResource]).resources"
-      }
+        case name = "save1"
+        enum params: String, _StringRawRepresentable {
+            case resources = "save(_resources:[PhotoResource]).resources"
+        }
     }
 
     // MARK: - load
@@ -826,7 +856,7 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
     }
 
     enum load2: String, _StringRawRepresentable {
-      case name = "load2"
+        case name = "load2"
     }
 
     // MARK: - remove
@@ -840,10 +870,10 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
     }
 
     enum remove3: String, _StringRawRepresentable {
-      case name = "remove3"
-      enum params: String, _StringRawRepresentable {
-        case resources = "remove(_resources:[PhotoResource]).resources"
-      }
+        case name = "remove3"
+        enum params: String, _StringRawRepresentable {
+            case resources = "remove(_resources:[PhotoResource]).resources"
+        }
     }
 }
 
@@ -853,9 +883,11 @@ class MockPreferencesController: NSViewController, PreferencesControllable {
         set(value) { _preferences = value; _preferencesHistory.append(_Variable(value)) }
     }
     var _preferences: Preferences!
-    var _preferencesHistory: [_Variable<Preferences>] = []
+    var _preferencesHistory: [_Variable<Preferences?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - open
 
@@ -866,7 +898,7 @@ class MockPreferencesController: NSViewController, PreferencesControllable {
     }
 
     enum open1: String, _StringRawRepresentable {
-      case name = "open1"
+        case name = "open1"
     }
 
     // MARK: - setDelegate
@@ -879,16 +911,18 @@ class MockPreferencesController: NSViewController, PreferencesControllable {
     }
 
     enum setDelegate2: String, _StringRawRepresentable {
-      case name = "setDelegate2"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:PreferencesControllerDelegate).delegate"
-      }
+        case name = "setDelegate2"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:PreferencesControllerDelegate).delegate"
+        }
     }
 }
 
 class MockPreferencesService: NSObject, PreferencesServicing {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - save
 
@@ -901,10 +935,10 @@ class MockPreferencesService: NSObject, PreferencesServicing {
     }
 
     enum save1: String, _StringRawRepresentable {
-      case name = "save1"
-      enum params: String, _StringRawRepresentable {
-        case preferences = "save(_preferences:Preferences).preferences"
-      }
+        case name = "save1"
+        enum params: String, _StringRawRepresentable {
+            case preferences = "save(_preferences:Preferences).preferences"
+        }
     }
 
     // MARK: - load
@@ -917,7 +951,7 @@ class MockPreferencesService: NSObject, PreferencesServicing {
     }
 
     enum load2: String, _StringRawRepresentable {
-      case name = "load2"
+        case name = "load2"
     }
 }
 
@@ -930,6 +964,8 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
     var _viewStateHistory: [_Variable<PreferencesViewStating?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - setDelegate
 
@@ -941,10 +977,10 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
     }
 
     enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:PreferencesViewControllerDelegate).delegate"
-      }
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:PreferencesViewControllerDelegate).delegate"
+        }
     }
 }
 
@@ -969,6 +1005,8 @@ class MockSharingService: NSObject, SharingServicing {
     var _messageBodyHistory: [_Variable<String?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - canPerform
 
@@ -983,10 +1021,10 @@ class MockSharingService: NSObject, SharingServicing {
     }
 
     enum canPerform1: String, _StringRawRepresentable {
-      case name = "canPerform1"
-      enum params: String, _StringRawRepresentable {
-        case items = "canPerform(withItemsitems:[Any]?).items"
-      }
+        case name = "canPerform1"
+        enum params: String, _StringRawRepresentable {
+            case items = "canPerform(withItemsitems:[Any]?).items"
+        }
     }
 
     // MARK: - perform
@@ -999,16 +1037,18 @@ class MockSharingService: NSObject, SharingServicing {
     }
 
     enum perform2: String, _StringRawRepresentable {
-      case name = "perform2"
-      enum params: String, _StringRawRepresentable {
-        case items = "perform(withItemsitems:[Any]).items"
-      }
+        case name = "perform2"
+        enum params: String, _StringRawRepresentable {
+            case items = "perform(withItemsitems:[Any]).items"
+        }
     }
 }
 
 class MockStatusBar: NSObject, StatusBarable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - statusItem
 
@@ -1021,10 +1061,10 @@ class MockStatusBar: NSObject, StatusBarable {
     }
 
     enum statusItem1: String, _StringRawRepresentable {
-      case name = "statusItem1"
-      enum params: String, _StringRawRepresentable {
-        case length = "statusItem(withLengthlength:CGFloat).length"
-      }
+        case name = "statusItem1"
+        enum params: String, _StringRawRepresentable {
+            case length = "statusItem(withLengthlength:CGFloat).length"
+        }
     }
 
     // MARK: - removeStatusItem
@@ -1037,16 +1077,18 @@ class MockStatusBar: NSObject, StatusBarable {
     }
 
     enum removeStatusItem2: String, _StringRawRepresentable {
-      case name = "removeStatusItem2"
-      enum params: String, _StringRawRepresentable {
-        case item = "removeStatusItem(_item:NSStatusItem).item"
-      }
+        case name = "removeStatusItem2"
+        enum params: String, _StringRawRepresentable {
+            case item = "removeStatusItem(_item:NSStatusItem).item"
+        }
     }
 }
 
 class MockStatusItemable: NSObject, StatusItemable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - statusItem
 
@@ -1059,10 +1101,10 @@ class MockStatusItemable: NSObject, StatusItemable {
     }
 
     enum statusItem1: String, _StringRawRepresentable {
-      case name = "statusItem1"
-      enum params: String, _StringRawRepresentable {
-        case length = "statusItem(withLengthlength:CGFloat).length"
-      }
+        case name = "statusItem1"
+        enum params: String, _StringRawRepresentable {
+            case length = "statusItem(withLengthlength:CGFloat).length"
+        }
     }
 
     // MARK: - removeStatusItem
@@ -1075,16 +1117,18 @@ class MockStatusItemable: NSObject, StatusItemable {
     }
 
     enum removeStatusItem2: String, _StringRawRepresentable {
-      case name = "removeStatusItem2"
-      enum params: String, _StringRawRepresentable {
-        case item = "removeStatusItem(_item:NSStatusItem).item"
-      }
+        case name = "removeStatusItem2"
+        enum params: String, _StringRawRepresentable {
+            case item = "removeStatusItem(_item:NSStatusItem).item"
+        }
     }
 }
 
 class MockUserDefaults: NSObject, UserDefaultable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - object
 
@@ -1097,10 +1141,10 @@ class MockUserDefaults: NSObject, UserDefaultable {
     }
 
     enum object1: String, _StringRawRepresentable {
-      case name = "object1"
-      enum params: String, _StringRawRepresentable {
-        case defaultName = "object(forKeydefaultName:String).defaultName"
-      }
+        case name = "object1"
+        enum params: String, _StringRawRepresentable {
+            case defaultName = "object(forKeydefaultName:String).defaultName"
+        }
     }
 
     // MARK: - set
@@ -1116,17 +1160,19 @@ class MockUserDefaults: NSObject, UserDefaultable {
     }
 
     enum set2: String, _StringRawRepresentable {
-      case name = "set2"
-      enum params: String, _StringRawRepresentable {
-        case value = "set(_value:Any?,forKeydefaultName:String).value"
-        case defaultName = "set(_value:Any?,forKeydefaultName:String).defaultName"
-      }
+        case name = "set2"
+        enum params: String, _StringRawRepresentable {
+            case value = "set(_value:Any?,forKeydefaultName:String).value"
+            case defaultName = "set(_value:Any?,forKeydefaultName:String).defaultName"
+        }
     }
 }
 
 class MockUserNotificationCenter: NSObject, UserNotificationCentering {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - deliver
 
@@ -1138,10 +1184,10 @@ class MockUserNotificationCenter: NSObject, UserNotificationCentering {
     }
 
     enum deliver1: String, _StringRawRepresentable {
-      case name = "deliver1"
-      enum params: String, _StringRawRepresentable {
-        case notification = "deliver(_notification:NSUserNotification).notification"
-      }
+        case name = "deliver1"
+        enum params: String, _StringRawRepresentable {
+            case notification = "deliver(_notification:NSUserNotification).notification"
+        }
     }
 }
 
@@ -1154,6 +1200,8 @@ class MockWindowController: NSObject, WindowControlling {
     var _contentViewControllerHistory: [_Variable<NSViewController?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - showWindow
 
@@ -1167,16 +1215,18 @@ class MockWindowController: NSObject, WindowControlling {
     }
 
     enum showWindow1: String, _StringRawRepresentable {
-      case name = "showWindow1"
-      enum params: String, _StringRawRepresentable {
-        case sender = "showWindow(_sender:Any?).sender"
-      }
+        case name = "showWindow1"
+        enum params: String, _StringRawRepresentable {
+            case sender = "showWindow(_sender:Any?).sender"
+        }
     }
 }
 
 class MockWorkspaceController: NSObject, WorkspaceControllable {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - open
 
@@ -1189,10 +1239,10 @@ class MockWorkspaceController: NSObject, WorkspaceControllable {
     }
 
     enum open1: String, _StringRawRepresentable {
-      case name = "open1"
-      enum params: String, _StringRawRepresentable {
-        case preference = "open(_preference:SystemPreference).preference"
-      }
+        case name = "open1"
+        enum params: String, _StringRawRepresentable {
+            case preference = "open(_preference:SystemPreference).preference"
+        }
     }
 
     // MARK: - open
@@ -1206,16 +1256,18 @@ class MockWorkspaceController: NSObject, WorkspaceControllable {
     }
 
     enum open2: String, _StringRawRepresentable {
-      case name = "open2"
-      enum params: String, _StringRawRepresentable {
-        case url = "open(_url:URL).url"
-      }
+        case name = "open2"
+        enum params: String, _StringRawRepresentable {
+            case url = "open(_url:URL).url"
+        }
     }
 }
 
 class MockWorkspace: NSObject, Workspacing {
     let invocations = _Invocations()
     let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
 
     // MARK: - open
 
@@ -1229,9 +1281,9 @@ class MockWorkspace: NSObject, Workspacing {
     }
 
     enum open1: String, _StringRawRepresentable {
-      case name = "open1"
-      enum params: String, _StringRawRepresentable {
-        case url = "open(_url:URL).url"
-      }
+        case name = "open1"
+        enum params: String, _StringRawRepresentable {
+            case url = "open(_url:URL).url"
+        }
     }
 }
