@@ -4,7 +4,11 @@ import Cocoa
 private func main() {
     let app = NSApplication.shared
     NSApp = app
-    app.delegate = AppDelegateFactory.make(for: app)
+    #if DEBUG
+    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+        app.delegate = AppDelegateFactory.make(for: app)
+    }
+    #endif
     _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
 }
 

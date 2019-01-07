@@ -37,9 +37,9 @@ extension TestNetworkManager {
                       resource: TestResource.photoResponse1Photo.file)
         ]
         let downloadStubs = [
-            // TODO: stubs could contain more info, like return a 200 / 500 etc, for now we force a filewrite failure
             DownloadStub(url: URL(string: "https://lh3.googleusercontent.com/test=w2148-h1610-no")!,
-                         writeURL: URL(string: "file://doesnotexist")!,
+                         statusCode: 500,
+                         writeURL: URL.makeTemporaryFolderURL(),
                          data: Data())
         ]
         return TestNetworkManager(fetchStubs: fetchStubs, downloadStubs: downloadStubs)
