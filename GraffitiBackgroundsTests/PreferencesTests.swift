@@ -87,10 +87,9 @@ final class PreferencesTests: XCTestCase {
         preferencesUI.1.autoRefreshIntervalTextField.fireTextChagedEvent(in: preferencesUI.1)
 
         // test
-        wait {
-            XCTAssertTrue(photoDelegate.invocations
-                .isInvoked(MockPhotoControllerDelegate.photoControllerTimerTriggered1.name))
-        }
+        waitSync()
+        XCTAssertTrue(photoDelegate.invocations
+            .isInvoked(MockPhotoControllerDelegate.photoControllerTimerTriggered1.name))
     }
 
     // MARK: - private
