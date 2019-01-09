@@ -33,10 +33,9 @@ final class RefreshTests: XCTestCase {
         statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let loadingProgress = self.statusItem._viewStateHistory.compactMap { $0.variable?.loadingPercentage }
-            XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
-        }
+        waitSync()
+        let loadingProgress = self.statusItem._viewStateHistory.compactMap { $0.variable?.loadingPercentage }
+        XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
     }
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsNormalStatusItem() {
@@ -48,12 +47,11 @@ final class RefreshTests: XCTestCase {
         statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let viewState = self.statusItem._viewStateHistory.last?.variable
-            XCTAssertEqual(viewState?.isLoading, false)
-            XCTAssertEqual(viewState?.loadingPercentage, 0.0)
-            XCTAssertEqual(viewState?.alpha, 1.0)
-        }
+        waitSync()
+        let viewState = self.statusItem._viewStateHistory.last?.variable
+        XCTAssertEqual(viewState?.isLoading, false)
+        XCTAssertEqual(viewState?.loadingPercentage, 0.0)
+        XCTAssertEqual(viewState?.alpha, 1.0)
     }
 
     func testRefreshFolderOnMenuClickWhenStartedShowsAlertNotification() {
@@ -67,14 +65,13 @@ final class RefreshTests: XCTestCase {
         statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
-            let notification = invocations.first?
-                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
-            XCTAssertEqual(notification?.title, "Refreshing...")
-            XCTAssertEqual(notification?.informativeText, "Your photos are now refreshing")
-            XCTAssertEqual(invocations.count, 2)
-        }
+        waitSync()
+        let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+        let notification = invocations.first?
+            .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+        XCTAssertEqual(notification?.title, "Refreshing...")
+        XCTAssertEqual(notification?.informativeText, "Your photos are now refreshing")
+        XCTAssertEqual(invocations.count, 2)
     }
 
     func testRefreshFolderOnMenuClickWhenFinishedShowsAlert() {
@@ -88,14 +85,13 @@ final class RefreshTests: XCTestCase {
         statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
-            let notification = invocations.last?
-                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
-            XCTAssertEqual(notification?.title, "Success!")
-            XCTAssertEqual(notification?.informativeText, "Your photos were reloaded")
-            XCTAssertEqual(invocations.count, 2)
-        }
+        waitSync()
+        let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+        let notification = invocations.last?
+            .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+        XCTAssertEqual(notification?.title, "Success!")
+        XCTAssertEqual(notification?.informativeText, "Your photos were reloaded")
+        XCTAssertEqual(invocations.count, 2)
     }
 
     func testRefreshFolderOnMenuClickClearsPreviousFiles() {
@@ -110,9 +106,8 @@ final class RefreshTests: XCTestCase {
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
-        }
+        waitSync()
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
     }
 
     func testRefreshFolderOnMenuClickSavesToUserDefaults() {
@@ -124,10 +119,9 @@ final class RefreshTests: XCTestCase {
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            XCTAssertEqual(self.env.photoStorageService.load().value?.first?.url.absoluteString,
-                           "https://photos.google.com/share/test/photo/test")
-        }
+        waitSync()
+        XCTAssertEqual(self.env.photoStorageService.load().value?.first?.url.absoluteString,
+                       "https://photos.google.com/share/test/photo/test")
     }
 
     func testRefreshFolderOnMenuClickDownloadsNewFiles() {
@@ -139,10 +133,9 @@ final class RefreshTests: XCTestCase {
         env.statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let folderContents = try? FileManager.default.contentsOfDirectory(atPath: self.env.photoFolderURL.path)
-            XCTAssertEqual(folderContents?.count, 1)
-        }
+        waitSync()
+        let folderContents = try? FileManager.default.contentsOfDirectory(atPath: self.env.photoFolderURL.path)
+        XCTAssertEqual(folderContents?.count, 1)
     }
 
     func testNotEnoughImagesAvailableShowsAlertNotification() {
@@ -157,17 +150,16 @@ final class RefreshTests: XCTestCase {
         statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
-            let notification = invocations.last?
-                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
-            XCTAssertEqual(notification?.title, "Error")
-            XCTAssertEqual(notification?.informativeText, """
+        waitSync()
+        let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+        let notification = invocations.last?
+            .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+        XCTAssertEqual(notification?.title, "Error")
+        XCTAssertEqual(notification?.informativeText, """
 There aren't enough images to download.\
  Try reducing the number of photos in your preferences, and try again
 """)
-            XCTAssertEqual(invocations.count, 2)
-        }
+        XCTAssertEqual(invocations.count, 2)
     }
 
     func testNotEnoghImagesDownloadedShowsAlertNotification() {
@@ -182,17 +174,16 @@ There aren't enough images to download.\
         statusItem.menu?.click(at: AppMenu.Order.refreshFolder.rawValue)
 
         // test
-        wait {
-            let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
-            let notification = invocations.last?
-                .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
-            XCTAssertEqual(notification?.title, "Error")
-            XCTAssertEqual(notification?.informativeText, """
+        waitSync()
+        let invocations = notificationCenter.invocations.find(MockUserNotificationCenter.deliver1.name)
+        let notification = invocations.last?
+            .parameter(for: MockUserNotificationCenter.deliver1.params.notification) as? NSUserNotification
+        XCTAssertEqual(notification?.title, "Error")
+        XCTAssertEqual(notification?.informativeText, """
 We couldn't download enough images. Please Try again.\
  If the problem persists, try reducing the number of photos in your preferences
 """)
-            XCTAssertEqual(invocations.count, 2)
-        }
+        XCTAssertEqual(invocations.count, 2)
     }
 
     // MARK: - private
