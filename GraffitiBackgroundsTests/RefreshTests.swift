@@ -6,13 +6,13 @@ import XCTest
 
 final class RefreshTests: XCTestCase {
     private var statusItem: MockLoadingStatusItem!
-    private var env: AppControllerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         statusItem = MockLoadingStatusItem()
         statusItem.viewState = LoadingStatusItemViewState()
-        env = AppControllerEnvironment(
+        env = AppTestEnvironment(
             userDefaults: UserDefaults.mock, statusItem: statusItem,
             networkManager: TestNetworkManager.make1PhotoDownloadSuccess(inFolder: .makeTemporaryFolderURL()),
             fileManager: FileManager.default, photoFolderURL: .makePhotoFolderURL()

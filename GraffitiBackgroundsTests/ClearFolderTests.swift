@@ -3,12 +3,12 @@ import Reachability
 import XCTest
 
 final class ClearFolderTests: XCTestCase {
-    private var env: AppControllerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
-        env = AppControllerEnvironment(userDefaults: UserDefaults.mock, fileManager: FileManager.default,
-                                       photoFolderURL: .makePhotoFolderURL())
+        env = AppTestEnvironment(userDefaults: UserDefaults.mock, fileManager: FileManager.default,
+                                 photoFolderURL: .makePhotoFolderURL())
     }
 
     override func tearDown() {

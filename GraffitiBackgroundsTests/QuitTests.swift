@@ -6,7 +6,7 @@ final class QuitTests: XCTestCase {
     func testQuitOnMenuClickQuitsApp() {
         // mocks
         let app = MockApplication()
-        let env = AppControllerEnvironment(app: app)
+        let env = AppTestEnvironment(app: app)
         env.inject()
 
         // sut

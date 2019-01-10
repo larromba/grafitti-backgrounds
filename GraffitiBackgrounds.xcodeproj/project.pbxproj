@@ -58,7 +58,7 @@
 		7F51DAD31FD34D0B00502804 /* PhotoResourceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */; };
 		7F51DAD51FD34D2A00502804 /* PhotoResourceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */; };
 		7F543E94214E8333008C2D5D /* NSMenuExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */; };
-		7F5A839B21D92763008F30BE /* AppControllerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */; };
+		7F5A839B21D92763008F30BE /* AppTestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839A21D92763008F30BE /* AppTestEnvironment.swift */; };
 		7F5A839D21D92791008F30BE /* TestNetworkManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839C21D92791008F30BE /* TestNetworkManagerExtensions.swift */; };
 		7F5A839F21D927A8008F30BE /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A839E21D927A8008F30BE /* URLExtensions.swift */; };
 		7F5A83A121D927C2008F30BE /* UserDefaultsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A021D927C2008F30BE /* UserDefaultsExtensions.swift */; };
@@ -197,7 +197,7 @@
 		7F51DAD21FD34D0B00502804 /* PhotoResourceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceRequest.swift; sourceTree = "<group>"; };
 		7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResourceResponse.swift; sourceTree = "<group>"; };
 		7F543E93214E8333008C2D5D /* NSMenuExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMenuExtensions.swift; sourceTree = "<group>"; };
-		7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllerEnvironment.swift; sourceTree = "<group>"; };
+		7F5A839A21D92763008F30BE /* AppTestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTestEnvironment.swift; sourceTree = "<group>"; };
 		7F5A839C21D92791008F30BE /* TestNetworkManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNetworkManagerExtensions.swift; sourceTree = "<group>"; };
 		7F5A839E21D927A8008F30BE /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7F5A83A021D927C2008F30BE /* UserDefaultsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtensions.swift; sourceTree = "<group>"; };
@@ -575,7 +575,7 @@
 		7FF29091219740EF0018C003 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7F5A839A21D92763008F30BE /* AppControllerEnvironment.swift */,
+				7F5A839A21D92763008F30BE /* AppTestEnvironment.swift */,
 				7FF2908C21973E100018C003 /* TestResource.swift */,
 			);
 			name = Utility;
@@ -840,7 +840,7 @@
 				7F65C8AD218A011600634454 /* SystemPreferencesTests.swift in Sources */,
 				7FF2908D21973E100018C003 /* TestResource.swift in Sources */,
 				7FF29066219617FC0018C003 /* ResponseTests.swift in Sources */,
-				7F5A839B21D92763008F30BE /* AppControllerEnvironment.swift in Sources */,
+				7F5A839B21D92763008F30BE /* AppTestEnvironment.swift in Sources */,
 				7FF290722196F40D0018C003 /* EmailTests.swift in Sources */,
 				7FF2906C21962D190018C003 /* ReachabilityTests.swift in Sources */,
 				7F5A839F21D927A8008F30BE /* URLExtensions.swift in Sources */,
