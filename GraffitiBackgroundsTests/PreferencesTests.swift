@@ -8,7 +8,7 @@ final class PreferencesTests: XCTestCase {
     func testPreferencesOnMenuClickOpensPreferences() {
         // mocks
         let windowController = MockWindowController()
-        let env = AppControllerEnvironment(preferencesWindowController: windowController)
+        let env = AppTestEnvironment(preferencesWindowController: windowController)
         env.inject()
 
         // sut
@@ -21,7 +21,7 @@ final class PreferencesTests: XCTestCase {
     func testPreferencesOnMenuClickIsBoughtToFront() {
         // mocks
         let app = MockApplication()
-        let env = AppControllerEnvironment(app: app)
+        let env = AppTestEnvironment(app: app)
         env.inject()
 
         // sut
@@ -36,7 +36,7 @@ final class PreferencesTests: XCTestCase {
         let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 2)
         let userDefaults = MockUserDefaults(preferences: preferences)
         let preferencesUI = makePreferencesUI()
-        let env = AppControllerEnvironment(preferencesWindowController: preferencesUI.0, userDefaults: userDefaults)
+        let env = AppTestEnvironment(preferencesWindowController: preferencesUI.0, userDefaults: userDefaults)
         env.inject()
 
         // sut
@@ -52,7 +52,7 @@ final class PreferencesTests: XCTestCase {
         // mocks
         let userDefaults = MockUserDefaults()
         let preferencesUI = makePreferencesUI()
-        let env = AppControllerEnvironment(preferencesWindowController: preferencesUI.0, userDefaults: userDefaults)
+        let env = AppTestEnvironment(preferencesWindowController: preferencesUI.0, userDefaults: userDefaults)
         env.inject()
 
         // sut
@@ -74,7 +74,7 @@ final class PreferencesTests: XCTestCase {
     func testPreferencesRestartDownloadTimerIfChanged() {
         // mocks
         let preferencesUI = makePreferencesUI()
-        let env = AppControllerEnvironment(preferencesWindowController: preferencesUI.0)
+        let env = AppTestEnvironment(preferencesWindowController: preferencesUI.0)
         env.inject()
         let photoDelegate = MockPhotoControllerDelegate()
         env.photoController.setDelegate(photoDelegate)

@@ -7,7 +7,7 @@ final class EmailTests: XCTestCase {
         // mocks
         let sharingService = MockSharingService()
         sharingService.actions.set(returnValue: true, for: MockSharingService.canPerform1.name)
-        let env = AppControllerEnvironment(sharingService: sharingService)
+        let env = AppTestEnvironment(sharingService: sharingService)
         env.inject()
 
         // sut

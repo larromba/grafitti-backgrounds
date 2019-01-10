@@ -5,13 +5,13 @@ import XCTest
 final class ReachabilityTests: XCTestCase {
     private var statusItem: LoadingStatusItem!
     private var reachability: MockReachability!
-    private var env: AppControllerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
         reachability = MockReachability()
-        env = AppControllerEnvironment(statusItem: statusItem, reachability: reachability)
+        env = AppTestEnvironment(statusItem: statusItem, reachability: reachability)
         env.inject()
     }
 

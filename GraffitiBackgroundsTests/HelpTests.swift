@@ -6,7 +6,7 @@ final class HelpTests: XCTestCase {
     func testHelpOnMenuClickOpensURL() {
         // mocks
         let workspace = MockWorkspace()
-        let env = AppControllerEnvironment(workspace: workspace)
+        let env = AppTestEnvironment(workspace: workspace)
         env.inject()
 
         // sut

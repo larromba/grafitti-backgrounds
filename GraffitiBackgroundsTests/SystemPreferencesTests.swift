@@ -3,10 +3,23 @@ import Reachability
 import XCTest
 
 final class SystemPreferencesTests: XCTestCase {
+    private var workspace: MockWorkspace!
+    private var env: AppTestEnvironment!
+
+    override func setUp() {
+        super.setUp()
+        workspace = MockWorkspace()
+        env = AppTestEnvironment(workspace: workspace)
+    }
+
+    override func tearDown() {
+        workspace = nil
+        env = nil
+        super.tearDown()
+    }
+
     func testSystemPreferencesOnMenuClickOpensSystemPreferences() {
         // mocks
-        let workspace = MockWorkspace()
-        let env = AppControllerEnvironment(workspace: workspace)
         env.inject()
 
         // sut

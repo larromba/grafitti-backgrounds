@@ -3,7 +3,7 @@ import Foundation
 import Networking
 import Reachability
 
-final class AppControllerEnvironment {
+final class AppTestEnvironment {
     var preferencesWindowController: WindowControlling
     var userDefaults: UserDefaultable
     var workspace: Workspacing
@@ -68,7 +68,7 @@ final class AppControllerEnvironment {
 
 // MARK: - TestEnvironment
 
-extension AppControllerEnvironment: TestEnvironment {
+extension AppTestEnvironment: TestEnvironment {
     func inject() {
         if !(preferencesWindowController.contentViewController is PreferencesViewController) {
             preferencesWindowController.contentViewController = MockPreferencesViewController()

@@ -5,12 +5,12 @@ import XCTest
 
 final class CancelRefreshTests: XCTestCase {
     private var statusItem: LoadingStatusItem!
-    private var env: AppControllerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
-        env = AppControllerEnvironment(statusItem: statusItem)
+        env = AppTestEnvironment(statusItem: statusItem)
     }
 
     override func tearDown() {
