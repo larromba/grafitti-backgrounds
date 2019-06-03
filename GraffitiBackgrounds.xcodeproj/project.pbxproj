@@ -218,6 +218,7 @@
 		7F6738C41FE2E4CC004DDAE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7F88A6DC21AF13AC0086D6BE /* Logging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Logging.framework; path = Carthage/Build/Mac/Logging.framework; sourceTree = "<group>"; };
 		7F925E6620460B250071F249 /* PreferencesViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewState.swift; sourceTree = "<group>"; };
+		7FA24DBD21FA1D10007951E7 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7FCA8F1E2177BFC20088E621 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextFieldExtensions.swift; sourceTree = "<group>"; };
@@ -398,6 +399,7 @@
 			isa = PBXGroup;
 			children = (
 				7F247EB51FD496860077D878 /* README.md */,
+				7FA24DBD21FA1D10007951E7 /* CHANGELOG.md */,
 				7F51DAA01FD33DF100502804 /* GraffitiBackgrounds */,
 				7F6738C11FE2E4CC004DDAE1 /* GraffitiBackgroundsTests */,
 				7F51DA9F1FD33DF100502804 /* Products */,

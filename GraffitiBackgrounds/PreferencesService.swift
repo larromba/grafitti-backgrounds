@@ -7,6 +7,7 @@ protocol PreferencesServicing: Mockable {
     func load() -> Result<Preferences>
 }
 
+// TODO: use bool for key etc, not data
 final class PreferencesService: PreferencesServicing {
     private enum Key: String, Keyable {
         case preferences

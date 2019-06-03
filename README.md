@@ -31,7 +31,7 @@ This assumes you're farmiliar with Xcode and building macOS apps.
 
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
 
-1. `carthage update`
+1. `carthage update --platform macOS`
 2. open `GraffitiBackgrounds.xcodeproj`
 3. click the top menu `Project -> Archive`
 4. after archiving, select `Distribute App`. 
