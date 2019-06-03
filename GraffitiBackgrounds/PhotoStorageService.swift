@@ -13,8 +13,8 @@ final class PhotoStorageService: PhotoStorageServicing {
         case resource
     }
 
-    private let encoder = PropertyListEncoder()
-    private let decoder = PropertyListDecoder()
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
     private let dataManager: DataManaging
     private let fileManager: FileManaging
 
