@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, AppDelegatable {
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        log("prefs: \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last ?? "")")
         appController.start()
     }
 }
