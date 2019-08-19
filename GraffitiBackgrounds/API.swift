@@ -6,7 +6,7 @@ enum API {
     var url: URL {
         switch self {
         case .photoAlbums:
-            return URL(string: "http://larhythmix.com/js/preload.js")!
+            return URL(string: "http://larhythmix.com/js/streetart.js")!
         }
     }
 }
