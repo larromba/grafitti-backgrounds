@@ -11,6 +11,7 @@
 
 # Future work
 
+* fix stencil error. waiting for sourcery update with associated type changes (sourcery currently 0.18 - march 2020) 
 * make library for grafitti images
 * does reachability really work?
 * fix: Networking.NetworkError 0 error msg

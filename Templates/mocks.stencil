@@ -65,7 +65,7 @@ import AsyncAwait
 {% macro mockVariableTypeName variable %}{% if variable.isOptional %}{{ variable.typeName }}{% else %}{{ variable.typeName }}!{% endif %}{% endmacro %}
 {% macro mockVariable variable %}
     var {{ variable.name }}: {{ variable.typeName }} {
-        get { return {% call underlyingVariableName variable %}{% if variable.type == nil %}!{% endif %} }
+        get { return {% call underlyingVariableName variable %} }
         set(value) { {% call underlyingVariableName variable %} = value; {% call underlyingVariableName variable %}History.append({% call helperClassPrefix %}Variable(value)) }
     }
     {% if variable.annotations.value or variable.annotations.value.description %}

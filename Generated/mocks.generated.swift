@@ -594,7 +594,7 @@ class MockMenuItem: NSObject, MenuItemable {
     typealias DelegateType = Any
     typealias ActionType = Any
     var actionType: ActionType {
-        get { return _actionType! }
+        get { return _actionType }
         set(value) { _actionType = value; _actionTypeHistory.append(_Variable(value)) }
     }
     var _actionType: ActionType!
@@ -754,7 +754,7 @@ class MockPhotoManagerDelegate: NSObject, PhotoManagerDelegate {
 
 class MockPhotoManager: NSObject, PhotoManaging {
     var isDownloadInProgress: Bool {
-        get { return _isDownloadInProgress! }
+        get { return _isDownloadInProgress }
         set(value) { _isDownloadInProgress = value; _isDownloadInProgressHistory.append(_Variable(value)) }
     }
     var _isDownloadInProgress: Bool!
@@ -1061,7 +1061,7 @@ class MockPreferencesViewController: NSViewController, PreferencesViewControllab
 
 class MockSharingService: NSObject, SharingServicing {
     var subject: String? {
-        get { return _subject! }
+        get { return _subject }
         set(value) { _subject = value; _subjectHistory.append(_Variable(value)) }
     }
     var _subject: String?
@@ -1073,7 +1073,7 @@ class MockSharingService: NSObject, SharingServicing {
     var _recipients: [String]? = []
     var _recipientsHistory: [_Variable<[String]?>] = []
     var messageBody: String? {
-        get { return _messageBody! }
+        get { return _messageBody }
         set(value) { _messageBody = value; _messageBodyHistory.append(_Variable(value)) }
     }
     var _messageBody: String?
@@ -1268,7 +1268,7 @@ class MockUserNotificationCenter: NSObject, UserNotificationCentering {
 
 class MockWindowController: NSObject, WindowControlling {
     var contentViewController: NSViewController? {
-        get { return _contentViewController! }
+        get { return _contentViewController }
         set(value) { _contentViewController = value; _contentViewControllerHistory.append(_Variable(value)) }
     }
     var _contentViewController: NSViewController? = NSViewController()
