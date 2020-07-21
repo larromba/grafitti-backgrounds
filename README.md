@@ -51,6 +51,9 @@ Enjoy!
 ## How it works
 This app has access to a number of Google Photos albums containing street-art from around the world. It scrapes the albums from Google Photos, and regexes the information into a usable format. It then downloads a random number of photos to `~/Pictures/GraffitiBackgrounds`. It's a bit hacky but it works.
 
+## Contributing
+It might help to read this [architecture and style guide](https://github.com/larromba/ios-code-architecture) before contributing.
+
 ## Licence
 [![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0) 
 
