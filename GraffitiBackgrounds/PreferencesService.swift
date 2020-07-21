@@ -1,13 +1,11 @@
 import Foundation
-import Result
 
 // sourcery: name = PreferencesService
 protocol PreferencesServicing: Mockable {
-    func save(_ preferences: Preferences) -> Result<Void>
-    func load() -> Result<Preferences>
+    func save(_ preferences: Preferences) -> Result<Void, PreferencesError>
+    func load() -> Result<Preferences, PreferencesError>
 }
 
-// TODO: use bool for key etc, not data
 final class PreferencesService: PreferencesServicing {
     private enum Key: String, Keyable {
         case preferences
@@ -21,17 +19,17 @@ final class PreferencesService: PreferencesServicing {
         self.dataManager = dataManager
     }
 
-    func save(_ preferences: Preferences) -> Result<Void> {
+    func save(_ preferences: Preferences) -> Result<Void, PreferencesError> {
         do {
             let data = try encoder.encode(preferences)
             dataManager.save(data, key: Key.preferences)
             return .success(())
         } catch {
-            return .failure(PreferencesError.encodeError(error))
+            return .failure(.encodeError(error))
         }
     }
 
-    func load() -> Result<Preferences> {
+    func load() -> Result<Preferences, PreferencesError> {
         guard let data = dataManager.load(key: Key.preferences) else {
             return .success(Preferences())
         }
@@ -39,7 +37,7 @@ final class PreferencesService: PreferencesServicing {
             let preferences = try decoder.decode(Preferences.self, from: data)
             return .success(preferences)
         } catch {
-            return .failure(PreferencesError.decodeError(error))
+            return .failure(.decodeError(error))
         }
     }
 }

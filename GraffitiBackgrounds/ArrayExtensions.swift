@@ -3,7 +3,7 @@ import Foundation
 extension Array where Element: Equatable {
     @discardableResult
     mutating func remove(_ element: Element) -> Bool {
-        guard let index = index(of: element) else {
+        guard let index = firstIndex(of: element) else {
             return false
         }
         _ = remove(at: index)

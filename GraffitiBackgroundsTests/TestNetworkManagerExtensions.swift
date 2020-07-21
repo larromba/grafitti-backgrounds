@@ -13,8 +13,7 @@ extension TestNetworkManager {
         ]
         let downloadStubs = [
             DownloadStub(url: URL(string: "https://lh3.googleusercontent.com/test=w2148-h1610-no")!,
-                         writeURL: url.appendingPathComponent("test.png"),
-                         data: Data())
+                         resource: DownloadResource(writeURL: url.appendingPathComponent("test.png"), data: Data()))
         ]
         return TestNetworkManager(fetchStubs: fetchStubs, downloadStubs: downloadStubs)
     }
@@ -25,7 +24,7 @@ extension TestNetworkManager {
             FetchStub(url: URL(string: "https://photos.app.goo.gl/test")!,
                       resource: TestResource.photoResponse0Photo.file)
         ]
-        return TestNetworkManager(fetchStubs: fetchStubs, downloadStubs: nil)
+        return TestNetworkManager(fetchStubs: fetchStubs)
     }
 
     static func make0PhotoDownloadSuccess() -> TestNetworkManager {
@@ -39,8 +38,7 @@ extension TestNetworkManager {
         let downloadStubs = [
             DownloadStub(url: URL(string: "https://lh3.googleusercontent.com/test=w2148-h1610-no")!,
                          statusCode: 500,
-                         writeURL: URL.makeTemporaryFolderURL(),
-                         data: Data())
+                         resource: DownloadResource(writeURL: URL.makeTemporaryFolderURL(), data: Data()))
         ]
         return TestNetworkManager(fetchStubs: fetchStubs, downloadStubs: downloadStubs)
     }

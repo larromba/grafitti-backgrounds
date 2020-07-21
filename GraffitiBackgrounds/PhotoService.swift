@@ -1,13 +1,12 @@
 import AsyncAwait
 import Cocoa
 import Networking
-import Result
 
 // sourcery: name = PhotoService
 protocol PhotoServicing: Mockable {
     func downloadPhotos(_ resources: [PhotoResource],
-                        progress: @escaping (Double) -> Void) -> Async<[PhotoResource]>
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource]>
+                        progress: @escaping (Double) -> Void) -> Async<[PhotoResource], Error>
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource], PhotoServiceError>
     func cancelAll()
 }
 
@@ -21,40 +20,40 @@ final class PhotoService: PhotoServicing {
     }
 
     func downloadPhotos(_ resources: [PhotoResource],
-                        progress: @escaping (Double) -> Void) -> Async<[PhotoResource]> {
+                        progress: @escaping (Double) -> Void) -> Async<[PhotoResource], Error> {
         return Async { completion in
             async({
                 let fetchDownloadURLOperations = resources.map { self.fetchDownloadURL(resource: $0) }
                 let fetchResults = try awaitAll(fetchDownloadURLOperations, progress: { percentage in
                     progress(Progress.normalize(progress: percentage, forStepIndex: 0, inTotalSteps: 2))
                 })
-                let downloadOperations = fetchResults.0.map { self.downloadPhoto(resource: $0) }
+                let downloadOperations = fetchResults.compactMap { $0.value }.map { self.downloadPhoto(resource: $0) }
                 let downloadResults = try awaitAll(downloadOperations, progress: { percentage in
                     progress(Progress.normalize(progress: percentage, forStepIndex: 1, inTotalSteps: 2))
                 })
-                let isCancelledErrors = downloadResults.1.filter { $0.isNetworkErrorCancelled }
+                let isCancelledErrors = downloadResults.compactMap { $0.error }.filter { $0.isNetworkErrorCancelled }
                 guard isCancelledErrors.isEmpty else {
                     completion(.failure(isCancelledErrors[0]))
                     return
                 }
-                completion(.success(downloadResults.0))
+                completion(.success(downloadResults.compactMap { $0.value }))
             }, onError: { error in
                 completion(.failure(error))
             })
         }
     }
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource]> {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource], PhotoServiceError> {
         if !fileManager.fileExists(atPath: url.path) {
             do {
                 try fileManager.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
             } catch {
-                return .failure(PhotoServiceError.cantCreateDownloadFolder(error))
+                return .failure(.cantCreateDownloadFolder(error))
             }
         }
 
         var results = [PhotoResource]()
-        var errors = [Error]()
+        var errors = [PhotoServiceError]()
         for resource in resources {
             guard let fileURL = resource.fileURL else {
                 continue
@@ -67,7 +66,7 @@ final class PhotoService: PhotoServicing {
                 resource.fileURL = newFileURL
                 results += [resource]
             } catch {
-                errors += [PhotoServiceError.moveError(error)]
+                errors += [.moveError(error)]
             }
         }
 
@@ -75,7 +74,7 @@ final class PhotoService: PhotoServicing {
             return .failure(errors[0])
         }
         guard errors.isEmpty else {
-            return .failure(PhotoServiceError.someImagesMissingAfterMove)
+            return .failure(.someImagesMissingAfterMove)
         }
 
         return .success(results)
@@ -87,7 +86,7 @@ final class PhotoService: PhotoServicing {
 
     // MARK: - private
 
-    private func fetchDownloadURL(resource: PhotoResource) -> Async<PhotoResource> {
+    private func fetchDownloadURL(resource: PhotoResource) -> Async<PhotoResource, Error> {
         return Async { completion in
             async({
                 let request = PhotoRequest(resource: resource)
@@ -101,7 +100,7 @@ final class PhotoService: PhotoServicing {
         }
     }
 
-    private func downloadPhoto(resource: PhotoResource) -> Async<PhotoResource> {
+    private func downloadPhoto(resource: PhotoResource) -> Async<PhotoResource, Error> {
         return Async { completion in
             async({
                 guard let downloadURL = resource.downloadURL else {

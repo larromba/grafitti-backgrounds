@@ -34,7 +34,7 @@ final class RefreshTests: XCTestCase {
 
         // test
         waitSync()
-        let loadingProgress = self.statusItem._viewStateHistory.compactMap { $0.variable?.loadingPercentage }
+        let loadingProgress = self.statusItem._viewStateHistory.compactMap { $0.variable??.loadingPercentage }
         XCTAssertNotEqual(loadingProgress.count, Set(loadingProgress).count)
     }
 
@@ -49,9 +49,9 @@ final class RefreshTests: XCTestCase {
         // test
         waitSync()
         let viewState = self.statusItem._viewStateHistory.last?.variable
-        XCTAssertEqual(viewState?.isLoading, false)
-        XCTAssertEqual(viewState?.loadingPercentage, 0.0)
-        XCTAssertEqual(viewState?.alpha, 1.0)
+        XCTAssertEqual(viewState??.isLoading ?? true, false)
+        XCTAssertEqual(viewState??.loadingPercentage ?? -1.0, 0.0)
+        XCTAssertEqual(viewState??.alpha ?? -1.0, 1.0)
     }
 
     func testRefreshFolderOnMenuClickWhenStartedShowsAlertNotification() {
@@ -190,6 +190,6 @@ We couldn't download enough images. Please Try again.\
 
     private func setPreferences() {
         let preferences = Preferences(isAutoRefreshEnabled: false, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 1)
-        env.photoController.setPreferences(preferences)
+        env.photoManager.setPreferences(preferences)
     }
 }

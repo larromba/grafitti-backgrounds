@@ -7,15 +7,15 @@ protocol AppDelegatable: NSApplicationDelegate, Mockable {
 }
 
 final class AppDelegate: NSObject, AppDelegatable {
-    private let appController: AppControllable
+    private let app: Apping
 
-    init(appController: AppControllable) {
-        self.appController = appController
+    init(app: Apping) {
+        self.app = app
         super.init()
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         log("prefs: \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last ?? "")")
-        appController.start()
+        app.start()
     }
 }
