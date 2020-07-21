@@ -14,7 +14,7 @@ final class AppTestEnvironment {
     var photoFolderURL: URL
     var notificationCenter: UserNotificationCentering
     var sharingService: SharingServicing
-    var app: Applicationable
+    var application: Applicationable
 
     private(set) var dataManager: DataManaging!
     private(set) var preferencesService: PreferencesServicing!
@@ -24,10 +24,12 @@ final class AppTestEnvironment {
     private(set) var photoAlbumService: PhotoAlbumServicing!
     private(set) var photoService: PhotoServicing!
     private(set) var photoStorageService: PhotoStorageServicing!
-    private(set) var photoController: PhotoControllable!
+    private(set) var photoManager: PhotoManaging!
     private(set) var alertController: AlertControlling!
     private(set) var emailController: EmailControlling!
-    private(set) var appController: AppController!
+    private(set) var appCoordinator: AppCoordinating!
+    private(set) var appRouter: AppRouting!
+    private(set) var app: Apping!
 
     init(preferencesWindowController: WindowControlling = MockWindowController(),
          userDefaults: UserDefaultable = MockUserDefaults(),
@@ -40,7 +42,7 @@ final class AppTestEnvironment {
          photoFolderURL: URL = .mock,
          notificationCenter: UserNotificationCentering = MockUserNotificationCenter(),
          sharingService: SharingServicing = MockSharingService(),
-         app: Applicationable = MockApplication()) {
+         application: Applicationable = MockApplication()) {
         self.preferencesWindowController = preferencesWindowController
         self.userDefaults = userDefaults
         self.workspace = workspace
@@ -51,7 +53,7 @@ final class AppTestEnvironment {
         self.photoFolderURL = photoFolderURL
         self.notificationCenter = notificationCenter
         self.sharingService = sharingService
-        self.app = app
+        self.application = application
     }
 
     func writePhoto(at fileURL: URL) -> Error? {
@@ -82,13 +84,19 @@ extension AppTestEnvironment: TestEnvironment {
         photoAlbumService = PhotoAlbumService(networkManager: networkManager)
         photoService = PhotoService(networkManager: networkManager, fileManager: fileManager)
         photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
-        photoController = PhotoController(photoAlbumService: photoAlbumService, photoService: photoService,
-                                          photoStorageService: photoStorageService, photoFolderURL: photoFolderURL)
+        photoManager = PhotoManager(photoAlbumService: photoAlbumService,
+                                    photoService: photoService,
+                                    photoStorageService: photoStorageService,
+                                    photoFolderURL: photoFolderURL)
         alertController = AlertController(notificationCenter: notificationCenter)
         emailController = EmailController(sharingService: sharingService)
-        appController = AppController(preferencesController: preferencesController,
-                                      workspaceController: workspaceController, menuController: menuController,
-                                      photoController: photoController, alertController: alertController,
-                                      emailController: emailController, app: app)
+        appCoordinator = AppCoordinator(preferencesController: preferencesController,
+                                        workspaceController: workspaceController,
+                                        menuController: menuController,
+                                        photoManager: photoManager,
+                                        alertController: alertController,
+                                        emailController: emailController)
+        appRouter = AppRouter(coordinator: appCoordinator)
+        app = App(router: appRouter, application: application)
     }
 }

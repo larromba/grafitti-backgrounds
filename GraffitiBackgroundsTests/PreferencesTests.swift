@@ -1,6 +1,5 @@
 @testable import Graffiti_Backgrounds
 import Reachability
-import Result
 import TestExtensions
 import XCTest
 
@@ -20,15 +19,15 @@ final class PreferencesTests: XCTestCase {
 
     func testPreferencesOnMenuClickIsBoughtToFront() {
         // mocks
-        let app = MockApplication()
-        let env = AppTestEnvironment(app: app)
+        let application = MockApplication()
+        let env = AppTestEnvironment(application: application)
         env.inject()
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
 
         // test
-        XCTAssertTrue(app.invocations.isInvoked(MockApplication.activate1.name))
+        XCTAssertTrue(application.invocations.isInvoked(MockApplication.activate1.name))
     }
 
     func testPreferencesRenderOnOpening() {
@@ -76,10 +75,10 @@ final class PreferencesTests: XCTestCase {
         let preferencesUI = makePreferencesUI()
         let env = AppTestEnvironment(preferencesWindowController: preferencesUI.0)
         env.inject()
-        let photoDelegate = MockPhotoControllerDelegate()
-        env.photoController.setDelegate(photoDelegate)
+        let photoDelegate = MockPhotoManagerDelegate()
+        env.photoManager.setDelegate(photoDelegate)
         let preferences = Preferences(isAutoRefreshEnabled: true, autoRefreshTimeIntervalHours: 1, numberOfPhotos: 0)
-        env.photoController.setPreferences(preferences)
+        env.photoManager.setPreferences(preferences)
 
         // sut
         env.statusItem.menu?.click(at: AppMenu.Order.preferences.rawValue)
@@ -89,7 +88,7 @@ final class PreferencesTests: XCTestCase {
         // test
         waitSync()
         XCTAssertTrue(photoDelegate.invocations
-            .isInvoked(MockPhotoControllerDelegate.photoControllerTimerTriggered1.name))
+            .isInvoked(MockPhotoManagerDelegate.photoManagerTimerTriggered1.name))
     }
 
     // MARK: - private

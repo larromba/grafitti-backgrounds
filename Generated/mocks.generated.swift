@@ -1,8 +1,11 @@
-// Generated using Sourcery 0.15.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
+
+// https://github.com/larromba/swift-mockable 
+// 2.0.0
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
@@ -11,9 +14,7 @@ import UIKit
 import AppKit
 #endif
 
-import Result
 import AsyncAwait
-
 @testable import Graffiti_Backgrounds
 
 // MARK: - Sourcery Helper
@@ -24,9 +25,9 @@ protocol _StringRawRepresentable: RawRepresentable {
 
 struct _Variable<T> {
     let date = Date()
-    var variable: T
+    var variable: T?
 
-    init(_ variable: T) {
+    init(_ variable: T?) {
         self.variable = variable
     }
 }
@@ -49,80 +50,84 @@ final class _Invocation {
 }
 
 final class _Actions {
-  enum Keys: String, _StringRawRepresentable {
-      case returnValue
-      case defaultReturnValue
-      case error
-  }
-  private var invocations: [_Invocation] = []
+    enum Keys: String, _StringRawRepresentable {
+        case returnValue
+        case defaultReturnValue
+        case error
+    }
+    private var invocations: [_Invocation] = []
 
-  // MARK: - returnValue
+    // MARK: - returnValue
 
-  func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: value, forKey: Keys.returnValue)
-  }
-  func returnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
-  }
+    func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.returnValue)
+    }
+    func returnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
+    }
 
-  // MARK: - defaultReturnValue
+    // MARK: - defaultReturnValue
 
-  fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
-  }
-  fileprivate func defaultReturnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
-  }
+    fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
+    }
+    fileprivate func defaultReturnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
+    }
 
-  // MARK: - error
+    // MARK: - error
 
-  func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: error, forKey: Keys.error)
-  }
-  func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.error) as? Error
-  }
+    func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: error, forKey: Keys.error)
+    }
+    func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.error) as? Error
+    }
 
-  // MARK: - private
+    // MARK: - private
 
-  private func invocation<T: _StringRawRepresentable>(for name: T) -> _Invocation {
-      if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
-          return invocation
-      }
-      let invocation = _Invocation(name: name.rawValue)
-      invocations += [invocation]
-      return invocation
-  }
+    private func invocation<T: _StringRawRepresentable>(for name: T) -> _Invocation {
+        if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+            return invocation
+        }
+        let invocation = _Invocation(name: name.rawValue)
+        invocations += [invocation]
+        return invocation
+    }
 }
 
 final class _Invocations {
-  private var history = [_Invocation]()
+    private var history = [_Invocation]()
 
-  fileprivate func record(_ invocation: _Invocation) {
-      history += [invocation]
-  }
+    fileprivate func record(_ invocation: _Invocation) {
+        history += [invocation]
+    }
 
-  func isInvoked<T: _StringRawRepresentable>(_ name: T) -> Bool {
-      return history.contains(where: { $0.name == name.rawValue })
-  }
+    func isInvoked<T: _StringRawRepresentable>(_ name: T) -> Bool {
+        return history.contains(where: { $0.name == name.rawValue })
+    }
 
-  func count<T: _StringRawRepresentable>(_ name: T) -> Int {
-      return history.filter {  $0.name == name.rawValue }.count
-  }
+    func count<T: _StringRawRepresentable>(_ name: T) -> Int {
+        return history.filter { $0.name == name.rawValue }.count
+    }
 
-  func all() -> [_Invocation] {
-      return history.sorted { $0.date < $1.date }
-  }
+    func all() -> [_Invocation] {
+        return history.sorted { $0.date < $1.date }
+    }
 
-  func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
-      return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
-  }
+    func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
+        return history.filter { $0.name == name.rawValue }.sorted { $0.date < $1.date }
+    }
+
+    func clear() {
+        history.removeAll()
+    }
 }
 
 // MARK: - Sourcery Mocks
@@ -150,7 +155,7 @@ class MockAlertController: NSObject, AlertControlling {
     }
 }
 
-class MockAppController: NSObject, AppControllable {
+class MockAppController: NSObject, AppCoordinating {
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -166,6 +171,22 @@ class MockAppController: NSObject, AppControllable {
 
     enum start1: String, _StringRawRepresentable {
         case name = "start1"
+    }
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: AppCoordinatorDelegate) {
+        let functionName = setDelegate2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate2.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate2: String, _StringRawRepresentable {
+        case name = "setDelegate2"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:AppCoordinatorDelegate).delegate"
+        }
     }
 }
 
@@ -240,6 +261,60 @@ class MockAppMenuController: NSObject, AppMenuControllable {
         enum params: String, _StringRawRepresentable {
             case delegate = "setDelegate(_delegate:AppMenuControllerDelegate).delegate"
         }
+    }
+}
+
+class MockAppRouter: NSObject, AppRouting {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - start
+
+    func start() {
+        let functionName = start1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+    }
+
+    enum start1: String, _StringRawRepresentable {
+        case name = "start1"
+    }
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: AppRouterDelegate) {
+        let functionName = setDelegate2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate2.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate2: String, _StringRawRepresentable {
+        case name = "setDelegate2"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:AppRouterDelegate).delegate"
+        }
+    }
+}
+
+class MockApp: NSObject, Apping {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - start
+
+    func start() {
+        let functionName = start1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+    }
+
+    enum start1: String, _StringRawRepresentable {
+        case name = "start1"
     }
 }
 
@@ -370,14 +445,14 @@ class MockEmailController: NSObject, EmailControlling {
 
     // MARK: - openMail
 
-    func openMail(receipient: String, subject: String, body: String) -> Result<Void> {
+    func openMail(receipient: String, subject: String, body: String) -> Result<Void, EmailError> {
         let functionName = openMail1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: receipient, forKey: openMail1.params.receipient)
         invocation.set(parameter: subject, forKey: openMail1.params.subject)
         invocation.set(parameter: body, forKey: openMail1.params.body)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Void>
+        return actions.returnValue(for: functionName) as! Result<Void, EmailError>
     }
 
     enum openMail1: String, _StringRawRepresentable {
@@ -590,12 +665,12 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
 
     // MARK: - fetchPhotoAlbums
 
-    func fetchPhotoAlbums(progress: @escaping (Double) -> Void) -> Async<[PhotoAlbum]> {
+    func fetchPhotoAlbums(progress: @escaping (Double) -> Void) -> Async<[PhotoAlbum], Error> {
         let functionName = fetchPhotoAlbums1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: progress, forKey: fetchPhotoAlbums1.params.progress)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Async<[PhotoAlbum]>
+        return actions.returnValue(for: functionName) as! Async<[PhotoAlbum], Error>
     }
 
     enum fetchPhotoAlbums1: String, _StringRawRepresentable {
@@ -618,7 +693,66 @@ class MockPhotoAlbumService: NSObject, PhotoAlbumServicing {
     }
 }
 
-class MockPhotoController: NSObject, PhotoControllable {
+class MockPhotoManagerDelegate: NSObject, PhotoManagerDelegate {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - photoManagerTimerTriggered
+
+    func photoManagerTimerTriggered(_ photoManager: PhotoManaging) {
+        let functionName = photoManagerTimerTriggered1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: photoManager, forKey: photoManagerTimerTriggered1.params.photoManager)
+        invocations.record(invocation)
+    }
+
+    enum photoManagerTimerTriggered1: String, _StringRawRepresentable {
+        case name = "photoManagerTimerTriggered1"
+        enum params: String, _StringRawRepresentable {
+            case photoManager = "photoManagerTimerTriggered(_photoManager:PhotoManaging).photoManager"
+        }
+    }
+
+    // MARK: - photoManager
+
+    func photoManager(_ photoManager: PhotoManaging, updatedDownloadPercentage percentage: Double) {
+        let functionName = photoManager2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: photoManager, forKey: photoManager2.params.photoManager)
+        invocation.set(parameter: percentage, forKey: photoManager2.params.percentage)
+        invocations.record(invocation)
+    }
+
+    enum photoManager2: String, _StringRawRepresentable {
+        case name = "photoManager2"
+        enum params: String, _StringRawRepresentable {
+            case photoManager = "photoManager(_photoManager:PhotoManaging,updatedDownloadPercentagepercentage:Double).photoManager"
+            case percentage = "photoManager(_photoManager:PhotoManaging,updatedDownloadPercentagepercentage:Double).percentage"
+        }
+    }
+
+    // MARK: - photoManager
+
+    func photoManager(_ photoManager: PhotoManaging, didChangeDownloadState inProgress: Bool) {
+        let functionName = photoManager3.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: photoManager, forKey: photoManager3.params.photoManager)
+        invocation.set(parameter: inProgress, forKey: photoManager3.params.inProgress)
+        invocations.record(invocation)
+    }
+
+    enum photoManager3: String, _StringRawRepresentable {
+        case name = "photoManager3"
+        enum params: String, _StringRawRepresentable {
+            case photoManager = "photoManager(_photoManager:PhotoManaging,didChangeDownloadStateinProgress:Bool).photoManager"
+            case inProgress = "photoManager(_photoManager:PhotoManaging,didChangeDownloadStateinProgress:Bool).inProgress"
+        }
+    }
+}
+
+class MockPhotoManager: NSObject, PhotoManaging {
     var isDownloadInProgress: Bool {
         get { return _isDownloadInProgress }
         set(value) { _isDownloadInProgress = value; _isDownloadInProgressHistory.append(_Variable(value)) }
@@ -654,11 +788,11 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - reloadPhotos
 
-    func reloadPhotos() -> Async<[PhotoResource]> {
+    func reloadPhotos() -> Async<[PhotoResource], Error> {
         let functionName = reloadPhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Async<[PhotoResource]>
+        return actions.returnValue(for: functionName) as! Async<[PhotoResource], Error>
     }
 
     enum reloadPhotos2: String, _StringRawRepresentable {
@@ -679,11 +813,11 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - clearFolder
 
-    func clearFolder() -> Result<Void> {
+    func clearFolder() -> Result<Void, PhotoStorageError> {
         let functionName = clearFolder4.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Void>
+        return actions.returnValue(for: functionName) as! Result<Void, PhotoStorageError>
     }
 
     enum clearFolder4: String, _StringRawRepresentable {
@@ -692,7 +826,7 @@ class MockPhotoController: NSObject, PhotoControllable {
 
     // MARK: - setDelegate
 
-    func setDelegate(_ delegate: PhotoControllerDelegate) {
+    func setDelegate(_ delegate: PhotoManagerDelegate) {
         let functionName = setDelegate5.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: delegate, forKey: setDelegate5.params.delegate)
@@ -702,66 +836,7 @@ class MockPhotoController: NSObject, PhotoControllable {
     enum setDelegate5: String, _StringRawRepresentable {
         case name = "setDelegate5"
         enum params: String, _StringRawRepresentable {
-            case delegate = "setDelegate(_delegate:PhotoControllerDelegate).delegate"
-        }
-    }
-}
-
-class MockPhotoControllerDelegate: NSObject, PhotoControllerDelegate {
-    let invocations = _Invocations()
-    let actions = _Actions()
-    static let invocations = _Invocations()
-    static let actions = _Actions()
-
-    // MARK: - photoControllerTimerTriggered
-
-    func photoControllerTimerTriggered(_ photoController: PhotoController) {
-        let functionName = photoControllerTimerTriggered1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: photoController, forKey: photoControllerTimerTriggered1.params.photoController)
-        invocations.record(invocation)
-    }
-
-    enum photoControllerTimerTriggered1: String, _StringRawRepresentable {
-        case name = "photoControllerTimerTriggered1"
-        enum params: String, _StringRawRepresentable {
-            case photoController = "photoControllerTimerTriggered(_photoController:PhotoController).photoController"
-        }
-    }
-
-    // MARK: - photoController
-
-    func photoController(_ photoController: PhotoController, updatedDownloadPercentage percentage: Double) {
-        let functionName = photoController2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: photoController, forKey: photoController2.params.photoController)
-        invocation.set(parameter: percentage, forKey: photoController2.params.percentage)
-        invocations.record(invocation)
-    }
-
-    enum photoController2: String, _StringRawRepresentable {
-        case name = "photoController2"
-        enum params: String, _StringRawRepresentable {
-            case photoController = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).photoController"
-            case percentage = "photoController(_photoController:PhotoController,updatedDownloadPercentagepercentage:Double).percentage"
-        }
-    }
-
-    // MARK: - photoController
-
-    func photoController(_ photoController: PhotoController, didChangeDownloadState inProgress: Bool) {
-        let functionName = photoController3.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: photoController, forKey: photoController3.params.photoController)
-        invocation.set(parameter: inProgress, forKey: photoController3.params.inProgress)
-        invocations.record(invocation)
-    }
-
-    enum photoController3: String, _StringRawRepresentable {
-        case name = "photoController3"
-        enum params: String, _StringRawRepresentable {
-            case photoController = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).photoController"
-            case inProgress = "photoController(_photoController:PhotoController,didChangeDownloadStateinProgress:Bool).inProgress"
+            case delegate = "setDelegate(_delegate:PhotoManagerDelegate).delegate"
         }
     }
 }
@@ -774,13 +849,13 @@ class MockPhotoService: NSObject, PhotoServicing {
 
     // MARK: - downloadPhotos
 
-    func downloadPhotos(_ resources: [PhotoResource],progress: @escaping (Double) -> Void) -> Async<[PhotoResource]> {
+    func downloadPhotos(_ resources: [PhotoResource],progress: @escaping (Double) -> Void) -> Async<[PhotoResource], Error> {
         let functionName = downloadPhotos1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: downloadPhotos1.params.resources)
         invocation.set(parameter: progress, forKey: downloadPhotos1.params.progress)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Async<[PhotoResource]>
+        return actions.returnValue(for: functionName) as! Async<[PhotoResource], Error>
     }
 
     enum downloadPhotos1: String, _StringRawRepresentable {
@@ -793,13 +868,13 @@ class MockPhotoService: NSObject, PhotoServicing {
 
     // MARK: - movePhotos
 
-    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource]> {
+    func movePhotos(_ resources: [PhotoResource], toFolder url: URL) -> Result<[PhotoResource], PhotoServiceError> {
         let functionName = movePhotos2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: movePhotos2.params.resources)
         invocation.set(parameter: url, forKey: movePhotos2.params.url)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
+        return actions.returnValue(for: functionName) as! Result<[PhotoResource], PhotoServiceError>
     }
 
     enum movePhotos2: String, _StringRawRepresentable {
@@ -831,12 +906,12 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
 
     // MARK: - save
 
-    func save(_ resources: [PhotoResource]) -> Result<Void> {
+    func save(_ resources: [PhotoResource]) -> Result<Void, PhotoStorageError> {
         let functionName = save1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: save1.params.resources)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Void>
+        return actions.returnValue(for: functionName) as! Result<Void, PhotoStorageError>
     }
 
     enum save1: String, _StringRawRepresentable {
@@ -848,11 +923,11 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
 
     // MARK: - load
 
-    func load() -> Result<[PhotoResource]> {
+    func load() -> Result<[PhotoResource], PhotoStorageError> {
         let functionName = load2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
+        return actions.returnValue(for: functionName) as! Result<[PhotoResource], PhotoStorageError>
     }
 
     enum load2: String, _StringRawRepresentable {
@@ -861,12 +936,12 @@ class MockPhotoStorageService: NSObject, PhotoStorageServicing {
 
     // MARK: - remove
 
-    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource], PhotoStorageError> {
         let functionName = remove3.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: resources, forKey: remove3.params.resources)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<[PhotoResource]>
+        return actions.returnValue(for: functionName) as! Result<[PhotoResource], PhotoStorageError>
     }
 
     enum remove3: String, _StringRawRepresentable {
@@ -926,12 +1001,12 @@ class MockPreferencesService: NSObject, PreferencesServicing {
 
     // MARK: - save
 
-    func save(_ preferences: Preferences) -> Result<Void> {
+    func save(_ preferences: Preferences) -> Result<Void, PreferencesError> {
         let functionName = save1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: preferences, forKey: save1.params.preferences)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Void>
+        return actions.returnValue(for: functionName) as! Result<Void, PreferencesError>
     }
 
     enum save1: String, _StringRawRepresentable {
@@ -943,11 +1018,11 @@ class MockPreferencesService: NSObject, PreferencesServicing {
 
     // MARK: - load
 
-    func load() -> Result<Preferences> {
+    func load() -> Result<Preferences, PreferencesError> {
         let functionName = load2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Preferences>
+        return actions.returnValue(for: functionName) as! Result<Preferences, PreferencesError>
     }
 
     enum load2: String, _StringRawRepresentable {
@@ -1230,12 +1305,12 @@ class MockWorkspaceController: NSObject, WorkspaceControllable {
 
     // MARK: - open
 
-    func open(_ preference: SystemPreference) -> Result<Void> {
+    func open(_ preference: SystemPreference) -> Result<Void, WorkspaceError> {
         let functionName = open1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: preference, forKey: open1.params.preference)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Void>
+        return actions.returnValue(for: functionName) as! Result<Void, WorkspaceError>
     }
 
     enum open1: String, _StringRawRepresentable {
@@ -1247,12 +1322,12 @@ class MockWorkspaceController: NSObject, WorkspaceControllable {
 
     // MARK: - open
 
-    func open(_ url: URL) -> Result<Void> {
+    func open(_ url: URL) -> Result<Void, WorkspaceError> {
         let functionName = open2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: url, forKey: open2.params.url)
         invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! Result<Void>
+        return actions.returnValue(for: functionName) as! Result<Void, WorkspaceError>
     }
 
     enum open2: String, _StringRawRepresentable {

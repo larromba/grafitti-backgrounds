@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F02A58421AB7E05007A6ECD /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; };
 		7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7F1A886A24C7191C000A7F23 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A886924C7191C000A7F23 /* App.swift */; };
+		7F1A886C24C71F86000A7F23 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A886B24C71F86000A7F23 /* AppRouter.swift */; };
+		7F1A886F24C72083000A7F23 /* WorkspaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A886E24C72083000A7F23 /* WorkspaceController.swift */; };
+		7F1A887124C722D5000A7F23 /* AppAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A887024C722D5000A7F23 /* AppAction.swift */; };
+		7F1A887324C73586000A7F23 /* TestExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7F02A48721AB08A6007A6ECD /* TestExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2956219CAA3D0062C85D /* StatusBarable.swift */; };
 		7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2958219CABF30062C85D /* StatusItemable.swift */; };
 		7F1B295B219DF34B0062C85D /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B295A219DF34B0062C85D /* TestEnvironment.swift */; };
@@ -20,6 +24,7 @@
 		7F1B296B219E25100062C85D /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2969219E25100062C85D /* strings.swift */; };
 		7F1B296F219E2D480062C85D /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B296E219E2D480062C85D /* BundleExtensions.swift */; };
 		7F1B2971219E2F650062C85D /* mocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1B2970219E2F650062C85D /* mocks.generated.swift */; };
+		7F1D32D224C0A0C500DC8BE6 /* ResultExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1D32D124C0A0C500DC8BE6 /* ResultExtensions.swift */; };
 		7F247E651FD366D70077D878 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E641FD366D70077D878 /* PhotoService.swift */; };
 		7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E681FD375E90077D878 /* PhotoRequest.swift */; };
 		7F247E6B1FD375F10077D878 /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F247E6A1FD375F10077D878 /* PhotoResponse.swift */; };
@@ -51,7 +56,7 @@
 		7F51DAB41FD33E6800502804 /* PhotoAlbumsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB31FD33E6800502804 /* PhotoAlbumsRequest.swift */; };
 		7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */; };
 		7F51DABC1FD3405000502804 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABB1FD3405000502804 /* PhotoAlbum.swift */; };
-		7F51DABE1FD345EA00502804 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABD1FD345EA00502804 /* AppController.swift */; };
+		7F51DABE1FD345EA00502804 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DABD1FD345EA00502804 /* AppCoordinator.swift */; };
 		7F51DAC21FD3482400502804 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAC11FD3482400502804 /* API.swift */; };
 		7F51DAC41FD348D500502804 /* PhotoAlbumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */; };
 		7F51DAD11FD34B1200502804 /* PhotoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F51DAD01FD34B1200502804 /* PhotoResource.swift */; };
@@ -76,7 +81,6 @@
 		7F6738B31FE2CE3A004DDAE1 /* FileManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738B21FE2CE3A004DDAE1 /* FileManaging.swift */; };
 		7F6738C31FE2E4CC004DDAE1 /* QuitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738C21FE2E4CC004DDAE1 /* QuitTests.swift */; };
 		7F88A6D621AF139E0086D6BE /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A48021AB020A007A6ECD /* Reachability.framework */; };
-		7F88A6D721AF139E0086D6BE /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A47F21AB020A007A6ECD /* Result.framework */; };
 		7F88A6D921AF139E0086D6BE /* AsyncAwait.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */; };
 		7F88A6DA21AF139E0086D6BE /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A58821AC06DD007A6ECD /* Networking.framework */; };
 		7F88A6DB21AF139E0086D6BE /* BaseOperation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F02A58021AB7B00007A6ECD /* BaseOperation.framework */; };
@@ -86,8 +90,7 @@
 		7FCA8F1D2177BF3A0088E621 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */; };
 		7FCA8F1F2177BFC20088E621 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F1E2177BFC20088E621 /* Keyable.swift */; };
 		7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */; };
-		7FCF0EED1FD6C60300138D77 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */; };
-		7FCF0EF11FD6CAE300138D77 /* WorkspaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */; };
+		7FCF0EED1FD6C60300138D77 /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EEC1FD6C60300138D77 /* PhotoManager.swift */; };
 		7FCF0EFB1FDA999B00138D77 /* SystemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */; };
 		7FDE11222199FC77001A424C /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE11212199FC77001A424C /* Progress.swift */; };
 		7FDE1126219A0F49001A424C /* photoAlbumResponse_1album.js in Resources */ = {isa = PBXBuildFile; fileRef = 7FDE1125219A0F49001A424C /* photoAlbumResponse_1album.js */; };
@@ -122,6 +125,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		7F1A887224C7357A000A7F23 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				7F1A887324C73586000A7F23 /* TestExtensions.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7F71B93921AADF5200135925 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -130,7 +143,6 @@
 			files = (
 				7F88A6DE21AF13B40086D6BE /* Logging.framework in CopyFiles */,
 				7F02A58921AC06DD007A6ECD /* Networking.framework in CopyFiles */,
-				7F02A48121AB020A007A6ECD /* Result.framework in CopyFiles */,
 				7F02A48221AB020A007A6ECD /* Reachability.framework in CopyFiles */,
 				7F02A4F921AB2C69007A6ECD /* AsyncAwait.framework in CopyFiles */,
 				7F02A58121AB7B00007A6ECD /* BaseOperation.framework in CopyFiles */,
@@ -146,6 +158,10 @@
 		7F02A4F821AB2C69007A6ECD /* AsyncAwait.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AsyncAwait.framework; path = Carthage/Build/Mac/AsyncAwait.framework; sourceTree = "<group>"; };
 		7F02A58021AB7B00007A6ECD /* BaseOperation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaseOperation.framework; path = Carthage/Build/Mac/BaseOperation.framework; sourceTree = "<group>"; };
 		7F02A58821AC06DD007A6ECD /* Networking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Networking.framework; path = Carthage/Build/Mac/Networking.framework; sourceTree = "<group>"; };
+		7F1A886924C7191C000A7F23 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		7F1A886B24C71F86000A7F23 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		7F1A886E24C72083000A7F23 /* WorkspaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceController.swift; sourceTree = "<group>"; };
+		7F1A887024C722D5000A7F23 /* AppAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAction.swift; sourceTree = "<group>"; };
 		7F1B2956219CAA3D0062C85D /* StatusBarable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarable.swift; sourceTree = "<group>"; };
 		7F1B2958219CABF30062C85D /* StatusItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemable.swift; sourceTree = "<group>"; };
 		7F1B295A219DF34B0062C85D /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
@@ -153,6 +169,7 @@
 		7F1B2969219E25100062C85D /* strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = strings.swift; path = Generated/strings.swift; sourceTree = SOURCE_ROOT; };
 		7F1B296E219E2D480062C85D /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		7F1B2970219E2F650062C85D /* mocks.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = mocks.generated.swift; path = Generated/mocks.generated.swift; sourceTree = SOURCE_ROOT; };
+		7F1D32D124C0A0C500DC8BE6 /* ResultExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtensions.swift; sourceTree = "<group>"; };
 		7F247E641FD366D70077D878 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		7F247E681FD375E90077D878 /* PhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRequest.swift; sourceTree = "<group>"; };
 		7F247E6A1FD375F10077D878 /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
@@ -190,7 +207,7 @@
 		7F51DAB31FD33E6800502804 /* PhotoAlbumsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumsRequest.swift; sourceTree = "<group>"; };
 		7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumsResponse.swift; sourceTree = "<group>"; };
 		7F51DABB1FD3405000502804 /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
-		7F51DABD1FD345EA00502804 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		7F51DABD1FD345EA00502804 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		7F51DAC11FD3482400502804 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		7F51DAC31FD348D500502804 /* PhotoAlbumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumService.swift; sourceTree = "<group>"; };
 		7F51DAD01FD34B1200502804 /* PhotoResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResource.swift; sourceTree = "<group>"; };
@@ -222,8 +239,7 @@
 		7FCA8F1C2177BF3A0088E621 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7FCA8F1E2177BFC20088E621 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
 		7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextFieldExtensions.swift; sourceTree = "<group>"; };
-		7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
-		7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceController.swift; sourceTree = "<group>"; };
+		7FCF0EEC1FD6C60300138D77 /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 		7FCF0EFA1FDA999B00138D77 /* SystemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPreference.swift; sourceTree = "<group>"; };
 		7FDE11212199FC77001A424C /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		7FDE1125219A0F49001A424C /* photoAlbumResponse_1album.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = photoAlbumResponse_1album.js; sourceTree = "<group>"; };
@@ -262,7 +278,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F88A6D621AF139E0086D6BE /* Reachability.framework in Frameworks */,
-				7F88A6D721AF139E0086D6BE /* Result.framework in Frameworks */,
 				7F88A6D921AF139E0086D6BE /* AsyncAwait.framework in Frameworks */,
 				7F88A6DA21AF139E0086D6BE /* Networking.framework in Frameworks */,
 				7F88A6DB21AF139E0086D6BE /* BaseOperation.framework in Frameworks */,
@@ -287,6 +302,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7F1A886824C718B3000A7F23 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				7F51DABD1FD345EA00502804 /* AppCoordinator.swift */,
+			);
+			name = Coordinator;
+			sourceTree = "<group>";
+		};
+		7F1A886D24C71F89000A7F23 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				7F1A886B24C71F86000A7F23 /* AppRouter.swift */,
+			);
+			name = Router;
+			sourceTree = "<group>";
+		};
 		7F1B296C219E25130062C85D /* Generated */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,11 +330,9 @@
 		7F247E621FD34F040077D878 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7F51DABD1FD345EA00502804 /* AppController.swift */,
 				7F615D931FD6A49E00DD519C /* AppMenuController.swift */,
 				7F247E8C1FD469440077D878 /* PreferencesController.swift */,
-				7FCF0EF01FD6CAE300138D77 /* WorkspaceController.swift */,
-				7FCF0EEC1FD6C60300138D77 /* PhotoController.swift */,
+				7F1A886E24C72083000A7F23 /* WorkspaceController.swift */,
 				7F31E3392187B0EA00571BC1 /* AlertController.swift */,
 				7FF2906D2196ECEF0018C003 /* EmailController.swift */,
 			);
@@ -364,6 +393,7 @@
 				7FCA8F202177C8EC0088E621 /* NSTextFieldExtensions.swift */,
 				7F31E3372187ADB200571BC1 /* ArrayExtensions.swift */,
 				7F1B296E219E2D480062C85D /* BundleExtensions.swift */,
+				7F1D32D124C0A0C500DC8BE6 /* ResultExtensions.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -421,7 +451,10 @@
 			children = (
 				7F24BE3D2194D210006BE4D0 /* main.swift */,
 				7F51DAA11FD33DF100502804 /* AppDelegate.swift */,
+				7F1A886924C7191C000A7F23 /* App.swift */,
 				7F24BE3A2194CF31006BE4D0 /* Factory */,
+				7F1A886D24C71F89000A7F23 /* Router */,
+				7F1A886824C718B3000A7F23 /* Coordinator */,
 				7F247E621FD34F040077D878 /* Controller */,
 				7F247E9E1FD476490077D878 /* ViewController */,
 				7F247E7D1FD42D260077D878 /* View */,
@@ -454,6 +487,7 @@
 				7F51DAB91FD33F5300502804 /* PhotoAlbumsResponse.swift */,
 				7F51DAD41FD34D2A00502804 /* PhotoResourceResponse.swift */,
 				7F51DAC11FD3482400502804 /* API.swift */,
+				7F1A887024C722D5000A7F23 /* AppAction.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -543,6 +577,7 @@
 		7F71B8B121A830AF00135925 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				7FCF0EEC1FD6C60300138D77 /* PhotoManager.swift */,
 				7F247E6E1FD3858E0077D878 /* DataManager.swift */,
 			);
 			name = Manager;
@@ -590,7 +625,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7F51DAAC1FD33DF100502804 /* Build configuration list for PBXNativeTarget "GraffitiBackgrounds" */;
 			buildPhases = (
-				7F247EA91FD476ED0077D878 /* ShellScript */,
+				7F247EA91FD476ED0077D878 /* Run Script */,
 				7F13D517219F4FBF00891DF7 /* ShellScript */,
 				7F4291F3217B2002003E64C2 /* ShellScript */,
 				7F88A6D521AF13930086D6BE /* Frameworks */,
@@ -615,6 +650,7 @@
 				7F6738BC1FE2E4CB004DDAE1 /* Sources */,
 				7F02A48921AB0904007A6ECD /* Frameworks */,
 				7F6738BE1FE2E4CB004DDAE1 /* Resources */,
+				7F1A887224C7357A000A7F23 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -633,17 +669,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0910;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Pink Chicken";
 				TargetAttributes = {
 					7F51DA9D1FD33DF100502804 = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1150;
 						ProvisioningStyle = Automatic;
 					};
 					7F6738BF1FE2E4CB004DDAE1 = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1150;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7F51DA9D1FD33DF100502804;
 					};
@@ -714,13 +750,14 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nif which swiftgen >/dev/null; then\n    swiftgen config run --config .swiftgen.yml\nelse\n    echo \"warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
 		};
-		7F247EA91FD476ED0077D878 /* ShellScript */ = {
+		7F247EA91FD476ED0077D878 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -764,12 +801,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F1A886F24C72083000A7F23 /* WorkspaceController.swift in Sources */,
 				7FCA8F212177C8EC0088E621 /* NSTextFieldExtensions.swift in Sources */,
 				7F247E971FD46E770077D878 /* PreferencesService.swift in Sources */,
 				7F247E691FD375E90077D878 /* PhotoRequest.swift in Sources */,
 				7F1B2959219CABF30062C85D /* StatusItemable.swift in Sources */,
 				7FF2906E2196ECEF0018C003 /* EmailController.swift in Sources */,
 				7FF29062219601DF0018C003 /* UserNotificationCentering.swift in Sources */,
+				7F1A887124C722D5000A7F23 /* AppAction.swift in Sources */,
+				7F1A886A24C7191C000A7F23 /* App.swift in Sources */,
 				7F247E6F1FD3858E0077D878 /* DataManager.swift in Sources */,
 				7FF290642196030B0018C003 /* Alert.swift in Sources */,
 				7F1B2957219CAA3D0062C85D /* StatusBarable.swift in Sources */,
@@ -805,19 +845,20 @@
 				7F1B296B219E25100062C85D /* strings.swift in Sources */,
 				7F31E3382187ADB200571BC1 /* ArrayExtensions.swift in Sources */,
 				7F24BE442194D886006BE4D0 /* UserDefaultable.swift in Sources */,
-				7F51DABE1FD345EA00502804 /* AppController.swift in Sources */,
+				7F51DABE1FD345EA00502804 /* AppCoordinator.swift in Sources */,
 				7F51DABA1FD33F5300502804 /* PhotoAlbumsResponse.swift in Sources */,
-				7FCF0EED1FD6C60300138D77 /* PhotoController.swift in Sources */,
+				7FCF0EED1FD6C60300138D77 /* PhotoManager.swift in Sources */,
 				7F247E951FD46D140077D878 /* StoryboardExtensions.swift in Sources */,
 				7F509A9F1FDD6C0800152B33 /* Workspacing.swift in Sources */,
-				7FCF0EF11FD6CAE300138D77 /* WorkspaceController.swift in Sources */,
 				7F247E651FD366D70077D878 /* PhotoService.swift in Sources */,
 				7F1B296F219E2D480062C85D /* BundleExtensions.swift in Sources */,
 				7F51DAC21FD3482400502804 /* API.swift in Sources */,
 				7F1B296A219E25100062C85D /* assets.swift in Sources */,
 				7F6567481FE2A9F200A6CB7F /* WindowControlling.swift in Sources */,
+				7F1A886C24C71F86000A7F23 /* AppRouter.swift in Sources */,
 				7F247E741FD387470077D878 /* PhotoStorageService.swift in Sources */,
 				7F51DAC41FD348D500502804 /* PhotoAlbumService.swift in Sources */,
+				7F1D32D224C0A0C500DC8BE6 /* ResultExtensions.swift in Sources */,
 				7F247E891FD4366A0077D878 /* LoadingStatusItem.swift in Sources */,
 				7F65672D1FE04B1200A6CB7F /* Applicationable.swift in Sources */,
 				7F365DF021007FE20074F0BF /* MenuItemViewState.swift in Sources */,
@@ -1003,6 +1044,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = PFC77GK3D7;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -1013,7 +1055,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgrounds;
 				PRODUCT_NAME = "Graffiti Backgrounds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1026,6 +1068,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = PFC77GK3D7;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -1036,7 +1079,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgrounds;
 				PRODUCT_NAME = "Graffiti Backgrounds";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1060,7 +1103,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Graffiti Backgrounds.app/Contents/MacOS/Graffiti Backgrounds";
 			};
 			name = Debug;
@@ -1084,7 +1127,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.GraffitiBackgroundsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Graffiti Backgrounds.app/Contents/MacOS/Graffiti Backgrounds";
 			};
 			name = Release;

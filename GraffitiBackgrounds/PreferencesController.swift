@@ -1,9 +1,9 @@
 import Cocoa
-import Result
 
 protocol PreferencesControllerDelegate: AnyObject {
-    func preferencesController(_ controller: PreferencesController, errorLoadingPreferences error: Error)
-    func preferencesController(_ controller: PreferencesController, didUpdatePreferences result: Result<Preferences>)
+    func preferencesController(_ controller: PreferencesControllable, errorLoadingPreferences error: PreferencesError)
+    func preferencesController(_ controller: PreferencesControllable,
+                               didUpdatePreferences result: Result<Preferences, PreferencesError>)
 }
 
 // sourcery: name = PreferencesController, inherits = NSViewController

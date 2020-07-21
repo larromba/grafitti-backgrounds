@@ -1,5 +1,7 @@
 # xcode.gitignore
 
+notes.txt
+
 ## Mac
 .DS_Store
 

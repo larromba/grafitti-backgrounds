@@ -3,7 +3,7 @@ import Networking
 import Reachability
 
 enum AppDelegateFactory {
-    static func make(for app: NSApplication) -> AppDelegatable {
+    static func make(for application: NSApplication) -> AppDelegatable {
         let preferencesWindow = NSStoryboard.preferences.instantiateInitialController() as! NSWindowController
         let dataManager = DataManger(userDefaults: UserDefaults.standard)
         let preferencesService = PreferencesService(dataManager: dataManager)
@@ -11,46 +11,40 @@ enum AppDelegateFactory {
             windowController: preferencesWindow,
             preferencesService: preferencesService
         )
-
-        let workspace = NSWorkspace.shared
-        let workspaceController = WorkspaceController(workspace: workspace)
-
         let statusItem = LoadingStatusItem(viewState: LoadingStatusItemViewState(), statusBar: NSStatusBar.system)
         let reachability = Reachability()
         let menuController = AppMenuController(statusItem: statusItem, reachability: reachability)
-
         let urlSession = URLSession(configuration: .default)
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 3
         let fileManager = FileManager.default
         let networkManager = NetworkManager(urlSession: urlSession, fileManager: fileManager, queue: queue)
-
         let photoAlbumService = PhotoAlbumService(networkManager: networkManager)
         let photoService = PhotoService(
             networkManager: networkManager,
             fileManager: fileManager
         )
         let photoStorageService = PhotoStorageService(dataManager: dataManager, fileManager: fileManager)
-        let photoController = PhotoController(
+        let photoManager = PhotoManager(
             photoAlbumService: photoAlbumService,
             photoService: photoService,
             photoStorageService: photoStorageService,
             photoFolderURL: .defaultSaveLocation
         )
-
         let alertController = AlertController(notificationCenter: NSUserNotificationCenter.default)
         let emailController = EmailController(sharingService: NSSharingService(named: .composeEmail))
-        let appController = AppController(
+        let workspaceController = WorkspaceController(workspace: NSWorkspace.shared)
+        let appCoordinator = AppCoordinator(
             preferencesController: preferencesController,
             workspaceController: workspaceController,
             menuController: menuController,
-            photoController: photoController,
+            photoManager: photoManager,
             alertController: alertController,
-            emailController: emailController,
-            app: app
+            emailController: emailController
         )
-
-        let appDelegate = AppDelegate(appController: appController)
+        let router = AppRouter(coordinator: appCoordinator)
+        let app = App(router: router, application: application)
+        let appDelegate = AppDelegate(app: app)
         return appDelegate
     }
 }

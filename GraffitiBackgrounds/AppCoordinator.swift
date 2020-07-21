@@ -1,50 +1,55 @@
 import AsyncAwait
 import Cocoa
-import Result
 
 // sourcery: name = AppController
-protocol AppControllable: Mockable {
+protocol AppCoordinating: Mockable {
     func start()
+    func setDelegate(_ delegate: AppCoordinatorDelegate)
 }
 
-final class AppController: AppControllable {
+protocol AppCoordinatorDelegate: AnyObject {
+    func coordinator(_ coordinator: AppCoordinating, handleAction action: AppAction)
+}
+
+final class AppCoordinator: AppCoordinating {
     private let preferencesController: PreferencesControllable
     private let workspaceController: WorkspaceControllable
     private let menuController: AppMenuControllable
-    private let photoController: PhotoControllable
+    private let photoManager: PhotoManaging
     private let alertController: AlertControlling
     private let emailController: EmailControlling
-    private let app: Applicationable
+    private weak var delegate: AppCoordinatorDelegate?
 
     init(preferencesController: PreferencesControllable,
          workspaceController: WorkspaceControllable,
          menuController: AppMenuControllable,
-         photoController: PhotoControllable,
+         photoManager: PhotoManaging,
          alertController: AlertControlling,
-         emailController: EmailControlling,
-         app: Applicationable) {
+         emailController: EmailControlling) {
         self.preferencesController = preferencesController
         self.workspaceController = workspaceController
         self.menuController = menuController
-        self.photoController = photoController
+        self.photoManager = photoManager
         self.alertController = alertController
         self.emailController = emailController
-        self.app = app
-
         preferencesController.setDelegate(self)
         menuController.setDelegate(self)
-        photoController.setDelegate(self)
-        photoController.setPreferences(preferencesController.preferences)
+        photoManager.setDelegate(self)
+        photoManager.setPreferences(preferencesController.preferences)
     }
 
     func start() {
         reloadPhotos()
     }
 
+    func setDelegate(_ delegate: AppCoordinatorDelegate) {
+        self.delegate = delegate
+    }
+
     // MARK: - private
 
     private func clearFolder() {
-        switch photoController.clearFolder() {
+        switch photoManager.clearFolder() {
         case .success:
             alertController.showAlert(.clearFolderSuccess)
         case .failure(let error):
@@ -55,7 +60,7 @@ final class AppController: AppControllable {
     private func reloadPhotos() {
         alertController.showAlert(.reloadingPhotos)
         async({
-            _ = try await(self.photoController.reloadPhotos())
+            _ = try await(self.photoManager.reloadPhotos())
             self.alertController.showAlert(.reloadPhotosSuccess)
         }, onError: { error in
             guard !error.isNetworkErrorCancelled else { return }
@@ -63,7 +68,7 @@ final class AppController: AppControllable {
         })
     }
 
-    private func handleNoSuccessResult(_ result: Result<Void>) {
+    private func handleNoSuccessResult<U: Error>(_ result: Result<Void, U>) {
         guard let error = result.error else { return }
         alertController.showAlert(.error(error))
     }
@@ -71,43 +76,44 @@ final class AppController: AppControllable {
 
 // MARK: - PreferencesControllerDelegate
 
-extension AppController: PreferencesControllerDelegate {
-    func preferencesController(_ coordinator: PreferencesController, didUpdatePreferences result: Result<Preferences>) {
+extension AppCoordinator: PreferencesControllerDelegate {
+    func preferencesController(_ coordinator: PreferencesControllable,
+                               didUpdatePreferences result: Result<Preferences, PreferencesError>) {
         switch result {
         case .success(let preferences):
-            photoController.setPreferences(preferences)
+            photoManager.setPreferences(preferences)
         case .failure(let error):
             alertController.showAlert(.error(error))
         }
     }
 
-    func preferencesController(_ controller: PreferencesController, errorLoadingPreferences error: Error) {
+    func preferencesController(_ controller: PreferencesControllable, errorLoadingPreferences error: PreferencesError) {
         alertController.showAlert(.error(error))
     }
 }
 
 // MARK: - MenuControllerDelegate
 
-extension AppController: AppMenuControllerDelegate {
+extension AppCoordinator: AppMenuControllerDelegate {
     func menuController(_ controller: AppMenuController, selected action: AppMenu.Action) {
         switch action {
         case .refreshFolder(action: .refresh):
             reloadPhotos()
         case .refreshFolder(action: .cancel):
-            photoController.cancelReload()
+            photoManager.cancelReload()
             alertController.showAlert(.cancelReloadSuccess)
         case .openFolder:
-            handleNoSuccessResult(workspaceController.open(photoController.photoFolderURL))
+            handleNoSuccessResult(workspaceController.open(photoManager.photoFolderURL))
         case .clearFolder:
             clearFolder()
         case .preferences:
             preferencesController.open()
-            app.activate(ignoringOtherApps: true)
+            delegate?.coordinator(self, handleAction: .bringToFront)
         case .systemPreferences:
             handleNoSuccessResult(workspaceController.open(SystemPreference.desktopScreenEffects.url))
         case .about:
-            app.orderFrontStandardAboutPanel(self)
-            app.activate(ignoringOtherApps: true)
+            delegate?.coordinator(self, handleAction: .openAbout)
+            delegate?.coordinator(self, handleAction: .bringToFront)
         case .help:
             handleNoSuccessResult(workspaceController.open(.help))
         case .contact:
@@ -115,23 +121,23 @@ extension AppController: AppMenuControllerDelegate {
                                                            subject: L10n.Email.subject(Bundle.appName),
                                                            body: L10n.Email.message))
         case .quit:
-            app.terminate(self)
+            delegate?.coordinator(self, handleAction: .terminate)
         }
     }
 }
 
-// MARK: - PhotoControllerDelegate
+// MARK: - PhotoManagerDelegate
 
-extension AppController: PhotoControllerDelegate {
-    func photoControllerTimerTriggered(_ photoController: PhotoController) {
+extension AppCoordinator: PhotoManagerDelegate {
+    func photoManagerTimerTriggered(_ photoManager: PhotoManaging) {
         reloadPhotos()
     }
 
-    func photoController(_ photoController: PhotoController, updatedDownloadPercentage percentage: Double) {
+    func photoManager(_ photoManager: PhotoManaging, updatedDownloadPercentage percentage: Double) {
         menuController.setLoadingPercentage(percentage)
     }
 
-    func photoController(_ photoController: PhotoController, didChangeDownloadState inProgress: Bool) {
+    func photoManager(_ photoManager: PhotoManaging, didChangeDownloadState inProgress: Bool) {
         menuController.setRefreshAction(inProgress ? .cancel : .refresh)
         menuController.setIsLoading(inProgress)
     }

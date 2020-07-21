@@ -1,11 +1,10 @@
 import Foundation
-import Result
 
 // sourcery: name = PhotoStorageService
 protocol PhotoStorageServicing: Mockable {
-    func save(_ resources: [PhotoResource]) -> Result<Void>
-    func load() -> Result<[PhotoResource]>
-    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]>
+    func save(_ resources: [PhotoResource]) -> Result<Void, PhotoStorageError>
+    func load() -> Result<[PhotoResource], PhotoStorageError>
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource], PhotoStorageError>
 }
 
 final class PhotoStorageService: PhotoStorageServicing {
@@ -23,17 +22,17 @@ final class PhotoStorageService: PhotoStorageServicing {
         self.fileManager = fileManager
     }
 
-    func save(_ resources: [PhotoResource]) -> Result<Void> {
+    func save(_ resources: [PhotoResource]) -> Result<Void, PhotoStorageError> {
         do {
             let data = try encoder.encode(resources)
             dataManager.save(data, key: Key.resource)
             return .success(())
         } catch {
-            return .failure(PhotoStorageError.encodeError(error))
+            return .failure(.encodeError(error))
         }
     }
 
-    func load() -> Result<[PhotoResource]> {
+    func load() -> Result<[PhotoResource], PhotoStorageError> {
         guard let data = dataManager.load(key: Key.resource) else {
             return .success([])
         }
@@ -41,11 +40,11 @@ final class PhotoStorageService: PhotoStorageServicing {
             let resources = try decoder.decode([PhotoResource].self, from: data)
             return .success(resources)
         } catch {
-            return .failure(PhotoStorageError.decodeError(error))
+            return .failure(.decodeError(error))
         }
     }
 
-    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource]> {
+    func remove(_ resources: [PhotoResource]) -> Result<[PhotoResource], PhotoStorageError> {
         guard !resources.isEmpty else {
             return .success([])
         }
@@ -59,7 +58,7 @@ final class PhotoStorageService: PhotoStorageServicing {
         }
 
         var results = [PhotoResource]()
-        var errors = [Error]()
+        var errors = [PhotoStorageError]()
         resources.forEach { resource in
             do {
                 if let fileURL = resource.fileURL, self.fileManager.fileExists(atPath: fileURL.path) {
@@ -68,7 +67,7 @@ final class PhotoStorageService: PhotoStorageServicing {
                 savedResources.remove(resource)
                 results += [resource]
             } catch {
-                errors += [PhotoStorageError.fileDeleteError(error)]
+                errors += [.fileDeleteError(error)]
             }
         }
 
