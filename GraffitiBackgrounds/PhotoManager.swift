@@ -98,15 +98,11 @@ final class PhotoManager: PhotoManaging {
                 }.get()
 
                 log("7. finish up")
-                onMain {
-                    self.stopReloading()
-                    completion(result)
-                }
+                onMain { self.stopReloading() }
+                completion(result)
             }, onError: { error in
-                onMain {
-                    self.stopReloading()
-                    completion(.failure(error))
-                }
+                onMain { self.stopReloading() }
+                completion(.failure(error))
             })
         }
     }

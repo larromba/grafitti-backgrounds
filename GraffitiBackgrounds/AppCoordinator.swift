@@ -61,10 +61,10 @@ final class AppCoordinator: AppCoordinating {
         alertController.showAlert(.reloadingPhotos)
         async({
             _ = try await(self.photoManager.reloadPhotos())
-            self.alertController.showAlert(.reloadPhotosSuccess)
+            onMain { self.alertController.showAlert(.reloadPhotosSuccess) }
         }, onError: { error in
             guard !error.isNetworkErrorCancelled else { return }
-            self.alertController.showAlert(.error(error))
+            onMain { self.alertController.showAlert(.error(error)) }
         })
     }
 
